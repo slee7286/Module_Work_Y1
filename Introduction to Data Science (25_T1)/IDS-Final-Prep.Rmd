@@ -1,0 +1,3044 @@
+---
+title: |
+  | IDS Midterm Notes
+  | 20/12/2025  
+author: |
+  | Siheon Lee
+  | EFDS Y1 T1
+output:
+  html_document:
+    toc: true
+    toc_depth: 6
+    df_print: paged
+  pdf_document:
+    toc: true
+    number_sections: true
+---
+
+
+## Lecture 1 (06/10/2025)
+
+* Note: there are multiple setwd() lines in the code that need to be rewritten for the local machine directory path
+* Repeated concepts have been eliminated (for example, if the tutorial repeats some concepts in the lecture, I haven't included it)
+
+* **Overview**
+  * Guiding principles for excellence in graphics
+  * Data types in R
+  * Understanding R
+  * Development loop
+
+8 Guiding principles for excellence in graphics
+
+1. Substance: induce the viewer to think about the substance rather than about other things
+2. No distortion: avoid distorting what the data have to say
+3. Information-dense: present many numbers in a small space
+4. Coherence: make large data sets coherent
+5. Encourage comparisons: encourage the eye to compare different pieces of data
+6. Broad-to-fine details: reveal the data at several levels of detail, from a broad overview to the fine structure
+7. Clear purpose: serve a reasonably clear purpose
+8. Alignment with verbal descriptions: be aligned with the verbal descriptions accompanying the graph
+
+
+Data types in R
+
+* numeric - (10.5, 55, 787)
+* integer - (1L, 55L, 100L, where the letter "L" declares this as an integer)
+* complex - (9+3i, where "i" is the imaginary part)
+* character (a.k.a. string) - ("k", "R is exciting", "FALSE", "11.5")
+* logical (a.k.a. boolean) - (TRUE or FALSE)
+* Date - "07/01/1867"
+
+Function - function in R is an object containing multiple command that are run together in a predefined order every time
+
+Split-apply-combine approach: splitting up a large data structure, operating on each piece, and joining the results back together
+
+Development loop: act, measure, assess, adjust
+
+## Tutorial 1 (09/10/2025)
+
+* **Overview**
+  * Installing and running packages
+  * Variables
+  * Vectors
+  * Seq()
+  * Pipe operator
+  * as.Date()
+  * round()
+  * print()
+  * sqrt()
+  * floor()
+  * class()
+  * Good coding practice
+
+### Tutorial Code
+We run the packages
+```{r, results='hide', message=FALSE, warning=FALSE}
+# Install the packages if necessary
+# install.packages("tidyverse")
+# install.packages("palmerpenguins")
+library(tidyverse)
+library(palmerpenguins)
+```
+
+View part of the palmerpenguins data
+```{r}
+head(penguins)
+```
+
+We can create a vector with c()
+```{r}
+primes <- c(2, 3, 5, 7, 11, 13)
+primes
+```
+
+Basic arithmetic on vectors is applied to every element of the vector
+```{r}
+primes * 2
+primes - 1
+
+primes <- c(primes, 15, 17)
+primes
+```
+
+seq() function creates a vector of a sequence of numbers from x to y by increments of z
+```{r}
+seq(from = 1, to = 10, by = 0.5)
+```
+
+Take care to appropriately format your code (whitespace, comments, indentation, new lines, etc.)
+
+Pipe operator |> (%>% in tidyverse)
+It takes the output of one expression and passes it as the first argument to the next function, making code easier to read.
+```{r}
+# Example:
+#   flights |>
+#     filter(dest == "IAH") |>
+#     group_by(month) |>
+#     summarise(n = n())
+#
+# This is equivalent to:
+#   summarise(group_by(filter(flights, dest == "IAH"), month), n = n())
+```
+
+### Additional Files
+```{r}
+2 + 3
+```
+
+Variables are assigned data through the arrow assignment operator
+```{r}
+x <- 3.14
+print(x)
+```
+
+R can handle dates through the as.Date() function
+```{r The Date type}
+# Messy date data as characters (Dec 7 2022)
+good_day <- "20221207"
+
+# Convert with as.Date
+as.Date(good_day, format = "%Y%m%d")
+
+# Sometimes our date has separators (Aug 18 2023)
+great_day <- "18-08-2023"
+
+# as.Date() can handle that too
+as.Date(great_day, format = "%d-%m-%Y")
+
+```
+
+round() can round numbers
+```{r Functions}
+Pi <- 3.1415926
+
+# Rounding Pi to the nearest whole number
+round(Pi, digits = 2)
+```
+
+Arguments are separated by commas, and the order in which they are passed is
+important (also note whitespace).
+
+print() function allows us to print text or numbers
+```{r The print function}
+
+print(Pi)
+print("Hello World!")
+```
+
+sqrt() function computes square root of number and floor() function rounds down to the nearest integer
+```{r Exercise 3}
+a <- 4
+b <- 3.8
+sqrt(a) # Find the square root of a
+floor(b) # Round down to nearest integer of b
+```
+
+class() function can tell us what type of data a variable holds
+```{r The class function}
+x <- 4
+class(x)
+
+y <- 4.5
+class(y)
+
+z <- "Imperial"
+class(z)
+
+a <- TRUE
+class(a)
+```
+
+## Lecture 2 (13/10/2025)
+
+* **Overview**
+  * Vectors
+  * names()
+  * Data frame
+  * Indexing
+  * If..else statements
+  * For loop
+  * Tidyverse
+  * select()
+  * filter()
+  * mutate()
+  * arrange()
+
+Vector holds same type of data in array (numbers, expressions, logical values, or character strings)
+
+Elements must be comma-separated and created through function c()
+```{r}
+codes <- c(380,124,818)
+codes
+country <- c("Italy", "Canada", "Egypt")
+country
+```
+
+We can create various vectors:
+```{r}
+c(1:10) # integers 1-10
+c(1:5,7,9) # integers 1-5 and 7 and 9
+c(1:5)*2-1 # odd numbers from 1-9
+```
+
+names() function allows you to label or name entries of a vector
+```{r}
+names(codes) <- country
+codes
+```
+
+Data frame is a list of vectors of equal length, used for storing data tables
+
+```{r}
+n = c(2, 3, 5)
+s = c("aa", "bb", "cc")
+b = c(TRUE, FALSE, TRUE)
+df = data.frame(n, s, b)
+df
+```
+
+[Indexing] To access an element of a vector or data frame, we can use square brackets
+
+Index is a position in a vector or data frame, and in R it always starts at 1
+```{r}
+codes[2]
+df[2,2] # retrieves element in 2nd row and 2nd column
+df[,2] # retrieves entirety of 2nd column
+df[2,] # retrieves entirety of 2nd row
+```
+
+If...else statements are conditional statements that take in a condition and run a specific code depending on if that condition is met or now
+
+We can "nest" if...else statements several times
+
+We can also use a for loop to repeatedly apply an operation but just change the index. In this case, we are indexing over the vector x.
+```{r}
+x <- c(25000, 125000, 190000) # input annual income
+for (y in x) {
+  if(y < 37701) {
+    print("This person falls in the basic rate tax band")
+    }
+  else if(y < 125140) {
+    print("This person falls in the higher rate tax band")
+    }
+  else {
+    print("This person falls in the highest tax band")
+    }
+}
+```
+
+Tidyverse is a collection of packages helpful for working with tidy data
+```{r, results='hide', message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+We say a data table is in tidy format if each row represents one observation and columns represent different variables available for each observation
+
+The following is a tidy data table
+```{r}
+fertility_rate <- data.frame (
+  Year = c(1960, 1961, 1962),
+  Fertility_rate_UK = c(2.62, 2.68, 2.75),
+  Fertility_rate_South_Korea = c(6.04, 5.89, 5.75)
+)
+fertility_rate
+```
+
+We can manipulate a data frame using verbs such as select, filter, mutate, and arrange
+
+* select() allows you to select particular columns from a data frame
+```{r}
+subdata <- select(fertility_rate, Year,
+Fertility_rate_South_Korea)
+subdata
+```
+
+* filter() allows you to filter out data that meet a particular criteria (e.g., NA values, values <X, etc.)
+```{r}
+filter(subdata, Fertility_rate_South_Korea < 6)
+```
+
+* mutate() creates new columns that are functions of existing variables. It can also modify (if the name is the same as an existing column) and delete columns (by setting their value to NULL)
+
+lag() is a function that lags a variable by one
+```{r}
+fertility_rate <- 
+  mutate(fertility_rate,rate_change_UK =
+           (Fertility_rate_UK - lag(Fertility_rate_UK))/lag(Fertility_rate_UK)*100)
+fertility_rate
+```
+
+To delete a column using mutate, we use the following:
+```{r}
+fertility_rate<- mutate(fertility_rate, rate_change_UK = NULL)
+```
+
+* arrange allows you to sort a data frame by a particular column (default is low to high)
+```{r}
+arrange(subdata, Fertility_rate_South_Korea)
+```
+
+## Tutorial 2 (16/10/2025)
+
+* **Overview**
+  * Parts of a function
+  * Plotting graph example
+  * setwd()
+  * read.csv()
+  * head()
+  * is.na()
+  * sum()
+  * colSums()
+  * na.omit()
+  * nrow()
+  * Vectorized operations
+  * select()
+  * filter()
+  * mutate()
+  * arrange()
+  * desc()
+  * If..else statement
+  * For loop
+  * Comparison (==,!=,>,<,>=,<=)
+
+### Tutorial Code
+
+Goals:
+* tidyverse: select, filter, mutate, arrange
+* data processing (removing NA values)
+* user-defined functions (if..else, for loops)
+* %>% pipe operator
+
+Parts of a function: name, arguments, and body
+```{r}
+# name <- function(arguments) {
+#   
+# }
+```
+
+Load required library for plotting:
+```{r, results='hide', message=FALSE, warning=FALSE}
+library(plotrix)
+```
+
+
+Explore plotting graphs and making functions
+```{r}
+# Takes in variables x and y, which represent the (x,y) coordinates of the circle's center
+# Vector c(1,0.66,0.33) represents radii of three circles
+# Colour of circumference is red
+# c("red","blue","orange") defines colours filling in circles
+# lty=1 defines line types for circumference
+# lwd=1 means line width is 1
+circle <- function(x,y){
+  draw.circle(x,y,c(1,0.66,0.33),border="red",
+col=c("red","blue","orange"),lty=1,lwd=1)
+}
+
+# Defines square plotting region
+par(pty="s")
+
+# creates empty plot
+# 1:5 sequence for x-axis labels
+# seq(1,10,length=5) for y-axis labels
+# No x- and y-axis titles
+# type=n creates empty plot
+# Title of "Test draw.circle"
+plot(1:5, seq(1,10,length=5),
+     type="n", xlab="", ylab="",
+     main="Test draw.circle")
+
+# Draws circle in plot
+circle(3,3)
+```
+
+Question mark shows available arguments
+```{r}
+# ?draw.circle
+```
+
+Create extended version of circle function that has default border and fill colours:
+```{r}
+circle_ext <- function(x,y,
+                       border_colour = 'red', # default border colour
+                       colour = c('red', 'blue', 'orange')){ # default fill colours
+  # When circle_ext() is called, this line is executed immediately.
+  # The values of 'border_colour' and 'colour' depend on what was passed
+  # in the function call. If nothing was passed, the default values above are used.
+  draw.circle(x,y,c(1,0.66,0.33),
+              border=border_colour, # border colour passed by the user
+              col=colour, # fill colours passed by the user
+              lty=1,
+              lwd=1)
+}
+
+par(pty = "s") # keep the plotting region square-shaped
+
+# Create empty plot again
+plot(1:5, seq(1,10,length=5),
+     type="n", xlab="", ylab="",
+     main="Test draw.circle")
+
+# This is the *function call* — where the function is actually executed.
+# At this moment, R substitutes x=3, y=3, border_colour='black',
+# and colour=c('purple','green','yellow'), and runs the code inside.
+
+circle_ext(3, 3,
+           border_colour = 'black',
+           colour = c("purple", "green", "yellow"))
+
+```
+
+We load the dataset required for next step:
+
+read.csv() reads data stored in a CSV to a data frame
+```{r}
+# Sets working directory
+setwd("C:/Users/slee7/OneDrive - Imperial College London/Introduction to Data Science/Week 2")
+uk_gdp_and_weeklyWage_na <- read.csv("data/uk_gdp_and_weeklyWage_na.csv")
+head(uk_gdp_and_weeklyWage_na)
+```
+
+is.na() function returns vector (TRUE/FALSE) fo the same length and shape as the input
+sum() function adds up values (counts TRUE=1 and FALSE=0)
+Check how many missing values there are in total:
+```{r}
+sum(is.na(uk_gdp_and_weeklyWage_na))
+```
+
+We can use colSums() to sum across the columns:
+```{r}
+colSums(is.na(uk_gdp_and_weeklyWage_na))
+```
+
+na.omit() removes all rows that contain at least one NA value
+```{r}
+uk_gdp_and_weeklyWage_no_NA <- na.omit(uk_gdp_and_weeklyWage_na)
+```
+
+nrow() function returns number of rows in data frame
+
+Check how many rows were removed:
+```{r}
+nrow(uk_gdp_and_weeklyWage_na) - nrow(uk_gdp_and_weeklyWage_no_NA)
+```
+
+Confirm that there are no missing values left:
+```{r}
+sum(is.na(uk_gdp_and_weeklyWage_no_NA))
+```
+
+Exercise 1. Write a function compute_s_n that for any given n computes the sum $S(n) = 1^2 + 2^2 + \dots + n^2$. Report the value of the sum when $n=10$.
+
+
+1. First approach using loops
+```{r}
+compute_s_n <- function(n) {
+  sum_squares <- 0
+  
+  for(i in 1:n){
+    sum_squares <- sum_squares +(i^2)
+  }
+  
+  return(sum_squares)
+}
+
+result <- compute_s_n(10)
+print(result)
+```
+
+2. Second approach using vectorized approach
+```{r}
+compute_s_n <- function(n) {
+  sum_squares <- sum((1:n)^2)
+  
+  return(sum_squares)
+}
+
+# Compute S_n for n = 10
+result <- compute_s_n(10)
+print(result)
+```
+
+#### Exercise 1: Calculating GDP growth rate and classifying weekly wage levels
+
+GDP Growth Rate is calculated using the formula:
+
+$$
+\text{GDP growth rate} = \frac{\text{GDP this year} - \text{GDP last year}}{\text{GDP last year}} \times 100
+$$
+
+```{r}
+# Step 1: Load the dataset
+setwd("C:/Users/slee7/OneDrive - Imperial College London/Introduction to Data Science/Week 2")
+uk_gdp_and_weeklyWage <- read.csv("data/uk_gdp_and_weeklyWage.csv")
+
+# Step 2: Add two new columns
+uk_gdp_and_weeklyWage <- uk_gdp_and_weeklyWage %>% 
+  mutate(
+    # GDP_growth_rate: how much GDP changed since last year, in %
+    # lag(GDP_m) gets the previous year's GDP
+    GDP_growth_rate = (GDP_m - lag(GDP_m)) / lag(GDP_m) * 100,
+         # weeklyWageLevel: TRUE if Weekly_pay > 500, FALSE otherwise
+         weeklyWageLevel = Weekly_pay>500)
+
+head(uk_gdp_and_weeklyWage)
+```
+
+#### Exercise 2: Working with Leap Years
+
+To determine whether a year is a leap year, we use the following rules:
+
+1. The year must be divisible by 4
+→ e.g., 2016, 2020, 2024
+
+2. But if the year is also divisible by 100, it is not a leap year
+→ e.g., 1900, 2100
+
+3. However, if it is divisible by 400, it is a leap year
+→ e.g., 2000, 2400
+
+
+Loop through each row of the dataset and check if leap year
+
+rbind() function stacks two data frames by row
+```{r}
+
+leap_year_subset <- NULL
+for (i in 1:nrow(uk_gdp_and_weeklyWage)) {
+  # Extract year value for current row
+  year_num <- uk_gdp_and_weeklyWage$Year[i]
+  
+  # Check if it is a leap year
+  
+  # If year is divisible by 100, check if it is also divisible by 400
+  if (year_num %% 100 == 0) {
+    
+    # If divisible by 400, it is a leap year
+    if (year_num %% 400 == 0) {
+      leap_year_subset <- rbind(leap_year_subset, uk_gdp_and_weeklyWage[i, ])
+    }
+  }
+  
+  # Otherwise, check if divisible by 4
+  else if (year_num %% 4 == 0) {
+    leap_year_subset <- rbind(leap_year_subset, uk_gdp_and_weeklyWage[i, ])
+  }
+  
+  # If both conditions fail, it is not a leap year
+  else {
+    print(paste(year_num, "is not a leap year"))
+  }
+}
+
+leap_year_subset
+```
+
+### Additional Files
+
+We can compare values and variables. output is either TRUE or FALSE boolean/logical values
+```{r}
+5 == 5
+5 != 5
+5 > 6
+5 >= 5
+4 < 5
+4 <= 5
+```
+
+select() function
+```{r}
+uk_gdp_and_weeklyWage %>%
+  select(Year, Weekly_pay) %>%
+  head()
+```
+
+filter() function
+```{r}
+uk_gdp_and_weeklyWage %>%
+  select(Year, Weekly_pay) %>%
+  filter(Year %% 4 == 0,
+         Year %% 100 != 0 |
+           Year %% 400 ==0 )
+```
+
+mutate() function
+
+```{r}
+uk_gdp_and_weeklyWage <- uk_gdp_and_weeklyWage %>%
+  mutate(GDP_growth_rate =
+           (GDP_m - lag(GDP_m)) / lag(GDP_m) * 100)
+```
+
+arrange() function
+
+Default is sorting in ascending order. To sort by descending order, specify arrange(desc())
+```{r}
+uk_gdp_and_weeklyWage %>%
+  arrange(desc(GDP_growth_rate))
+```
+
+## Lecture 3 (20/10/2025)
+
+* **Overview**
+  * Tidy format
+  * pull() / $
+  * Dot operator
+  * case_when()
+  * between()
+  * group_by()
+  * ungroup()
+  * summarise()
+  * n()
+  * mean()
+  
+Tidy format if:
+
+1. each row represents one observation
+2. each column represents the different variables available for each of these observations
+3. each value is a cell with each cell being a single value
+
+Load required package
+```{r, results='hide', message=FALSE, warning=FALSE}
+library(nycflights13)
+```
+
+We will use the flights dataset within the package.
+
+We can sort first by the year, then within each year by month, then within each month by day, and then from the most delay to the least delay
+```{r}
+flights %>%
+  arrange(year, month, day, desc(dep_delay)) %>%
+  head()
+```
+
+pull() is similar to $, where it gets a specific variable (column) from a data frame
+```{r}
+# Equivalent to head(flights$dep_delay)
+flights %>%
+  pull(dep_delay) %>%
+  head(10)
+```
+
+Dot operator lets the pipe move the value into a specified argument.
+```{r}
+exponent <- function(x,y){
+  x^y
+  }
+x <- 2
+y <- 3
+# Computes 3^2
+y %>% exponent(x)
+
+#Computes 2^3
+y %>% exponent(x,.)
+```
+
+case_when() function outputs any number of values depending on the conditional statement
+```{r}
+x <- c(-2, -1, 0, 1, 2)
+case_when(x < 0 ~ "Negative",
+          x > 0 ~ "Positive",
+          TRUE ~ "Zero")
+```
+
+We can use case_when() with mutate to create new column with data depending on a conditional statement with an existing variable
+```{r}
+flights %>%
+  filter(!is.na(dep_delay)) %>%
+  mutate(group= case_when(
+    dep_delay < 0 ~ "Early departure",
+    dep_delay == 0 ~ "On time",
+    dep_delay > 60 ~ "Delayed more than 1 hour",
+    TRUE ~ "Delayed up to 1 hour")) %>%
+  select(dep_delay,group) %>%
+  head()
+```
+
+between() allows to check if a value falls inside an interval
+
+between(x,a,b) does the same as x >= a & x <= b
+```{r}
+flights %>%
+  filter(!is.na(dep_delay)) %>%
+  mutate(group= case_when(
+    dep_delay < 0 ~ "Early departure",
+    between(dep_delay,0,10)~ "On time up to 10 mins",
+    dep_delay > 10 ~ "Delayed more than 10 mins")) %>%
+  select(dep_delay,group) %>%
+  head()
+```
+
+group_by() allows you to group a data frame by a particular categorical variable
+
+Any subsequent operation conduct will work on the group
+
+It is good practice to ungroup() the data frame after conducting the grouped operation
+
+summarise() creates summary statistics, reducing the data frame to have a single row for each observation (or group if the data frame is grouped)
+
+We can group the data by each date and calculate the average delay by using summarise():
+```{r, message=FALSE, warning=FALSE}
+flights %>%
+  group_by(year, month, day) %>%
+  summarise(avg_delay = mean(dep_delay, na.rm = TRUE)) %>%
+  ungroup() %>%
+  head()
+```
+
+Another useful summary is n(), which returns the number of rows in each group
+```{r}
+flights %>%
+  group_by(month) %>%
+  summarise(
+    avg_delay = mean(dep_delay, na.rm = TRUE),
+    nrows = n()) %>%
+  head()
+```
+
+### Check your understanding
+
+Suppose we have the following data frame:
+```{r}
+df <- data.frame(
+  x = 1:5,
+  y = c("a", "b", "a", "a", "b"),
+  z = c("K", "K", "L", "L", "K")
+)
+df
+```
+
+Visualize what the following outputs might be:
+```{r}
+df %>%
+  group_by(y)
+
+df %>%
+  arrange(y)
+
+df %>%
+  group_by(y) %>%
+  summarise(
+    # mean() calculates the mean of all the values
+    mean_x = mean(x)
+  )
+
+df %>%
+  group_by(y,z) %>%
+  summarise(
+    mean_x = mean(x)
+  )
+
+df %>%
+  group_by(y,z) %>%
+  mutate(
+    mean_x = mean(x)
+  )
+```
+
+## Tutorial 3 (23/10/2025)
+
+* **Overview**
+  * dplyr package
+  * Ways to access columns: $, [[]], [, "col"]
+  * min()
+  * max()
+  * Turn data frame columns into vectors
+  * seq() with dates
+  * format()
+  * quantile()
+  * cut()
+  * sd()
+  * tail()
+  * summary()
+  * parse_number()
+
+### Tutorial Code
+
+Load required package and sample data frame
+```{r, results='hide', message=FALSE, warning=FALSE}
+library(dplyr)
+
+students <- data.frame(
+  name = c("Alice", "Bob", "Chloe", "Daniel", "Emma"),
+  age = c(21, 22, 20, 23, 21),
+  score = c(85, 90, 78, 92, 88)
+)
+```
+
+You can access the column in different ways:
+```{r}
+students$name # Using the $ operator
+
+students[["age"]] 
+
+students[, "score"]
+```
+
+min() function finds the minimum value of the data
+
+max() function finds the maximum value of the data
+```{r}
+students %>%
+  summarise(
+    avg_score = mean(score),
+    min_score = min(score),
+    max_score = max(score)
+)
+```
+
+Sometimes datasets include dates. Here is an example of creating one using seq() and extracting its year using mutate() and format().
+
+format() takes in an object and POSIX-style format codes for Date objects to extract a specific part of the object as a character (string)
+
+* %Y - 4-digit year
+* $m - month(01-12)
+* %d - day
+
+```{r}
+example_dates <- data.frame(
+  Date = seq(as.Date("2020-01-01"),
+             by = "month",
+             length.out = 6)
+)
+
+example_dates %>%
+  mutate(Year = format(Date, "%Y"))
+
+```
+
+You can extract a single column as vector using pull() or the dot operator
+```{r}
+mtcars %>%
+  pull(mpg) %>%
+  head()
+
+mtcars %>%
+  .$mpg %>%
+  head()
+```
+
+### Additional Files
+
+cut() function  used to cut a range of values into bins and specify labels for each bin
+```{r}
+vec <- c(0:100)
+cut(vec,
+    # number of breaks to make or vector of break points
+    c(0,20,40,60,80,100),
+    # whether to include lowest break point
+    include.lowest = TRUE,
+    # labels = NULL produces interval bins,
+    # labels = FALSE produces integer category starting at 1,
+    # and you can also assign your own labels with labels = c()
+    labels = FALSE)
+```
+
+quantile() function produces sample quantiles corresponding to the given probabilities.  The smallest
+observation corresponds to a probability of 0 and the largest to a probability of 1.
+
+```{r}
+vec <- c(0:50)
+quantile(vec,
+         # vector of probabilities
+         # seq(0,1,0.25) = c(0,0.25,0.5,0.75,1)
+         # these are the quartiles (0%, 25%, 50%, 75%, and 100%)
+         probs = seq(0, 1, 0.25), 
+         # types of 1-9 quantile algorithms
+         # default is 7
+         type = 7)
+```
+
+By making the quantiles the break points and combining with cut, we can categorize different numerical values into their respective quartiles.
+
+```{r}
+uk_gdp_and_weeklyWage <- uk_gdp_and_weeklyWage %>%
+  mutate(
+    GDP_growth_rate = (GDP_m - lag(GDP_m)) / lag(GDP_m) * 100
+    )
+
+uk_gdp_and_weeklyWage <- uk_gdp_and_weeklyWage %>%
+  mutate(GDP_growth_rate_Quartile = cut(GDP_growth_rate,
+                                        quantile(GDP_growth_rate,
+                                                 probs = seq(0, 1, 0.25),
+                                                 type = 7,
+                                                 na.rm = T),
+                                        include.lowest = T,
+                                        labels = F)
+)
+
+uk_gdp_and_weeklyWage %>%
+  arrange(GDP_growth_rate) %>%
+  head()
+```
+
+sd() gives the standard deviation of the data
+
+Find mean and standard deviations of data:
+```{r}
+uk_gdp_and_weeklyWage %>%
+  filter(!is.na(GDP_growth_rate_Quartile)) %>%
+  group_by(GDP_growth_rate_Quartile) %>%
+  summarise(mean_GDP = mean(GDP_m),
+            std_GDP = sd(GDP_m),
+            mean_wage = mean(Weekly_pay),
+            std_wage = sd(Weekly_pay),
+            mean_GDPrate = mean(GDP_growth_rate),
+            std_GDPrate = sd(GDP_growth_rate)) %>%
+  ungroup()
+```
+
+tail() gives the last n number of rows of a data frame
+```{r}
+uk_gdp_and_weeklyWage %>%
+  arrange(GDP_growth_rate) %>%
+  tail(10)
+```
+
+summary() gives a generic result summary
+```{r}
+GDP_growth_rate_summary <-
+  uk_gdp_and_weeklyWage %>%
+  summary(GDP_growth_rate, na.rm=T)
+GDP_growth_rate_summary
+```
+
+parse_number() drops any non-numeric characters before and after the first number
+```{r}
+GDP_growth_rate_summary[3,4]
+parse_number(GDP_growth_rate_summary[3,4],
+             # Makes sure " " (spaces) separate thousands, not "," (commas)
+             # parse_number() ignores spaces when parsing
+             locale = locale(grouping_mark = " "))
+```
+
+## Lecture 4 (27/10/2025)
+
+* **Overview**
+  * ggplot2 package
+  * Plot/Geometry types (line, bar, histogram, scatterplot, etc.)
+  * geom_point()
+    * col
+    * size
+  * ggplot() object
+  * aes()
+  * geom_text()
+    * nudge_x
+    * label
+  * geom_label()
+  * Global vs local aesthetic mapping
+  * xlab()
+  * ylab()
+  * ggtitle()
+  * scale_x_continuous()
+  * scale_y_continuous()
+  * scale_x_log10()
+  * scale_y_log10()
+  * Categories as colours
+  
+Install ggplot2 package, designed to work exclusively with data tables in tidy format
+```{r, results='hide', message=FALSE, warning=FALSE}
+library(ggplot2)
+library(dslabs) # US gun homicide dataset
+```
+
+Three main components to using ggplot2
+
+1. Data: a data set
+2. Geometry: the type of plot (e.g., scatterplot, barplot, histogram, smooth densities, qqplot, and boxplot)
+3. Aesthetic mapping: additional visual cues to represent the information in the data set (e.g., the x-axis and y-axis variables and grid sizes, colour, etc.)
+
+First step in creating ggplot2 graph is to define a ggplot object
+```{r}
+# Below renders a black slate since no geomtry is defined
+
+# ggplot(data = murders)
+murders %>% ggplot() # Pipe operator definition
+```
+
+In ggplot2, we create graphs by adding layers. Layers can define geometries, compute summary statistics, define what scales to use, or even change styles.
+
+To add layers, we use the symbol "+"
+
+Geometry function names follow the pattern: "geom_X" where "X" is the name of the geometry
+
+* geom_point() - scatterplot
+* geom_bar() - bar chart
+* geom_histogram() - histogram
+* geom_boxplot() - boxplot
+
+If we add the geometry to the existing ggplot object, it defaults to using the existing data.
+
+Aesthetic mappings describes how properties of the data connect with features of the graph, such as which variables form the x- and y-axes, distance along an axis, size, or colour
+
+aes() function connects data with aesthetic mappings
+
+aes also uses variable names from the object component: we can use population and total without having to call them as murders\$population and murders\$total
+
+```{r}
+murders %>% ggplot() +
+  geom_point(aes(x = population/10^6, y = total))
+```
+
+geom_text() and geom_label() allows use to add text to the plot without and with a rectangle behind the text, respectively
+
+Each geometry function has many arguments other than aes and data, tending to be specific to the function
+
+Whereas mapping use data from specific observations and need to be inside aes(), operations we want to affect all the points the same way do not need to be included inside aes
+
+```{r}
+murders %>% ggplot() +
+  geom_point(aes(x = population/10^6, y = total),
+             # increases size of dots
+             size = 3) +
+  geom_text(aes(population/10^6, total, label = abb),
+            # shifts text slightly to right
+            nudge_x = 1.5)
+```
+
+geom_text(aes(population/10^6, total), label = abb) will give error since abb is not found because it is outside of aes function
+
+Global aesthetic mappings can be defined within the ggplot object
+
+We can rewrite the previous code as follows:
+```{r}
+murders %>% ggplot(aes(x = population/10^6, y = total, label = abb)) +
+  geom_point(size = 3) +
+  geom_text(nudge_x = 1.5)
+```
+
+If necessary, we can override the global mapping by defining a new mapping within a layer
+```{r, warning=FALSE}
+murders %>% ggplot(aes(x = population/10^6, y = total, label = abb)) +
+  geom_point(size = 3) +
+  # text label overriden
+  geom_text(aes(x = 10,
+  y = 800,
+  label = "Hello there!"))
+```
+
+scale_x_continuous() and scale_y_continuous() allows us to change the scale of the axes
+
+Because log-scale is so common, we can also use scale_x_log10() and scale_y_log10()
+```{r}
+murders %>% ggplot(aes(x = population/10^6, y = total, label = abb)) +
+  geom_point(size = 3) +
+  geom_text(nudge_x = 0.05) +
+  scale_x_continuous(trans = "log10") +
+  scale_y_continuous(trans = "log10")
+```
+
+To change axes labels and add a title, we use xlab(), ylab(), and ggtitle()
+
+We can also assign colour depending on a categorical variable using aes(col=x)
+```{r}
+murders %>% ggplot(aes(x = population/10^6, y = total, label = abb)) +
+  geom_point(aes(
+    # assign colour based on geographical region
+    col = region),
+    size = 3
+    ) +
+  geom_text(nudge_x = 0.05) +
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") +
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010")
+```
+
+## Tutorial 4 (30/10/2025)
+
+* **Overview**
+  * stringsAsFactors
+  * geom_line()
+    * linetype
+  * scale_colour_manual()
+  * theme_minimal()
+  * theme()
+    * plot.title
+    * legend.title
+    * element_text()
+      * hjust
+      * size
+      * face
+    * element_blank()
+    * element_line()
+    * axis.line.y.right
+    * axis.ticks.y.right
+    * axis.title.y.right
+    * axis.text.y.right
+  * data()
+  * as.data.frame()
+  * labs()
+  * geom_smooth()
+    * method, se, colour
+  * scale_y_continuous
+    * sec.axis
+      * name
+  * ~
+  * shape
+  * alpha
+  
+)
+
+### Tutorial Code
+
+stringsAsFactors determines whether character strings should be converted to factors (categorical variables)
+```{r}
+setwd("C:/Users/slee7/OneDrive - Imperial College London/Introduction to Data Science/Week 4")
+
+uk_gdp_and_weeklyWage <- read.csv("Tutorial files/uk_gdp_and_weeklyWage_Pop.csv",
+stringsAsFactors = F)
+
+uk_gdp_and_weeklyWage <-   uk_gdp_and_weeklyWage %>%
+  mutate(GDP_growth_rate = (GDP_m - lag(GDP_m)) / lag(GDP_m) * 100,
+         weeklyWageQuantile = cut(Weekly_pay,
+                                  quantile(Weekly_pay,
+                                           probs = seq(0, 1, 0.25), type = 7),
+                                  include.lowest = T, labels = F)
+         )
+
+uk_gdp_and_weeklyWage <- uk_gdp_and_weeklyWage %>%
+  mutate(GDP_growth_rate_Quantile = cut(GDP_growth_rate,
+                                        quantile(GDP_growth_rate,
+                                                 probs = seq(0, 1, 0.25), type = 7, na.rm = T),
+                                        include.lowest = T, labels = F)
+         )
+```
+
+as.factor() converts data as categorical data instead of numeric or character string data
+
+scale_colour_manual() sets manual values for the colour categorical factor in terms of a vector of colours
+
+theme_minimal() sets a minimialistic theme with no background annotation to the ggplot object
+
+theme() offers a way to customize the aesthetics of your plot
+
+plot.title sets the title of the plot
+
+legend.title sets the title of the legend
+
+element_text() specifies that the non-data component will be text
+
+hjust sets the horizontal justification between [0,1]
+
+face is the font face ("plain", "italic", "bold", "bold.italic")
+
+element_blank() draws nothing and assigns no space
+```{r}
+uk_gdp_and_weeklyWage %>%
+  mutate(weeklyWageQuantile = as.factor(weeklyWageQuantile)) %>%
+  ggplot(aes(x = Year, y = Weekly_pay, colour = weeklyWageQuantile)) +
+  geom_point(size = 2) +
+  geom_line(aes(group = weeklyWageQuantile)) +
+  xlab("Year") +
+  ylab("Weekly Wage (£)") +
+  ggtitle("Weekly Wage between 2000 and 2022 (UK)") +
+  scale_colour_manual(values = c("blue", "red", "green", "orange")) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+    legend.title = element_blank()
+    )
+```
+
+data() leads built-in or package-provided datasets into the current workspace
+
+as.data.frame() coerces object (vector, list, matrix, or array) into a data frame
+```{r}
+data("LifeCycleSavings")
+savings_data <- as.data.frame(LifeCycleSavings)
+```
+
+Data formatting (no new information learned)
+```{r}
+savings_data <- savings_data %>%
+  mutate(savings_category = case_when(
+    sr < 10 ~ "Low Savings",
+    sr >= 10 & sr <= 20 ~ "Moderate Savings",
+    sr > 20 ~ "High Savings"
+    ))
+```
+
+labs() allow for another way to label instead of xlab(), ylab(), ggtitle(), etc.
+
+Since colour mapping produces a legend by default, labs(colour="Title") renames that colour scale legend title
+
+geom_smooth() plots a trend line that follows the method
+
+"lm" method is the linear regression model
+
+se is whether to display a confidence band around the trend line
+```{r}
+savings_data %>%
+  ggplot(aes(x = dpi, y = sr, colour = savings_category)) +
+  geom_point(size = 3) +
+  geom_smooth(method = "lm", se = FALSE, colour = "black") +
+  scale_colour_manual(values = c("Low Savings" = "blue",
+                                "Moderate Savings" = "orange",
+                                "High Savings" = "red")) +
+  labs(x = "Disposable Income (dpi)",
+       y = "Savings Rate (sr)",
+       title = "Relationship Between Disposable Income and Savings Rate with Trend Line",
+       colour = "Savings Category")
+```
+
+### Additional Files
+
+A scale factor may be estimated using the following but must have further empirical adjustments:
+$$
+\text{scale_factor} = \frac{\max(\text{2nd dataset}) - \min(\text{2nd dataset}))}{(\max(\text{1st dataset}) - \min(\text{1st dataset}))}
+$$
+
+```{r}
+uk_gdp_and_weeklyWage <- uk_gdp_and_weeklyWage %>%
+  mutate(GDP_per_cap = GDP_m/Population*1000000)
+
+scale_factor <- (max(uk_gdp_and_weeklyWage$GDP_per_cap) - min(uk_gdp_and_weeklyWage$GDP_per_cap)) / (max(uk_gdp_and_weeklyWage$Weekly_pay) - min(uk_gdp_and_weeklyWage$Weekly_pay))
+
+scale_factor = scale_factor*2
+```
+
+You can have multiple lines in one plot by just adding more geometries by using "+"
+
+alpha specifies the transparency, ranging from [0,1]
+
+shape modifies the appearance of points
+
+linetype modifies the appearance of lines
+
+Additionally, you can add a second axis on the opposite side to show a different scale. This can be achieved through specifying sec.axis, which defines a one-to-one transformation of the primary scale.
+
+`~` serves to introduce a one-sided formula, applying the transformation that comes afterwards. Since we have `~.*scale_factor`, this means `~` is a `function(x) = x * scale_factor`.
+
+element_line() specifies that the non-data component will be a line
+
+axis.line.y.right is the line along the right y-axis
+
+axis.ticks.y.right are the ticks along the right y-axis
+
+axis.title.y.right is the title of the right y-axis
+
+axis.text.y.right is the text of the right y-axis
+
+```{r}
+uk_gdp_and_weeklyWage %>%
+  ggplot(aes(x=Year)) +
+  geom_point(aes(y=Weekly_pay), size = 2, alpha = 0.7, shape = 19) +
+  geom_line(aes(y=Weekly_pay)) +
+  geom_point(aes(y=GDP_per_cap/scale_factor), size = 2, colour = "red", alpha = 0.7, shape = 17) +
+  geom_line(aes(y=GDP_per_cap/scale_factor), colour = "red", linetype = "dashed") +
+  labs(title ="Weekly Wage between 2001 and 2022 (UK)",
+       x = "Year",
+       y = "Weekly Wage (£)") +
+  scale_y_continuous(
+    sec.axis = sec_axis(~. *scale_factor, name= "GDP per Capita (£/pp)")) +
+  theme(axis.line.y.right = element_line(colour = "red"),
+        axis.ticks.y.right = element_line(colour = "red"),
+        axis.title.y.right = element_text(colour = "red"),
+        axis.text.y.right = element_text(colour = "red")) +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 12, face = "bold")
+    )
+```
+
+## Lecture 5 (3/11/2025)
+
+* **Overview**
+  * geom_abline()
+    * intercept
+  * lty
+  * ggthemes package
+    * theme_economist()
+  * ggrepel package
+    * geom_text_repel()
+    * geom_label_repel()
+  * ggpubr package
+    * ggarrange
+  * geom_histogram()
+    * bins
+  * geom_density
+    * after_stat()
+  * R Markdown
+    * YAML header
+    * Text formatting
+    * Heading
+    * Comments
+    * Lists
+    * Links
+  * Version control
+  * Git workflow
+  * GitHub
+  
+If we wanted a line to represent the average murder rate by population, since we converted into log scale, $y=rx$ becomes $log(y) = log(r) + log(x)$ where the slope is 1 and the y-intercept is $log(r)$.
+
+geom_abline() draws a line with intercept (a) and slope (b).
+
+lty is the short form for linetype
+
+Instead of labs(colour="Title"), to change the legend, we can do scale_colour_discrete(name="Title") or theme(legend.title=element_text("Title"))
+```{r}
+r <- murders %>%
+  summarise(rate = sum(total)/sum(population)*10^6) %>%
+  pull(rate)
+
+murders %>% ggplot(aes(x = population/10^6, y = total, label = abb)) +
+  geom_point(aes(
+    col = region),
+    size = 3
+    ) +
+  geom_abline(intercept = log10(r), lty = 2,) +
+  geom_text(nudge_x = 0.05) +
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") +
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010") +
+  scale_colour_discrete(name = "Region")
+```
+
+ggthemes gives a powerful way to customize the non-data components of your
+plots: (i.e. titles, labels, fonts, background, gridlines, and legends)
+
+ggrepel package provides geometries for ggplot2 to repel overlapping texts and labels.
+
+geom_text_repel() repels text to avoid overlap
+
+geom_label_repel() does the same, but puts text inside a label box
+
+ggpubr provides easy-to-use functions for creating and customizing ‘ggplot2’- based publication ready plots.
+
+```{r, results='hide', message=FALSE, warning=FALSE}
+library(ggthemes)
+library(ggrepel)
+library(ggpubr)
+```
+
+```{r}
+murders %>% ggplot(aes(x = population/10^6, y = total, label = abb)) +
+  geom_point(aes(
+    col = region),
+    size = 3
+    ) +
+  geom_abline(intercept = log10(r), lty = 2,) +
+  geom_text_repel() +
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") +
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010") +
+  scale_colour_discrete(name = "Region") +
+  theme_economist()
+```
+
+Histogram divides span of data into non-overlapping bins of the e size. Then, for each bin, it counts the number of values that fall in that interval. The histogram plots these counts as bars with the base of the bar defined by the intervals.
+
+Histograms answer questions such as uni/multimodality, symmetric/asymmetric distribution, 95% value range
+
+geom_histogram() creates a histogram
+
+bins define the number of bins to divide the x-axis into
+
+after_stat() accesses and maps aesthetics to variables that are calculated after a statistical transformation has been applied to the data
+
+density is the probability density of each bin calculated by the geom_histogram() geometry
+
+geom_density() computes and draws a kernel density estimate, a smoothed version of the histogram
+
+ggarrange() provides method of arranging multiple ggplots on the same page
+
+labels define a list of labels to be added to the plots
+
+vjust adjust the vertical position of each label
+
+ncol defines the number of columns in the plot grid
+
+nrow defines the number of rows in the plot grid
+
+```{r}
+bins_5 <- murders %>%
+  ggplot(aes(x = total, y = after_stat(density))) +
+  geom_histogram(bins = 5) +
+  geom_density()
+
+bins_10 <- murders %>%
+  ggplot(aes(x = total, y = after_stat(density))) +
+  geom_histogram(bins = 10) +
+  geom_density()
+
+bins_20 <- murders %>%
+  ggplot(aes(x = total, y = after_stat(density))) +
+  geom_histogram(bins = 20) +
+  geom_density()
+
+bins_30 <- murders %>%
+  ggplot(aes(x = total, y = after_stat(density))) +
+  geom_histogram(bins = 30) +
+  geom_density()
+
+ggarrange(bins_5, bins_10, bins_20, bins_30, labels=c("5 bins", "10 bins", "20 bins", "30 bins"), vjust=16.5, ncol = 2, nrow = 2)
+```
+
+R Markdown s a simple and easy to use plain text language used to
+combine your R code, results from your data analysis (including plots and
+tables) and written commentary into a single nicely formatted and
+reproducible document.
+
+You can output RMD files into HTML, PDF, or Word
+
+RMD is normally composed of (1) a YAML header, (2) formatted text, and (3) one or more code chunks
+
+YAML header is surrounded before and after by a `---` delimeter on its own line and contains the metadata and options for the entire document such as the author name, date, output format, etc.
+
+A simple YAML header may look like this:
+
+`---`
+
+`title: My first R markdown document`
+
+`author: Jane Doe`
+
+`date: November 04, 2024`
+
+`output: pdf_document` (or html\_document/word\_document)
+
+`---`
+
+RMD can render almost) all the text formatting that you are likely to
+need such as italics, bold, strike-through, superscript and subscript as well
+as bulleted and numbered lists, headers and footers, images, links to other
+documents or web pages and even equations.
+
+You need to "markup" the formatting in the RMD script to be rendered in your output document.
+
+Some of the most common RMD syntax is: bold (`**text**`: **text**), italic (`*text*`: *text*), strikethrough (`~~text~~`: ~~text~~), superscript (`text^2^`: text^2^), and subscript (`text~2~`: text~2~)
+
+RMD generally ignores multiple spaces within the text. If you really want multiple spaces, use `&nbsp`. In PDF output, use `\\` and in HTML, use `<br>` for line breaks.
+
+Headings and subheadings are added by using the \# symbol at the beginning of the line.  You can decrease the size of the headings by simply adding more \# symbols.
+
+If you want to include a comment in your R markdown document outside a
+code chunk which won’t be included in the final rendered document then
+enclose your comment between `<!--` and `-->`.
+
+You can create an unordered list with "-", "+", or "\*" and an ordered list with 1., 2., etc. Sub-items need to be indented.
+
+Enclose the link text between square brackts and URL between round brackets immediately after `[link](https://www.imperial.ac.uk)`.
+
+To make any url links have the distinct blue colour, add “urlcolour: blue” to the YAML header.
+
+Problems with coding include backups, alternate versions (trying things out), rewinding, different versions for different people, merge changes from team, and merge conflicts (incompatible changes)
+
+Version control is a system for tracking and managing changes to files (especially code) over time, allowing developers to revert to past versions, compare changes, and collaborate by merging different work streams safely
+
+The following is the Git workflow:
+
+- Create repository: `git init`
+- Add files: `git add .`
+- Create commit: `git commit -m 'new feature'`
+- Share with remote repository: `git push origin main`
+- Get others' new change: `git pull origin main`
+
+Making branches allow different versions of the repository to exist:
+
+- Make a branch: `git checkout -b new_branch`
+- Switch branches: `git checkout different_branck`
+- Merge branches (inside "this_branch" run): `git merge other_branch` to "this_branch"
+
+Github provides git repository hosting and is a useful online interface for viewing files, branches and merges
+
+## Tutorial 5 (06/11/2025)
+
+* **Overview**
+  * fill
+  * geom_vline
+    * xintercept
+  * panel.grid.major
+  * panel.grid.minor
+  * legend.position
+
+### Tutorial Code
+
+fill defines the fill colour of the plots
+
+geom_vline draws a vertical line
+
+xintercept defines the x-intercept, a single x-value where the vline is located at
+
+linewidth defines the width of the line
+
+panel.grid.major specifies major grid lines (primary divisions on axis)
+
+panel.grid.minor specifies minor grid lines (finer detail between major lines)
+
+legend.position defines the position of the legend
+```{r}
+
+setwd("C:/Users/slee7/OneDrive - Imperial College London/Introduction to Data Science/Week 5")
+uk_gdp_and_weeklyWage <- read.csv("uk_gdp_and_weeklyWage2.csv",
+                                  stringsAsFactors = F)
+
+uk_gdp_and_weeklyWage %>%
+  ggplot(aes(x = Weekly_pay, y = after_stat(density))) +
+  geom_histogram(bins = 6, colour = "black", fill = "lightblue", linetype = "dashed") +
+  geom_density(alpha = 0.5, fill = "lightpink") +
+  geom_vline(aes(xintercept = mean(Weekly_pay)),
+             colour = "blue", linetype = "solid", linewidth = 1) +
+  labs(
+    title = "Distribution of Weekly Wage",
+    x = "Weekly Wage (£)",
+    y = "Density"
+    ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 1.0, size = 14, face = "italic"),
+    axis.text = element_text(size = 10),
+    axis.title = element_text(size = 12, face = "italic"),
+    panel.grid.major = element_line(colour = "lightgrey"),
+    panel.grid.minor = element_blank(), # Remove minor grid lines
+    legend.position = "none" # Remove legend
+    )
+```
+
+### Additional Files
+
+None!
+
+## Lecture 6 (10/11/2025)
+
+* **Overview**
+  * High-level development loop
+  * Low-level development loop
+  * Data wrangling
+  * Mutating joins
+  * Filtering joins
+  * Primary and foreign keys
+  * count()
+  * left_join()
+    * join_by()
+  * right_join()
+  * full_join()
+  * inner_join()
+  * semi_join()
+  * anti_join()
+  * Wide and long format
+  * system.file()
+  * file.path()
+  * gather()
+    * convert
+      * type.convert()
+  * spread()
+  * separate()
+    * extra
+  * unite()
+  * rename()
+
+High-Level Development Loop: find data, understand data, research question, hypothesis, evaluation
+
+Low-Level Development Loop: make changes to code, run code, results/errors, evaluate/understand, plan next step
+
+Data wrangling is needed to convert data from its raw form to the tidy form
+
+Mutating joins add new variable to one data frame from matching observations in another (left_join, inner_join, right_join, full_join)
+
+Filtering joins filter observations from one data frame based on whether or not they match an observation in another. It does not add new columns from the right table. (semi_join, anti_join)
+
+Every join involves a primary key and a foreign key.
+
+A primary key is a variable or set of variables that uniquely identifies each observation. When more than one variable is needed, the key is called a compound
+key.
+
+A foreign key is a variable (or set of variables)that corresponds to a primary key in another table.
+
+count() lets you count the unique values of one or more variables
+
+Ideally your primary keys should all be unique (`df %>% count(primary_key) %>% filter (n > 1)` gives nothing) and should not contain missing values (`df %>% filter(is.na(primary_key))` gives nothing)
+
+We will be using the nycflights13 package to demonstrate:
+```{r}
+flights2 <- flights %>% select(year, time_hour, origin, dest, tailnum, carrier)
+
+head(flights2)
+
+head(airlines)
+
+head(planes)
+
+head(airports)
+```
+
+All dplyr join functions take a pair of data frames (`x` and `y`) and return a data frame.
+
+By writing `join_by(key)` within, you can specify which key to join the data frames by.
+
+left_join() keeps all rows from the left table and adds matching columns from the right table
+
+When left_join() fails to find a match for a row in the left data frame, it fills the right table variables (on the right) with missing values.
+```{r}
+left_join(flights2,airlines, join_by(carrier)) %>%
+  head()
+```
+
+right_join() keeps all observations in the right table and adds matching columns from the left table
+
+When right_join() fails to find a match for a row in the left data frame, it fills the left table variables (on the left) with missing values.
+
+full_join() keeps all observations that appear in the right or left table.
+
+Every row of the right and left table is included and whenever there isn't a match, the missing table's variable is filled with missing values. As per convention, the output starts with all rows from the left table, followed by the unmatched right table rows.
+
+inner_join() retains rows if and only if the keys are equal. Given there are no NA values in both tables to start, there are o NA values after inner_join.
+
+semi_join() keeps all rows in the left table that have a match in the right table. However, it does not add new columns from the right table.
+```{r}
+semi_join(airports, flights2, join_by(faa == origin))
+```
+
+anti_join() keeps all rows in the left table that does not have a match in the right table. However, it does not add new columns from the right table.
+```{r}
+anti_join(flights2, airports, join_by(dest == faa)) %>%
+  head()
+```
+
+In wide format, one observation has several components, which are in different columns. The observation types are stored in the column titles.
+
+In long format, each component has been split out into its own observation. The observation types are stores in a single column.
+
+
+
+This code loads the data needed. The system.file() is used to find the full file names (paths) of files and directories within installed packages. file.path() is used to construct file paths from individual components to be compatible across different operating systems.
+```{r}
+path <- system.file("extdata", package="dslabs")
+filename <- file.path(path, "life-expectancy-and-fertility-two-countries-example.csv")
+wide_data <- read_csv(filename, show_col_types = FALSE)
+head(wide_data)
+```
+
+gather() reshapes data from a "wide" format to a "long" format.
+
+* The first argument is the data frame.
+
+* The second and third argument will tell gather the column names we want to assign to the column containing the current column names and the column containing the observations, respectively.
+
+* The fourth argument specifies which columns to gather (default is all)
+
+Gather function assumes column names are characters
+
+convert will run the function type.convert() that converts a data object to logical, integer, numeric, complex, character or factor as appropriate.
+
+You can also eliminate a column by putting a hyphen in front ("-country").
+
+```{r}
+new_tidy_data <- gather(wide_data, key, value, `1960_fertility`:`2015_life_expectancy`, convert = TRUE)
+
+# Alternatively do mutate(year = as.numeric(year))
+
+head(new_tidy_data)
+```
+
+Since the raw data contains two variables, we need to separate the variables
+
+The separate function takes three arguments: (1) the name of the column to be separated, (2) the names to be used for the new columns, and (3) the character that separates the variables.
+
+extra = "merge" ensures that the last two variables are merged when there is an extra separation (otherwise, "life" and "expectancy" are broken up).
+
+```{r}
+new_tidy_data2 <- new_tidy_data %>%
+  separate(key, c("year", "variable_name"), "_", extra = "merge")
+head(new_tidy_data2)
+```
+
+We can also do the reverse of separate by uniting two columns into one.
+
+fill="right" tells R to fill with missing values on the right if there are not enough pieces to separate
+```{r}
+new_tidy_data3 <- new_tidy_data %>%
+  separate(key, into = c("year", "first_variable_name", "second_variable_name"), sep = "_", fill = "right")
+
+head(new_tidy_data3)
+
+new_tidy_data4 <- unite(new_tidy_data3, variable_name, first_variable_name, second_variable_name)
+
+# Note how "fertility" and "NA" was joined to "fertility_NA"
+
+head(new_tidy_data4)
+```
+
+Sometimes it is useful to convert long format into wide format. To do this, we use spread.
+
+* The first argument is the data frame.
+
+* The second argument tells which variable will be used as the column names.
+
+* The third argument specifies which variable to use to fill out the cells.
+
+rename(x=y) renames the column y into "x"
+```{r}
+spread(new_tidy_data4, variable_name, value) %>%
+  rename(fertility = fertility_NA) %>%
+  head()
+```
+
+## Tutorial 6 (13/11/2025)
+
+* **Overview**
+  * pivot_longer()
+  * pivot_wider()
+  * rbind()
+  * cbind()
+  
+### Tutorial Code
+
+Create toy dataset
+```{r}
+exam_scores <- data.frame(
+  student = c("Alice", "Bob", "Charlie"),
+  math = c(85, 92, 78),
+  english = c(90, 88, 82),
+  science = c(88, 95, 80)
+  )
+
+exam_scores
+```
+
+pivot_longer() converts data from wide to long format (turns multiple columns into key–value pairs). It does the same thing as gather().
+
+```{r}
+exam_scores_long <- pivot_longer(exam_scores,
+                                 cols = math:science,
+                                 names_to = "subject",
+                                 values_to = "score")
+
+exam_scores_long
+```
+
+pivot_wider() converts data from long to wide format (spread key–value pairs into columns). It does the same thing as spread().
+
+```{r}
+exam_scores_wide <- exam_scores_long %>%
+  pivot_wider(
+    names_from = subject,
+    values_from = score,
+    names_prefix = "score_",
+    values_fill = list(score = NA_real_), # missing combinations
+    values_fn = list(score = ~mean(.x, na.rm = TRUE)) # handle duplicates
+    )
+
+exam_scores_wide
+```
+
+rbind() stacks datasets vertically (rows) with the same columns.
+```{r}
+math_scores <- data.frame(
+  student = c("Alice", "Bob"),
+  score = c(85, 92)
+  )
+
+english_scores <- data.frame(
+  student = c("Charlie", "Diana"),
+  score = c(88, 90)
+  )
+
+all_scores <- rbind(math_scores, english_scores)
+
+all_scores
+```
+
+cbind() combines datasets horizontally (columns) with the same number of rows.
+```{r}
+students <- data.frame(
+  student = c("Alice", "Bob", "Charlie")
+  )
+
+scores <- data.frame(
+  score = c(85, 92, 88)
+  )
+students_scores <- cbind(students, scores)
+
+students_scores
+```
+
+### Additional Files
+
+None!
+
+## Lecture 7 (17/11/2025)
+
+* **Overview**
+  * Exploratory data analysis (EDA)
+  * Variance
+  * Covariance
+  * Subgroups
+  * coord_cartesian()
+    * ylim
+  * Unusual values
+  * geom_freqpoly()
+  * %%
+  * %/%
+  * geom_boxplot()
+    * varwidth
+  * geom_count()
+  * geom_tile()
+  * cut_width()
+  
+  
+Exploratory Data Analysis (EDA) is the terminology used to describe the
+process of exploring data in a systematic way using visualisation and data
+transformation. The process involves:
+
+* Generating questions about the data
+* Searching for answers by visualising, transforming, and modelling your
+data
+* Using what you learn to refine your questions and/or generate new questions
+
+It is a creative process with a goal to develop an understanding of your data. The best way to understand patterns is to visualize the distribution of the variable's values. Two types of questions guide discovery:
+
+* What type of variation occurs within my variables?
+* What type of covariation occurs between my variables?
+
+Variation is the tendency of the values of a variable to change from measurement to measurement.
+
+Visualization can reveal clusters, suggesting subgroups exist within the data. To understand subgroups, ask:
+
+* How are the observations within each subgroup similar to each other?
+* How are the observations in separate clusters different from each other?
+* How can you explain or describe the clusters?
+* Why might the appearance of clusters be misleading?
+
+We will use the ggplot2's diamonds database:
+```{r}
+head(diamonds)
+```
+
+Outliers are observations that are unusual.
+
+Here, the only evidence of
+outliers is the unusually wide limits on the x-axis.
+
+```{r}
+diamonds %>%
+  ggplot(aes(x = y)) +
+  geom_histogram(binwidth = 0.5)
+```
+
+coord_cartesian() sets the x,y clips for the graph
+```{r}
+diamonds %>%
+  ggplot(aes(x = y)) +
+  geom_histogram(binwidth = 0.5) +
+  coord_cartesian(ylim = c(0,50))
+```
+
+We see unusual values at 0, ~30, and ~60.
+We can select them:
+```{r}
+diamonds %>%
+  filter(y < 3 | y > 20) %>%
+  select(price, x, y, z) %>%
+  arrange(y)
+```
+
+Through EDA, we found out possible NA values (0 mm doesn't exist) and possible errors (32mm and 59mm diamonds that are cheap).
+
+If you encounter unusual values in your dataset, you can drop the entire row with the strange values (not recommended) or replace with missing values:
+
+```{r}
+diamonds2 <- diamonds %>%
+  mutate(y = if_else(y < 3 | y > 20, NA, y))
+```
+
+If you plot this data with missing values, ggplot ignores those rows but gives a warning that there are missing values
+
+`%%` indicates `x mod y` and `%/%` indicates integer division.
+
+geom_freqpoly() creates a density plot that connects the middle of a histogram chart with lines
+```{r}
+new <- nycflights13::flights %>%
+  mutate(
+    cancelled = is.na(dep_time),
+    sched_hour = sched_dep_time %/% 100,
+    sched_min = sched_dep_time %% 100,
+    sched_dep_time = sched_hour + (sched_min / 60))
+
+new %>%
+  ggplot(aes(x = sched_dep_time, after_stat(density))) +
+  geom_freqpoly(aes(colour = cancelled), binwidth = 1/4)
+```
+
+Covariation is the
+tendency for the values of two or more
+variables to vary together in a related way.
+
+geom_boxplot() gives a box and whiskers plot depicting the range, Q1, median, Q3, and outliers
+```{r}
+ggplot(diamonds2, aes(x = price, y = cut)) +
+  geom_boxplot()
+```
+
+geom_count() gives the number of observations at each location, then maps the count to the size of the points
+```{r}
+ggplot(diamonds2, aes(x = cut, y = color)) +
+  geom_count()
+```
+
+geom_tile() creates a tiled heat map
+```{r}
+diamonds2 %>%
+  count(color, cut) %>%
+  ggplot(aes(x = cut, y = color)) +
+  geom_tile(aes(fill = n))
+```
+
+cut_width() discretizes a continuous numeric variable into a categorical one by creating bins
+
+aes group makes the geometry plot graphs for each group
+
+varwidth makes the width of the boxplot proportional to the number of points
+```{r}
+diamonds2 %>%
+  filter(carat < 3) %>%
+  ggplot(aes(x = carat, y = price)) +
+  geom_boxplot(aes(group = cut_width(carat, 0.1)),
+               varwidth = TRUE)
+```
+
+## Tutorial 7 (20/11/2025)
+
+* **Overview**
+  * as.numeric()
+  * colnames()
+  * Multiple by= in joins
+  * scale_x_continuous()
+    * limits
+    * breaks
+  * scale_colour_manual()
+  * scale_shape_manual()
+  * scale_linetype_manual()
+  * scale_fill_manual()
+  * rowid_to_column()
+  * drop_na()
+  * distinct()
+  * colSums()
+  * which()
+  * apply()
+    * arr.ind
+  * add_column()
+  
+### Tutorial Code
+
+Load required datasets
+```{r}
+setwd("C:/Users/slee7/OneDrive - Imperial College London/Introduction to Data Science/Week 7")
+
+Eng_population <- read.csv("./data2/ONS-England_population.csv", stringsAsFactors = F)
+
+Wales_population <- read.csv("./data2/ONS-Wales_population.csv", stringsAsFactors = F)
+
+Eng_Wales_GDP_GR <- read.csv("./data2/ONS-England-Wales_GDP_GrowthRate.csv", stringsAsFactors = F)
+```
+
+as.numeric() converts object into numeric type
+
+colnames() retrieves or sets the column names of matrix-like objects such as data frames and matrices
+
+We correct the data as follows:
+```{r}
+Eng_population <- Eng_population[8:58,]
+colnames(Eng_population) <- c("Year", "Population")
+Eng_population <- Eng_population %>%
+  mutate(Year = as.numeric(Year),
+         Population = as.numeric(Population),
+         Region = "England")
+
+Wales_population <- Wales_population[8:58,] 
+colnames(Wales_population) <- c("Year", "Population")
+Wales_population <- Wales_population %>%
+  mutate(Year = as.numeric(Year),
+         Population = as.numeric(Population),
+         Region = "Wales")
+
+Eng_Wales_population <- rbind(Eng_population, Wales_population)
+
+head(Eng_Wales_population)
+```
+
+
+We can specify multiple columns to join by through c("column1 from x" = "column1 from y", "column2 from x" = "column2 from y"...). Only the columns from the x data frame remains.
+```{r}
+inner_join_data1 <- Eng_Wales_GDP_GR %>%
+  inner_join(Eng_Wales_population,
+             by = c("calendar.years" = "Year",
+                    "Geography" = "Region")
+             )
+
+head(inner_join_data1)
+```
+
+scale_x_continuous() can define the length of the x-axis (limits) and the axis ticks (breaks)
+
+scale_colour_manual() sets the mappings from data to colour
+
+scale_shape_manual() sets the mappings from data to shape
+
+scale_linetype_manual() sets the mappings from data to linetype
+
+scale_fill_manual() sets the mappings from data to fill
+
+```{r, warning=FALSE}
+inner_join_data1 %>%
+  ggplot(aes(x = calendar.years, y = GrowthRate)) +
+  geom_point(aes(colour = Geography, shape = Geography), size = 3) +
+  geom_smooth(method = "lm", aes(colour = Geography, fill = Geography, lty = Geography)) +
+  labs(x = "Year", y = "GDP Growth Rate", title = "GDP Growth Rate over the years") +
+  theme_minimal() +
+  theme(
+    axis.title = element_text(size = 12, face = "bold"),
+    axis.text = element_text(size = 10),
+    plot.title = element_text(hjust = 0.5, size = 15, face = "bold"),
+    legend.title = element_text(size = 12, face = "bold")
+    ) +
+  scale_x_continuous(breaks = 2013:2021,
+                     limits = c(2013, 2021)
+                     ) +
+  scale_colour_manual(values = c("England" = "darkorange",
+                                "Wales" = "darkgreen")) +
+  scale_shape_manual(values = c("England" = 16,
+                                "Wales" = 17)) +
+  scale_linetype_manual(values = c("England" = "dashed",
+                                   "Wales" = "dotted")) +
+  scale_fill_manual(values = c("England" = "orange",
+                               "Wales" = "lightgreen"))
+```
+
+### Additional Files
+
+We will use the airquality dataset
+```{r}
+data("airquality")
+
+head(airquality)
+```
+
+rowid_to_column() converts row numbers into an explicit column 
+
+drop_na() removes rows with any NA in any column and can be restricted to looking at specific columns
+```{r}
+airquality <- airquality %>%
+  rowid_to_column("Index") %>%
+  drop_na(Ozone) # Only looks for NA in Ozone column
+
+boxplot(airquality$Ozone,
+        main = "Boxplot of Ozone Levels",
+        ylab = "Ozone Levels",
+        col = "lightblue")
+```
+
+distinct() only keeps unique/distinct rows in a data frame
+```{r}
+ozone_with_outliers <- airquality %>%
+  mutate(
+    Q1 = quantile(Ozone, 0.25),
+    Q3 = quantile(Ozone, 0.75),
+    IQR = Q3 - Q1,
+    Lower_Bound = Q1 - 1.5 * IQR,
+    Upper_Bound = Q3 + 1.5 * IQR,
+    Is_Outlier = if_else(Ozone < Lower_Bound | Ozone > Upper_Bound, "Outlier", "Not outlier")
+    )
+
+ozone_with_outliers %>%
+  select(Q1, Q3, IQR, Lower_Bound, Upper_Bound) %>%
+  distinct()
+```
+
+```{r}
+setwd("C:/Users/slee7/OneDrive - Imperial College London/Introduction to Data Science/Week 7")
+
+uk_gdp_and_weeklyWage <- read.csv("data/uk_gdp_and_weeklyWage.csv", stringsAsFactors = F)
+```
+
+colSums() calculate the sum of each column
+
+which() returns the position of values that meet a specific logical condition
+```{r}
+uk_gdp_and_weeklyWage %>% select(which(colSums(is.na(.)) > 0))
+```
+
+The following function detects outliers (1.5 times IQR)
+```{r}
+detect_outlier <- function(x) {
+  Q1 <- quantile(x, probs=.25, na.rm = T)
+  Q3 <- quantile(x, probs=.75, na.rm = T)
+  IQR = Q3-Q1
+  result <- x > Q3 + (IQR*1.5) | x < Q1 - (IQR*1.5)
+  return(result)
+}
+```
+
+apply() returns values obtained by applying a function to a specified margin (1 is rows, 2 is columns, and c(1,2) is rows and columns).
+
+arr.ind returns row and column index instead of a linear index
+
+add_column() adds a column with name-value pairs
+```{r}
+NAs_loc <- which(uk_gdp_and_weeklyWage %>%
+apply(., MARGIN = 2, is.na) , arr.ind = T)
+
+outliers <- data.frame(rows=c(), cols=c())
+outliers <- outliers %>% add_column(rows = NA, cols = NA)
+
+outliers <- which(uk_gdp_and_weeklyWage %>%
+apply(., MARGIN = 2, detect_outlier), arr.ind = T) %>%
+  data.frame()
+
+outliers_NAs <- rbind(outliers, NAs_loc)
+
+outliers_NAs
+```
+
+## Lecture 8 (24/11/2025)
+
+* **Overview**
+  * Cambridge Analytica
+  * Word vectorization
+  * ELIZA
+  * Markov chain models
+  * Transformers
+  * Attention
+  * LLM
+  * String processing
+  * stringr package
+  * rvest package
+  * paste0()
+  * paste()
+  * read_html()
+  * html_node()
+  * html_table()
+  * setNames()
+  * str_detect()
+  * any()
+  * summarise_all()
+  * str_replace_all()
+  * parse_number()
+  * mutate_at()
+  * suppressWarnings()
+  * Regular expressions (regex)
+    * \\d
+    * []
+    * ^//$
+    * Quantifiers
+      * \{\}
+      * \*
+      * ?
+      * +
+    * \\s
+    * [^]
+    * Groups
+      * ()
+      * \\i
+  * str_view()
+  * str_replace()
+  * str_extract()
+  * str_match()
+  * str_subset()
+
+Cambridge Analytica showed that a computer only needed to know a couple hundred Facebook likes to know more about the person than themselves, their families, and their spouses.
+
+Words can be represented as points in a multidimensional space as multidimensional vectors
+
+ELIZA was an early chatbot
+
+WordNet showed semantic relations between words linking synonyms
+
+Markov chain models are sequences of events where the probability of the next event (state) depends only on the current state, not the entire past history (the Markov Property).
+
+Transformers use multi-headed attention models that pay attention to specific words
+
+LLMs learn by scanning enormous
+amounts of training data. During training, they learn patterns in the training text by learning to predict the next word. They are then able to produce new passages of text in response to a question from the user.
+
+String processing includes extracting numbers from strings, removing unwanted characters from text, finding and replacing characters, extracting specific parts of strings, and splitting strings into multiple values.
+
+ In general, string processing tasks can be divided into detecting, locating, extracting, and replacing patterns in strings.
+
+stringr package has functions starting with "str_" and has the string being processed as the first argument
+
+rvest library makes it easier to scrape web pages
+```{r, results='hide', message=FALSE, warning=FALSE}
+library(stringr)
+library(rvest)
+```
+
+
+paste0()=paste(,sep = "") concatenates multiple R objects into a single character string with no separator
+
+read_html() reads the HTML content from the URL
+
+html_node() extracts a specific HTML element
+
+html_table() parses an HTML tablee into a data frame
+
+setNames() sets the column names of a data frame
+
+Constructing the murders data set:
+```{r}
+url <- paste0("https://en.wikipedia.org/w/index.php?title=","Gun_violence_in_the_United_States_by_state","&direction=prev&oldid=810166167")
+
+murders_raw <- read_html(url) %>%
+html_node("table") %>%
+html_table() %>%
+setNames(c("state", "population", "total", "murder_rate"))
+
+head(murders_raw)
+```
+
+To turn the population into numeric value, we use as.numeric()
+
+str_detect() returns TRUE if it detects the specified string
+
+any() returns TRUE if at least one the values is true
+
+summarise_all() applies the summary function to every non-grouping column in a data frame
+```{r}
+murders_raw %>% summarise_all(function(x) any(str_detect(x, ",")))
+```
+
+str_replace_all() replaces all occurences of a specified string with another specified string
+```{r}
+test_1 <- str_replace_all(murders_raw$population, ",", "")
+print(head(as.numeric(test_1)))
+```
+
+parse_number() removes non-numeric characters before coercing into numeric value
+
+mutate_at() applies a function to a specific subset of columns in a data frame
+```{r}
+murders_new <- murders_raw %>% mutate_at(2:3, parse_number)
+
+head(murders_new)
+```
+
+We will now use the reported_heights dataset:
+```{r}
+data(reported_heights)
+head(reported_heights)
+```
+
+We see that the height is reported in various ways:
+```{r, warning=FALSE}
+reported_heights %>%
+  filter(is.na(as.numeric(height))) %>% head()
+```
+
+suppressWarnings avoids warning message
+
+| is OR operator (true if either x | y is true)
+```{r}
+not_inches <- function(x, smallest = 50, tallest = 84){
+  inches <- suppressWarnings(as.numeric(x))
+  ind <- is.na (inches) | inches < smallest | inches > tallest
+  return(ind)
+}
+
+problems <- reported_heights %>%
+  filter(not_inches(height)) %>%
+  pull(height)
+
+head(problems, 10)
+```
+
+3 patterns emerge:
+
+1. A pattern of the form x'y or x' y'' or x'y" with x and y representing feet and
+inches, respectively.
+2. A pattern of the form x.y or x,y with x feet and y inches.
+3. Entries that were reported in centimeters rather than inches.
+
+Regular expressions (regex)  are a concise and flexible tool for describing patterns in strings.
+
+To express something as a symbol, you use the backslash ("\\")
+
+"\\d" refers to any digit.
+
+You can define other patterns with []. [56] detects 5 or 6 and [4-7] detects values 4 through 7.
+
+Anchors let us define patterns that must start or end at a specific place. \^ represents the beginning and \$ represents the end of a string.
+
+Curly brackets are quantifiers that can specify how many times an element must appear. \{1,3\} means between 1 and 3 times.
+
+\* means zero or more instances of the previous character
+
+\? means zero or one instance of the previous character
+
+\+ means one or more instances of the previous character
+
+str_view() views the underlying HTML rendering of the regular expression match. match specifies if we view the matchs or the non-matches.
+
+To specify patterns that we do not want to detect, we can use the \^ symbol inside square brackets
+
+Groups are defined using parentheses and permits tools to identify specific parts of the pattern so we can extract them.
+
+str_match() extracts the original string and the captured groups and returns a matrix
+```{r}
+yes <- c("5,9", "5,11", "6,", "6,1")
+no <- c("5'9", ",", "2,8", "6.1.1")
+s <- c(yes, no)
+s
+
+pattern_with_groups <- "^([4-7]),(\\d*)$"
+str_match(s, pattern_with_groups)
+```
+
+str_extract() extracts only strings that match a pattern, not the values defined by groups
+```{r}
+str_extract(s, pattern_with_groups)
+```
+
+We will see what still doesn't fit our pattern:
+```{r}
+pattern <- "^[4-7]'\\d{1,2}\"$"
+# Means that digits 4-7 start, then ' symbol, then one or two digits, then " symbol
+problems %>% str_view(pattern, match=FALSE)
+```
+
+str_subset() returns all elements of string where there's at least one match to pattern
+```{r}
+str_subset(problems, "inches")
+str_subset(problems,"''")
+```
+
+We can now remove the inches symbol
+
+\\s represents white space.
+
+str_replace() replaces the first match of a pattern
+
+We can improve our pattern by adding \\s* in front of and after the feet symbol to permit space between the feet symbol and numbers
+
+```{r}
+pattern <- "^[4-7]\\s*'\\s*\\d{1,2}$"
+problems %>%
+  str_replace("feet|ft|foot", "'") %>%
+  # replace feet, ft, foot with '
+  str_replace("inches|in|''|\"", "") %>%
+  # remove all inches symbols
+  str_detect(pattern) %>%
+  sum()
+```
+
+Special character for the i-th group is \\i. So \\1 is the value extracted from the first group, \\2 is the value from the second, and so on.
+
+```{r}
+pattern_with_groups <-"^([4-7])\\s*[,\\.\\s+]\\s*(\\d*)$"
+# This finds a string starting with a digit from 4-7, then none or more white space, a space | , symbol | ' symbol, then none or more white space, then none or more digits
+```
+
+## Tutorial 8 (27/11/2025)
+
+* **Overview**
+  * str_trim()
+  * str_to_lower()
+  * identical()
+  
+### Tutorial Code
+
+str_trim() removes leading and trailing spaces
+```{r}
+str_trim(" 5'11 ")
+```
+
+str_to_lower() standardises lettercase.
+```{r}
+str_to_lower("Five Feet Eight Inches")
+```
+
+identical() returns TRUE if two objects are exactly equal
+
+### Additional Files
+
+None!
+
+## Lecture 9 (01/12/2025)
+
+* **Overview**
+  * Graphical excellence
+  * 8 guiding principles of graphical excellence
+  * Data-ink ratio
+  * Lie factor
+  * Time series
+  * Tables
+  * Five guidelines for designing tables
+  * structure of a data science talk
+  * Technical report
+  * General tips
+
+* Graphical excellence is the well-designed presentation of interesting data: a matter of substance, statistics and design
+* Graphical excellence consists of complex ideas communicated with clarity,
+precision and efficiency
+* Graphical excellence gives the viewer the greatest number of ideas in the shortest time with the least ink in the smallest space
+  * $$\text{Data-ink ratio} = \frac{\text{Data-ink}}{\text{Total "ink" used to produce the graphic}}$$
+  * The closer a graphic’s data-ink ratio to 1, the more information-dense
+* Graphical excellence is nearly always multivariate
+* Graphical excellence requires telling the truth about the data
+
+8 Guiding principles for excellence in graphics
+
+1. Substance: induce the viewer to think about the substance rather than about other things
+  - Time series are graphs with time (marked on a regular rhythm of seconds, minutes, hours, days, etc.) on one dimension
+  - Relational graphics link at least two variables, and encourage/implore the viewer to observe a possible causal relationship between the two variables
+2. No distortion: avoid distorting what the data have to say
+  - Bar charts should always start at zero
+  - $$\text{Lie Factor} = \frac{\text{Size of effect in graphic}}{\text{Size of effect in data}}$$
+  - Weary of graphics with Lie Factors greater than 1.05 and less than 0.95
+  - Graphics should display data variation, not design variation
+  - In time-series displays of money, deflated and standardized units should
+be used
+  - The number of variable dimensions should not exceed the number of dimensions in the data
+  - Graphics should not quote data out of context
+3. Information-dense: present many numbers in a small space
+  - Graphical elegance is often found in simplicity of design and complexity of the data
+  - Attractive graphical design:
+    * Have a properly chosen format and design
+    * Use words, numbers and drawings together
+    *  Reflect a balance, a proportion, a sense of relevant scale
+    * Display an accessible complexity of detail
+    * Often have a narrative quality, a story to tell about the data
+    * Are drawn in a professional manner, with the technical details of production done with care
+    * Avoid content-free decoration
+4. Coherence: make large data sets coherent
+5. Encourage comparisons: encourage the eye to compare different pieces of data
+6. Broad-to-fine details: reveal the data at several levels of detail, from a broad overview to the fine structure
+7. Clear purpose: serve a reasonably clear purpose
+8. Alignment with verbal descriptions: be aligned with the verbal descriptions accompanying the graph
+
+Tables are the best way to show exact numerical values, especially for small datasets
+
+Five guidelines for designing tables:
+
+1.  Creating hierarchy is vital in any design output you produce. 
+  - Usually, the largest and boldest part will grab our attention first and be the most important, with the smallest and lightest being least important.
+2. White space acts as breathing room.
+3. Any gridlines should run either horizontally or vertically and should not
+intersect.
+  - With a very dense table without many sections, you may consider using banded rows where every second row is lightly shaded.
+4. As a quick rule of thumb, all text should be left aligned, and all numbers should be right aligned. 
+  - The column headers should share the same alignment as its column, regardless of being text or numbers.
+5. Consider adding “sparklines” – small, intense, simple, word-sized graphics
+
+Structure of a data science talk
+
+* Situation - background context
+* Complication - description of the problem that required data science
+  * Communicate the problem at hand
+  * Provide relevant data/evidence to convince the audience of the issues
+  * Describe and explain any challenges
+* Analysis - analysis that was carried out
+  * Describe your methodology (strategy for analysis) and why
+  *  Balance technical details with high-level descriptions, depending on your audience
+  * When communicating results in a table or a graphic:
+    *  Take time to explain what is being shown, what the axes are, or the columns in a table, what the units are of any numbers being plotted, etc.
+    * This you should do even if there are labels because the process of explaining the basics focuses the audience’s attention
+* Resolution - presentation of the main findings and recommendations to resolve the complication 
+  * You may want to discuss any assumptions/limitations here, or in your analysis section
+
+Goal of a technical report is to communicate the results of a project and often to obtain funding
+
+Structure of a technical report: title, contents, abstract/executive summary
+
+General tips
+
+* Like with graphics, keep slides uncluttered and avoid using overly complex designs that do not contain information in itself
+* Make use of colour, boldface, and different font sizes
+* For each slide, think of its purpose and its "topic sentence"
+* Avoid reading off the slide; ideally you have bullet points, not full sentences
+* Use animation effectively; not to distract
+
+## Tutorial 9 (4/12/2025)
+
+* **Exam Prep**
+
+Get required data
+```{r, results='hide', message=FALSE, warning=FALSE}
+library(quantmod)
+getSymbols("AAPL", src = "yahoo", from = "2021-01-01", to = "2021-12-31")
+aapl_data <- data.frame(date = index(AAPL), coredata(AAPL))
+```
+
+```{r}
+head(aapl_data)
+```
+
+2. Calculate Daily Returns
+
+* Use the tidyverse package to calculate the daily returns of the stock
+* Daily returns are defined as:
+$$
+\text{Daily Return} = \frac{\text{Today's Closing Price}-\text{Yesterday's Closing Price}}{\text{Yesterday's Closing Price}}
+$$
+*  Store the results in a new column called daily_return.
+Provide the R code and display the first 6 rows that includes the daily_return column.
+
+Answer:
+```{r}
+aapl_data <- aapl_data %>%
+  arrange(date) %>%
+  mutate(daily_return = (AAPL.Close - lag(AAPL.Close)) / lag(AAPL.Close))
+
+head(aapl_data)
+```
+
+3. Add Month Factor and Visualise Daily Returns
+
+* Create a new column named Month that extracts the month from the date (as a factor)
+* Use ggplot2 to create a line plot of daily returns over time, colored by the Month variable
+* The x-axis should represent the date, the y-axis should represent the daily return, and the color should differentiate each month.
+* Add a title, labels for the axes, a legend, and customize the theme to make the plot clear and visually appealing. Ensure that the plot adheres to principles of graphical excellence
+
+Hint; type in your console ?format()
+
+Provide the R code and include the resulting plot.
+
+
+```{r}
+aapl_data$Month <- format(aapl_data$date, "%b")
+aapl_data$Month <- factor(aapl_data$Month, levels = month.abb)
+
+head(aapl_data)
+
+aapl_data %>%
+  ggplot(aes(x = date, y = daily_return, color = Month)) +
+  geom_line(size = 0.7) +
+  labs(
+    title = "Daily Returns of Apple Inc. (AAPL) in 2021 by Month",
+    x = "Date",
+    y = "Daily Return",
+    color = "Month"
+    ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 14),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10),
+    legend.position = "right"
+    )
+```
+
+4. Analyse the Plot
+
+* Briefly describe any patterns or trends you observe in the daily returns over different months.
+*  Discuss how the addition of the Month variable helps in analyzing seasonal trends or changes in volatility.
+* Explain how your plot adheres to the principles of graphical excellence.
+
+### Additional Files
+
+None!
+
+## Lecture 10 (08/12/2025)
+
+* **Overview**
+  * Package vignettes
+    * browseVignettes()
+    * vignette()
+  * help()/?
+  * help.start()
+  * apropos()
+  * Model
+  * Black box models
+  * Model parameters
+  * Clustering
+  * Dimensionality reduction
+  * Abstraction
+  * Multicollinear
+  * Swiss roll dataset
+  * Feature rejection/selection
+  * Linear combination of features
+  * Principal component analysis (PCA)
+    * Scree plot
+    * Loadings plot
+  * t-SNE (t-distributed stochastic neighbour embedding)
+    * Kullback-Leibler (KL) divergence
+    * Perplexity
+  * Dimensionality reduction vs clustering
+
+Package vignettes provide introductions to the tools offered by different packages
+
+browseVignettes() or vignette("dplyr")
+
+help() function or the shortcut ? followed by the function name opens its documentation page
+
+help.start() starts a local web server to display a hypertext version of R's online documentation in browser
+
+apropos() returns character vector giving the names of objects in the search list matching
+
+Models are algorithms which learn about the particular dataset they are applied to.
+
+Advanced algorithms and models can be used as black boxes (without understanding what is inside)
+
+
+Model parameters are the internal, learned variables within a model that define its behavior and predictions, adjusted during training to map inputs to accurate outputs.
+
+Clustering is a technique which assigns labels (cluster labels) to data points existing in an $n$-dimensional space.
+
+We can visualise 1, 2 or 3 dimensions of space (and 1 of time)
+
+Shapes can be projected on to lower dimensions – as if they were moving through a lower-dimensional plane
+
+As we keep adding more features (dimensions), the model’s performance may drop
+
+We can deal with high-dimensional data (resisting the curse of dimensionality) using abstraction – our innate ability to split the world into hierarchical categories.
+
+High-dimensional data is often multicollinear (there are many
+variables which are correlated with each other).
+
+We could throw away some of these variables – but they still encode some useful information even though they are highly correlated with others. It is better to try to combine them, keeping all the information which is useful, but dropping as much as possible.
+
+A Swiss roll dataset is synthetic data created to challenge classifiers or dimensionality reduction methods.
+
+The most basic form of feature selection involves simply choosing the good features and rejecting others.
+
+Given several features, we can give each one a coefficient and make a linear combination of the input features.
+$$
+output = f_1 * c_1 + f_2 * c_2 + f_3 * c_3
+$$
+
+Linear operations such as this one have useful properties: they distribute (so you can work out small combinations and then assemble them into larger ones – the order does not matter)
+
+Principal component analysis (PCA) is a very popular linear dimensionality reduction technique. It creates new axes (the major axes of variation) which better express the data.
+
+The scree plot shows how much of the variance is explained by each principal component. Components with larger eigenvalues explain more of the data
+
+To choose how many principal components to use, there must first be fewer PCs than there are input variables. Sometimes, the number of PCs is limited. If there is an elbow on the scree plot, drop the PCs which contribute less (after the elbow). The goal is to explain as much of the variance as possible while reducing the number of components.
+
+The loadings plot shows how each original variable influences each component. Each PC is a linear combination of (some of) the original variables.
+
+Other similar methods to PCA include factor analysis, clustering, linear discriminant analysis, and $t$-SNE ($t$-distributed stochastic neighbour embedding)
+
+$t$-SNE is a method directed at visualising data in either 2D or 3D
+
+Point distributions are expressed in high-dimensional (e.g. 100D) space and visualisation space (2D or 3D).
+
+The Kullback-Leibler (KL) divergence between the distributions is then minimised.
+
+The parameter perplexity can be varied.
+
+$t$-SNE does not do well on a Swiss roll dataset, which PCA does (PCA is more flexible and versatile)
+
+Dimensionality reduction and clustering are both forms of unsupervised learning. Clustering does not impose a new multidimensional space.
+
+## Tutorial 10 (11/12/2025)
+
+* **Overview**
+  * FactoMineR package
+  * factoextra package
+  * corrplot package
+  * PerformanceAnalytics package
+  * cor()
+  * corrplot()
+    * type
+    * order
+    * tl.col
+    * tl.srt
+  * chart.Correlation()
+    * histogram
+    * pch
+  * PCA()
+    * graph
+  * barplot()
+    * names.arg
+    * main
+    * xlab
+    * ylab
+    * col
+  * lines()
+    * x
+    * y
+    * type
+    * pch
+    * col
+  * plot()
+    * choix
+  * theme_bw()
+  * fviz_screeplot()
+  * fviz_pca_var()
+    * col.var()
+    * scale_color_gradient2()
+  * fviz_pca_ind()
+    * col.ind
+  * scale()
+  * prcomp()
+  * cumsum()
+  * biplot()
+    * main
+  
+### Tutorial Code
+  
+FactoMineR package is an R package dedicated to multivariate Exploratory Data Analysis
+
+factoextra package provides some easy-to-use functions to extract and visualize the output of multivariate data analyses
+
+corrplot package provides a visual exploratory tool on correlation matrix that supports automatic variable reordering to help detect hidden patterns among variables.
+
+PerformanceAnalytics package is a collection of econometric functions for performance and risk analysis.
+
+Exercise 1 — Load libraries & inspect the data
+
+a. Load FactoMineR and factoextra.
+b. Load the dataset decathlon2.
+c. Display the first 6 rows of the first 6 variables.
+d. Create the object decathlon2.active containing only the first 23 rows and the first 10 variables.
+
+```{r, results='hide', message=FALSE, warning=FALSE}
+library(FactoMineR)
+library(factoextra)
+library(corrplot)
+library(PerformanceAnalytics)
+```
+
+```{r}
+data(decathlon2)
+head(decathlon2[, 1:6])
+
+decathlon2.active <- decathlon2[1:23, 1:10]
+head(decathlon2.active[, 1:6])
+```
+
+Exercise 2 — Compute descriptive statistics
+For each variable in decathlon2.active, compute:
+
+* Minimum
+* First quartile
+* Median
+* Mean
+* Third quartile
+* Maximum  
+
+Store results in a data frame called decathlon2.active_stats.
+  
+```{r}
+decathlon2.active_stats <- data.frame(
+  Min = apply(decathlon2.active, 2, min),
+  Q1 = apply(decathlon2.active, 2, quantile, 1/4),
+  Med = apply(decathlon2.active, 2, median),
+  Mean = apply(decathlon2.active, 2, mean),
+  Q3 = apply(decathlon2.active, 2, quantile, 3/4),
+  Max = apply(decathlon2.active, 2, max)
+)
+
+decathlon2.active_stats <- round(decathlon2.active_stats, 1)
+
+decathlon2.active_stats
+```
+  
+Exercise 3 — Compute and explore correlations
+
+a. Compute the correlation matrix of the active dataset using the function cor().
+b. Round values to 2 decimal places and show the first 6 columns.
+c. Using the corrplot package, draw a correlation heatmap (upper triangular only) using the function corrplot() that takes as argument the correlation matrix you just computed (type ?corrplot() for more info).
+d. Using the PerformanceAnalytics package, create a correlation–scatterplot matrix with histograms, using the function chart.Correlation() (more info by typing ?chart.Correlation()).
+  
+cor() computes correlation between variables, outputting a correlation matrix for a data frame input.
+
+corrplot() draws a corrleation heatmap. type="upper" displays only the upper triangle, order="hclust" reorders variables using hierarchical clustering (variables with similar correlation patterns are placed next to each other), tl.col sets variable label color, and tl.srt sets label rotation.
+
+chart.Correlation() creates a correlation-scatterplot matrix. histogram shows distribution through histograms along the diagonal, and pch-19 uses solid dots for the scatterplots
+```{r}
+cor.mat <- round(cor(decathlon2.active), 2)
+head(cor.mat[, 1:6])
+
+corrplot(cor.mat, type = "upper",
+         order = "hclust",
+         tl.col = "black",
+         tl.srt = 45)
+
+chart.Correlation(decathlon2.active[, 1:6],
+histogram = TRUE, pch = 19)
+```
+  
+Interpretation
+
+Key patterns from your heatmap:
+
+*  Strong negative correlations between time-based sprint events and jump events e.g.,
+  * X100m vs Long.jump = -0.76
+  * X110m.hurdle vs Long.jump = -0.59
+
+This makes sense: faster sprinters (lower times) tend to jump further.
+
+* Shot put, discus, javelin cluster together: clear strength/power group
+* 1500m (endurance) is weakly correlated with most events: endurance performance is somewhat independent of speed/strength.
+* X400m correlates strongly with X100m (0.59) and X110m.hurdle (0.58): 400m performance is strongly
+tied to sprint capacity.
+
+The heatmap reveals three natural clusters:
+
+* Speed/Agility cluster: 100m, 110m hurdles, 400m, long jump
+* Power cluster: shot put, discus, javelin
+* Endurance cluster: 1500m
+
+Exercise 4 — Run PCA
+
+a. Use the function PCA() (from FactoMineR) to run PCA on decathlon2.active.
+b. Store the result in res.pca.
+c. Display the PCA summary printed in the console
+
+PCA() runs PCA. graph=FALSE suppresses automatic pots.
+```{r}
+res.pca <- PCA(decathlon2.active, graph = FALSE)
+print(res.pca)
+```
+  
+Exercise 5 — Scree plot and eigenvalues
+
+a. Extract the matrix of eigenvalues using res.pca$eig.
+b. Display the first two columns.
+c. Create a scree plot using barplot().
+d. Add a line plot (red) connecting the eigenvalues.
+e. Reproduce the scree plot using fviz_screeplot().
+
+barplot() draws a bar plot. names.arg defines the horizontal labels, main defines the title, xlab is the x-axis title, ylab is the y-axis title, and col defines the column color.
+
+lines() draws a line plot. x defines the horizontal labels, y defines the vertical labels, type defines what is drawn ("b" is both line and points), pch specifies the point character (19 is a solid filled circle), and col sets the color of the line and points
+
+fviz_screeplot() draws a screeplot. ncp sets the number of dimensions to be shown.
+```{r}
+eigenvalues <- res.pca$eig
+head(eigenvalues[, 1:2])
+
+barplot(eigenvalues[, 2],
+        names.arg = 1:nrow(eigenvalues),
+        main = "Variances",
+        xlab = "Principal Components",
+        ylab = "Percentage of variances",
+        col = "steelblue")
+
+lines(x = 1:nrow(eigenvalues),
+      y = eigenvalues[, 2],
+      type = "b",
+      pch = 19,
+      col = "red")
+
+fviz_screeplot(res.pca, ncp = 10)
+```
+  
+What the plots show:
+
+The scree plot visually displays how much variance each principal component explains. Your eigenvalues:
+
+* PC1 = 41.24%
+* PC2 = 18.39%
+* PC3 = 12.39%
+
+Interpretation:
+
+* The steep drop from PC1 → PC2 → PC3 indicates strong underlying structure, not noise.
+* After PC3, the components explain very little variance (<10% each).
+* Thus, your first two PCs capture ~60% of all variability.
+
+This supports:
+
+* Visualizing data in 2D
+* Interpreting PC1 and PC2 meaningfully
+
+Exercise 6 — Variable analysis
+
+a. Plot the PCA variable map using plot(res.pca, choix="var").
+b. Using fviz_pca_var():
+
+* plot factor loadings
+* change colour to "steelblue"
+* colour variables by "contrib"
+* apply a gradient colour scale
+
+plot() draws a PCA variable map. choix="var" specifies plotting the variables, not individuals.
+
+fviz_pca_var() draws a PCA variable map. col.var="contrib" makes the color scale with the variable's contribution to the principle components.
+
+scale_color_gradient2() customizes diverging color scales. low, mid, and high contribution colors are set, and midpoint sets the contribution value treated as average.
+
+theme_bw() is a black-and-white theme.
+```{r}
+plot(res.pca, choix = "var")
+fviz_pca_var(res.pca)
+fviz_pca_var(res.pca, col.var = "contrib")
+fviz_pca_var(res.pca, col.var="contrib") +
+  scale_color_gradient2(low="blue", mid="white",
+                        high="red", midpoint=55) +
+  theme_bw()
+```
+  
+What the plot shows:
+
+* Arrows representing each variable’s loading on PC1 and PC2.
+
+Key patterns from your plot:
+
+* PC1 (x-axis): 41.2% variance
+
+Variables with long arrows pointing right or left:
+
+* X110m.hurdle, X100m, X400m (pointing negatively): time-based speed events load strongly (but negative sign simply reflects low times = good performance)
+* Long.jump, High.jump (opposite direction): agility/explosive events align strongly but inversely signed (They indicate good performance when values increase)
+
+Interpretation:
+* PC1 = overall speed/agility performance (High loading magnitudes, opposite signs reflect scaling direction differences.)
+* PC2 (y-axis): 18.4% variance
+
+Variables pointing strongly upward:  
+* Shot.put, Discus, Javeline: strong power/throw events
+
+Variable pointing downward:
+
+*X1500m: endurance event
+
+Meaning:
+
+* PC2 = power vs endurance trade-off
+
+Thus the variable plot clearly shows:
+
+* PC1: How “fast + agile” an athlete is
+* PC2: How “powerful vs endurance-oriented” they are
+
+Exercise 7 — Individuals analysis
+
+a. Plot the individuals map using plot(res.pca, choix="ind").
+b. Use fviz_pca_ind() to visualise individuals.
+c. Automatically colour individuals by their cos2 value using a colour gradient.
+
+The plot() now plots individual observations.
+
+fviz_pca_ind() plots the same individual factor map. col.ind="cos2" colors individuals by their squared cosine.
+```{r}
+plot(res.pca, choix = "ind")
+fviz_pca_ind(res.pca)
+fviz_pca_ind(res.pca, col.ind="cos2") +
+  scale_color_gradient2(low="blue", mid="white",
+                        high="red", midpoint=0.50)
+```
+
+### Additional Files
+
+```{r}
+data(mtcars)
+head(mtcars)
+```
+
+PCA is sensitive to the scale of each variable. Without scaling, PCA would give too much weight to variables with larger magnitudes.
+
+scale() standardizes each column to have mean of 0 and standard deviation of 1.
+```{r}
+scaled_data <- scale(mtcars)
+head(scaled_data)
+```
+
+prcomp() performs PCA, center=TRUE subtracts the mean, and scale.=TRUE divides by the standarad deviation.
+
+The summary output shows:
+
+* The standard deviation of each principal component
+* The proportion of variance explained
+* The cumulative variance explained
+```{r}
+pca_result <- prcomp(scaled_data, center = TRUE, scale. = TRUE)
+summary(pca_result)
+```
+
+cumsum() calculates the cumulative sum of elements along a specified direction or axis.
+
+Here we compute and store:
+
+* Standard deviation of each PC
+* Proportion of variance explained
+* Cumulative proportion of variance explained
+```{r}
+importance <- pca_result$sdev^2 / sum(pca_result$sdev^2)
+
+importance_df <- data.frame(
+  PC = 1:length(importance),
+  StandardDeviation = pca_result$sdev,
+  ProportionVariance = importance,
+  CumulativeProportion = cumsum(importance)
+)
+
+print(importance_df)
+```
+
+The biplot simultaneously displays:
+
+1. Principal component scores for each car
+2. Loadings, showing how each original variable contributes to the components
+```{r}
+biplot(pca_result, main = "PCA Biplot of mtcars Dataset")
+```
+
+
+```{r}
+explained_variance <- pca_result$sdev^2 / sum(pca_result$sdev^2)
+
+variance_df <- data.frame(PC = 1:length(explained_variance),
+                          Variance = explained_variance)
+
+variance_df %>%
+  ggplot(aes(x = PC, y = Variance)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Explained Variance by Principal Components",
+    x = "Principal Component",
+    y = "Variance Explained") +
+  theme_minimal()
+```
+
+```{r}
+pca_data <- data.frame(pca_result$x[, 1:2],
+Car = rownames(mtcars))
+```
+
+```{r}
+ggplot(pca_data, aes(x = PC1, y = PC2, label = Car)) +
+  geom_point(size = 3) +
+  geom_text(vjust = 1.5, hjust = 1.5) +
+  labs(
+    title = "PCA of mtcars Dataset",
+    x = "Principal Component 1",
+    y = "Principal Component 2") +
+  theme_minimal()
+```
