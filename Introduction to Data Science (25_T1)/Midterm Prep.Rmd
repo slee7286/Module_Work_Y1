@@ -2399,6 +2399,16 @@ None!
 ## Lecture 9 (01/12/2025)
 
 * **Overview**
+  * Graphical excellence
+  * 8 guiding principles of graphical excellence
+  * Data-ink ratio
+  * Lie factor
+  * Time series
+  * Tables
+  * Five guidelines for designing tables
+  * structure of a data science talk
+  * Technical report
+  * General tips
 
 * Graphical excellence is the well-designed presentation of interesting data: a matter of substance, statistics and design
 * Graphical excellence consists of complex ideas communicated with clarity,
@@ -2412,62 +2422,555 @@ precision and efficiency
 8 Guiding principles for excellence in graphics
 
 1. Substance: induce the viewer to think about the substance rather than about other things
-  * Time series are graphs with time (marked on a regular rhythm of seconds, minutes, hours, days, etc.) on one dimension
-  * Relational graphics link at least two variables, and encourage/implore the viewer to observe a possible causal relationship between the two variables
+  - Time series are graphs with time (marked on a regular rhythm of seconds, minutes, hours, days, etc.) on one dimension
+  - Relational graphics link at least two variables, and encourage/implore the viewer to observe a possible causal relationship between the two variables
 2. No distortion: avoid distorting what the data have to say
-  * Bar charts should always start at zero
-  * $$\text{Lie Factor} = \frac{\text{Size of effect in graphic}}{\text{Size of effect in data}}$$
-  * Weary of graphics with Lie Factors greater than 1.05 and less than 0.95
-  * Graphics should display data variation, not design variation
-  * In time-series displays of money, deflated and standardized units should
+  - Bar charts should always start at zero
+  - $$\text{Lie Factor} = \frac{\text{Size of effect in graphic}}{\text{Size of effect in data}}$$
+  - Weary of graphics with Lie Factors greater than 1.05 and less than 0.95
+  - Graphics should display data variation, not design variation
+  - In time-series displays of money, deflated and standardized units should
 be used
-  * The number of variable dimensions should not exceed the number of dimensions in the data
-  * Graphics should not quote data out of context
+  - The number of variable dimensions should not exceed the number of dimensions in the data
+  - Graphics should not quote data out of context
 3. Information-dense: present many numbers in a small space
-  * Graphical elegance is often found in simplicity of design and complexity of the data
-  * Attractive graphical design:
+  - Graphical elegance is often found in simplicity of design and complexity of the data
+  - Attractive graphical design:
     * Have a properly chosen format and design
     * Use words, numbers and drawings together
     *  Reflect a balance, a proportion, a sense of relevant scale
+    * Display an accessible complexity of detail
+    * Often have a narrative quality, a story to tell about the data
+    * Are drawn in a professional manner, with the technical details of production done with care
+    * Avoid content-free decoration
 4. Coherence: make large data sets coherent
 5. Encourage comparisons: encourage the eye to compare different pieces of data
 6. Broad-to-fine details: reveal the data at several levels of detail, from a broad overview to the fine structure
 7. Clear purpose: serve a reasonably clear purpose
 8. Alignment with verbal descriptions: be aligned with the verbal descriptions accompanying the graph
 
+Tables are the best way to show exact numerical values, especially for small datasets
+
+Five guidelines for designing tables:
+
+1.  Creating hierarchy is vital in any design output you produce. 
+  - Usually, the largest and boldest part will grab our attention first and be the most important, with the smallest and lightest being least important.
+2. White space acts as breathing room.
+3. Any gridlines should run either horizontally or vertically and should not
+intersect.
+  - With a very dense table without many sections, you may consider using banded rows where every second row is lightly shaded.
+4. As a quick rule of thumb, all text should be left aligned, and all numbers should be right aligned. 
+  - The column headers should share the same alignment as its column, regardless of being text or numbers.
+5. Consider adding “sparklines” – small, intense, simple, word-sized graphics
+
+Structure of a data science talk
+
+* Situation - background context
+* Complication - description of the problem that required data science
+  * Communicate the problem at hand
+  * Provide relevant data/evidence to convince the audience of the issues
+  * Describe and explain any challenges
+* Analysis - analysis that was carried out
+  * Describe your methodology (strategy for analysis) and why
+  *  Balance technical details with high-level descriptions, depending on your audience
+  * When communicating results in a table or a graphic:
+    *  Take time to explain what is being shown, what the axes are, or the columns in a table, what the units are of any numbers being plotted, etc.
+    * This you should do even if there are labels because the process of explaining the basics focuses the audience’s attention
+* Resolution - presentation of the main findings and recommendations to resolve the complication 
+  * You may want to discuss any assumptions/limitations here, or in your analysis section
+
+Goal of a technical report is to communicate the results of a project and often to obtain funding
+
+Structure of a technical report: title, contents, abstract/executive summary
+
+General tips
+
+* Like with graphics, keep slides uncluttered and avoid using overly complex designs that do not contain information in itself
+* Make use of colour, boldface, and different font sizes
+* For each slide, think of its purpose and its "topic sentence"
+* Avoid reading off the slide; ideally you have bullet points, not full sentences
+* Use animation effectively; not to distract
+
+## Tutorial 9 (4/12/2025)
+
+* **Exam Prep**
+
+Get required data
+```{r, results='hide', message=FALSE, warning=FALSE}
+library(quantmod)
+getSymbols("AAPL", src = "yahoo", from = "2021-01-01", to = "2021-12-31")
+aapl_data <- data.frame(date = index(AAPL), coredata(AAPL))
+```
+
+```{r}
+head(aapl_data)
+```
+
+2. Calculate Daily Returns
+
+* Use the tidyverse package to calculate the daily returns of the stock
+* Daily returns are defined as:
+$$
+\text{Daily Return} = \frac{\text{Today's Closing Price}-\text{Yesterday's Closing Price}}{\text{Yesterday's Closing Price}}
+$$
+*  Store the results in a new column called daily_return.
+Provide the R code and display the first 6 rows that includes the daily_return column.
+
+Answer:
+```{r}
+aapl_data <- aapl_data %>%
+  arrange(date) %>%
+  mutate(daily_return = (AAPL.Close - lag(AAPL.Close)) / lag(AAPL.Close))
+
+head(aapl_data)
+```
+
+3. Add Month Factor and Visualise Daily Returns
+
+* Create a new column named Month that extracts the month from the date (as a factor)
+* Use ggplot2 to create a line plot of daily returns over time, colored by the Month variable
+* The x-axis should represent the date, the y-axis should represent the daily return, and the color should differentiate each month.
+* Add a title, labels for the axes, a legend, and customize the theme to make the plot clear and visually appealing. Ensure that the plot adheres to principles of graphical excellence
+
+Hint; type in your console ?format()
+
+Provide the R code and include the resulting plot.
 
 
+```{r}
+aapl_data$Month <- format(aapl_data$date, "%b")
+aapl_data$Month <- factor(aapl_data$Month, levels = month.abb)
+
+head(aapl_data)
+
+aapl_data %>%
+  ggplot(aes(x = date, y = daily_return, color = Month)) +
+  geom_line(size = 0.7) +
+  labs(
+    title = "Daily Returns of Apple Inc. (AAPL) in 2021 by Month",
+    x = "Date",
+    y = "Daily Return",
+    color = "Month"
+    ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 14),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10),
+    legend.position = "right"
+    )
+```
+
+4. Analyse the Plot
+
+* Briefly describe any patterns or trends you observe in the daily returns over different months.
+*  Discuss how the addition of the Month variable helps in analyzing seasonal trends or changes in volatility.
+* Explain how your plot adheres to the principles of graphical excellence.
+
+### Additional Files
+
+None!
+
+## Lecture 10 (08/12/2025)
+
+* **Overview**
+  * Package vignettes
+    * browseVignettes()
+    * vignette()
+  * help()/?
+  * help.start()
+  * apropos()
+  * Model
+  * Black box models
+  * Model parameters
+  * Clustering
+  * Dimensionality reduction
+  * Abstraction
+  * Multicollinear
+  * Swiss roll dataset
+  * Feature rejection/selection
+  * Linear combination of features
+  * Principal component analysis (PCA)
+    * Scree plot
+    * Loadings plot
+  * t-SNE (t-distributed stochastic neighbour embedding)
+    * Kullback-Leibler (KL) divergence
+    * Perplexity
+  * Dimensionality reduction vs clustering
+
+Package vignettes provide introductions to the tools offered by different packages
+
+browseVignettes() or vignette("dplyr")
+
+help() function or the shortcut ? followed by the function name opens its documentation page
+
+help.start() starts a local web server to display a hypertext version of R's online documentation in browser
+
+apropos() returns character vector giving the names of objects in the search list matching
+
+Models are algorithms which learn about the particular dataset they are applied to.
+
+Advanced algorithms and models can be used as black boxes (without understanding what is inside)
 
 
+Model parameters are the internal, learned variables within a model that define its behavior and predictions, adjusted during training to map inputs to accurate outputs.
+
+Clustering is a technique which assigns labels (cluster labels) to data points existing in an $n$-dimensional space.
+
+We can visualise 1, 2 or 3 dimensions of space (and 1 of time)
+
+Shapes can be projected on to lower dimensions – as if they were moving through a lower-dimensional plane
+
+As we keep adding more features (dimensions), the model’s performance may drop
+
+We can deal with high-dimensional data (resisting the curse of dimensionality) using abstraction – our innate ability to split the world into hierarchical categories.
+
+High-dimensional data is often multicollinear (there are many
+variables which are correlated with each other).
+
+We could throw away some of these variables – but they still encode some useful information even though they are highly correlated with others. It is better to try to combine them, keeping all the information which is useful, but dropping as much as possible.
+
+A Swiss roll dataset is synthetic data created to challenge classifiers or dimensionality reduction methods.
+
+The most basic form of feature selection involves simply choosing the good features and rejecting others.
+
+Given several features, we can give each one a coefficient and make a linear combination of the input features.
+$$
+output = f_1 * c_1 + f_2 * c_2 + f_3 * c_3
+$$
+
+Linear operations such as this one have useful properties: they distribute (so you can work out small combinations and then assemble them into larger ones – the order does not matter)
+
+Principal component analysis (PCA) is a very popular linear dimensionality reduction technique. It creates new axes (the major axes of variation) which better express the data.
+
+The scree plot shows how much of the variance is explained by each principal component. Components with larger eigenvalues explain more of the data
+
+To choose how many principal components to use, there must first be fewer PCs than there are input variables. Sometimes, the number of PCs is limited. If there is an elbow on the scree plot, drop the PCs which contribute less (after the elbow). The goal is to explain as much of the variance as possible while reducing the number of components.
+
+The loadings plot shows how each original variable influences each component. Each PC is a linear combination of (some of) the original variables.
+
+Other similar methods to PCA include factor analysis, clustering, linear discriminant analysis, and $t$-SNE ($t$-distributed stochastic neighbour embedding)
+
+$t$-SNE is a method directed at visualising data in either 2D or 3D
+
+Point distributions are expressed in high-dimensional (e.g. 100D) space and visualisation space (2D or 3D).
+
+The Kullback-Leibler (KL) divergence between the distributions is then minimised.
+
+The parameter perplexity can be varied.
+
+$t$-SNE does not do well on a Swiss roll dataset, which PCA does (PCA is more flexible and versatile)
+
+Dimensionality reduction and clustering are both forms of unsupervised learning. Clustering does not impose a new multidimensional space.
+
+## Tutorial 10 (11/12/2025)
+
+* **Overview**
+  *
+  
+### Tutorial Code
+  
+Exercise 1 — Load libraries & inspect the data
+
+a. Load FactoMineR and factoextra.
+b. Load the dataset decathlon2.
+c. Display the first 6 rows of the first 6 variables.
+d. Create the object decathlon2.active containing only the first 23 rows and the first 10 variables.
+
+```{r, results='hide', message=FALSE, warning=FALSE}
+library(FactoMineR)
+library(factoextra)
+library(corrplot)
+library(PerformanceAnalytics)
+```
+
+```{r}
+data(decathlon2)
+head(decathlon2[, 1:6])
+
+decathlon2.active <- decathlon2[1:23, 1:10]
+head(decathlon2.active[, 1:6])
+```
+
+Exercise 2 — Compute descriptive statistics
+For each variable in decathlon2.active, compute:
+
+* Minimum
+* First quartile
+* Median
+* Mean
+* Third quartile
+* Maximum  
+
+Store results in a data frame called decathlon2.active_stats.
+  
+```{r}
+decathlon2.active_stats <- data.frame(
+  Min = apply(decathlon2.active, 2, min),
+  Q1 = apply(decathlon2.active, 2, quantile, 1/4),
+  Med = apply(decathlon2.active, 2, median),
+  Mean = apply(decathlon2.active, 2, mean),
+  Q3 = apply(decathlon2.active, 2, quantile, 3/4),
+  Max = apply(decathlon2.active, 2, max)
+)
+
+decathlon2.active_stats <- round(decathlon2.active_stats, 1)
+
+decathlon2.active_stats
+```
+  
+Exercise 3 — Compute and explore correlations
+
+a. Compute the correlation matrix of the active dataset using the function cor().
+b. Round values to 2 decimal places and show the first 6 columns.
+c. Using the corrplot package, draw a correlation heatmap (upper triangular only) using the function corrplot() that takes as argument the correlation matrix you just computed (type ?corrplot() for more info).
+d. Using the PerformanceAnalytics package, create a correlation–scatterplot matrix with histograms, using the function chart.Correlation() (more info by typing ?chart.Correlation()).
+  
+```{r}
+cor.mat <- round(cor(decathlon2.active), 2)
+head(cor.mat[, 1:6])
+
+corrplot(cor.mat, type = "upper",
+         order = "hclust",
+         tl.col = "black",
+         tl.srt = 45)
+
+chart.Correlation(decathlon2.active[, 1:6],
+histogram = TRUE, pch = 19)
+```
+  
+
+Interpretation
+
+Key patterns from your heatmap:
+
+*  Strong negative correlations between time-based sprint events and jump events e.g.,
+  * X100m vs Long.jump = -0.76
+  * X110m.hurdle vs Long.jump = -0.59
+
+This makes sense: faster sprinters (lower times) tend to jump further.
+
+* Shot put, discus, javelin cluster together: clear strength/power group
+* 1500m (endurance) is weakly correlated with most events: endurance performance is somewhat independent of speed/strength.
+* X400m correlates strongly with X100m (0.59) and X110m.hurdle (0.58): 400m performance is strongly
+tied to sprint capacity.
+
+The heatmap reveals three natural clusters:
+
+* Speed/Agility cluster: 100m, 110m hurdles, 400m, long jump
+* Power cluster: shot put, discus, javelin
+* Endurance cluster: 1500m
+
+Exercise 4 — Run PCA
+
+a. Use the function PCA() (from FactoMineR) to run PCA on decathlon2.active.
+b. Store the result in res.pca.
+c. Display the PCA summary printed in the console
+  
+```{r}
+res.pca <- PCA(decathlon2.active, graph = FALSE)
+print(res.pca)
+```
+  
+Exercise 5 — Scree plot and eigenvalues
+
+a. Extract the matrix of eigenvalues using res.pca$eig.
+b. Display the first two columns.
+c. Create a scree plot using barplot().
+d. Add a line plot (red) connecting the eigenvalues.
+e. Reproduce the scree plot using fviz_screeplot().
+
+```{r}
+eigenvalues <- res.pca$eig
+head(eigenvalues[, 1:2])
+
+barplot(eigenvalues[, 2],
+        names.arg = 1:nrow(eigenvalues),
+        main = "Variances",
+        xlab = "Principal Components",
+        ylab = "Percentage of variances",
+        col = "steelblue")
+
+lines(x = 1:nrow(eigenvalues),
+      eigenvalues[, 2],
+      type = "b",
+      pch = 19,
+      col = "red")
+
+fviz_screeplot(res.pca, ncp = 10)
+```
+  
+What the plots show:
+
+The scree plot visually displays how much variance each principal component explains. Your eigenvalues:
+
+* PC1 = 41.24%
+* PC2 = 18.39%
+* PC3 = 12.39%
+
+Interpretation:
+
+* The steep drop from PC1 → PC2 → PC3 indicates strong underlying structure, not noise.
+* After PC3, the components explain very little variance (<10% each).
+* Thus, your first two PCs capture ~60% of all variability.
+
+This supports:
+
+* Visualizing data in 2D
+* Interpreting PC1 and PC2 meaningfully
+
+Exercise 6 — Variable analysis
+
+a. Plot the PCA variable map using plot(res.pca, choix="var").
+b. Using fviz_pca_var():
+
+* plot factor loadings
+* change colour to "steelblue"
+* colour variables by "contrib"
+* apply a gradient colour scale
+
+```{r}
+plot(res.pca, choix = "var")
+fviz_pca_var(res.pca)
+fviz_pca_var(res.pca, col.var = "contrib")
+fviz_pca_var(res.pca, col.var="contrib") +
+  scale_color_gradient2(low="blue", mid="white",
+                        high="red", midpoint=55) +
+  theme_bw()
+```
+  
+What the plot shows:
+
+* Arrows representing each variable’s loading on PC1 and PC2.
+
+Key patterns from your plot:
+
+* PC1 (x-axis): 41.2% variance
+
+Variables with long arrows pointing right or left:
+
+* X110m.hurdle, X100m, X400m (pointing negatively): time-based speed events load strongly (but negative sign simply reflects low times = good performance)
+* Long.jump, High.jump (opposite direction): agility/explosive events align strongly but inversely signed (They indicate good performance when values increase)
+
+Interpretation:
+* PC1 = overall speed/agility performance (High loading magnitudes, opposite signs reflect scaling direction differences.)
+* PC2 (y-axis): 18.4% variance
+
+Variables pointing strongly upward:  
+* Shot.put, Discus, Javeline: strong power/throw events
+
+Variable pointing downward:
+
+*X1500m: endurance event
+
+Meaning:
+
+* PC2 = power vs endurance trade-off
+
+Thus the variable plot clearly shows:
+
+* PC1: How “fast + agile” an athlete is
+* PC2: How “powerful vs endurance-oriented” they are
+
+Exercise 7 — Individuals analysis
+
+a. Plot the individuals map using plot(res.pca, choix="ind").
+b. Use fviz_pca_ind() to visualise individuals.
+c. Automatically colour individuals by their cos2 value using a colour gradient.
+
+```{r}
+plot(res.pca, choix = "ind")
+fviz_pca_ind(res.pca)
+fviz_pca_ind(res.pca, col.ind="cos2") +
+  scale_color_gradient2(low="blue", mid="white",
+                        high="red", midpoint=0.50)
+```
+
+### Additional Files
+
+```{r}
+data(mtcars)
+head(mtcars)
+```
+
+PCA is sensitive to the scale of each variable. Without scaling, PCA would give too much weight to variables with larger magnitudes.
+
+scale() standardizes each column to have mean of 0 and standard deviation of 1.
+```{r}
+scaled_data <- scale(mtcars)
+head(scaled_data)
+```
+
+prcomp() performs PCA, center=TRUE subtracts the mean, and scale.=TRUE divides by the standarad deviation.
+
+The summary output shows:
+
+* The standard deviation of each principal component
+* The proportion of variance explained
+* The cumulative variance explained
+```{r}
+pca_result <- prcomp(scaled_data, center = TRUE, scale. = TRUE)
+summary(pca_result)
+```
+
+Here we compute and store:
+
+* Standard deviation of each PC
+* Proportion of variance explained
+* Cumulative proportion of variance explained
+```{r}
+importance <- pca_result$sdev^2 / sum(pca_result$sdev^2)
+
+importance_df <- data.frame(
+  PC = 1:length(importance),
+  StandardDeviation = pca_result$sdev,
+  ProportionVariance = importance,
+  CumulativeProportion = cumsum(importance)
+)
+
+print(importance_df)
+```
 
 
+The biplot simultaneously displays:
+
+1. Principal component scores for each car
+2. Loadings, showing how each original variable contributes to the components
+```{r}
+biplot(pca_result, main = "PCA Biplot of mtcars Dataset")
+```
 
 
+```{r}
+explained_variance <- pca_result$sdev^2 / sum(pca_result$sdev^2)
 
+variance_df <- data.frame(PC = 1:length(explained_variance),
+                          Variance = explained_variance)
 
+variance_df %>%
+  ggplot(aes(x = PC, y = Variance)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Explained Variance by Principal Components",
+    x = "Principal Component",
+    y = "Variance Explained") +
+  theme_minimal()
+```
 
+```{r}
+pca_data <- data.frame(pca_result$x[, 1:2],
+Car = rownames(mtcars))
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```{r}
+ggplot(pca_data, aes(x = PC1, y = PC2, label = Car)) +
+  geom_point(size = 3) +
+  geom_text(vjust = 1.5, hjust = 1.5) +
+  labs(
+    title = "PCA of mtcars Dataset",
+    x = "Principal Component 1",
+    y = "Principal Component 2") +
+  theme_minimal()
+```
 
