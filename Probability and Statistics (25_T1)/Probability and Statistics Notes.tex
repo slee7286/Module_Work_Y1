@@ -24,7 +24,7 @@
 \tableofcontents
 \newpage
 
-\section{Lecture 1 (6/10/2025)}
+\section{Lecture 1 (06/10/2025)}
 \subsection{Slide 1}
 \begin{itemize}
     \item Dr Fanyin Zheng
@@ -892,7 +892,7 @@
     \end{itemize}
 \end{itemize}
 
-\section{Lecture 5 (3/11/2025)}
+\section{Lecture 5 (03/11/2025)}
 \begin{itemize}
     \item Moment generating functions are optional for the tests
     \item $r$th moment - $\mu_r = E[W^r]$ where $r$ is a positive integer and $\int_{-\infty}^\infty \vert w \vert^r f(w)dw < \infty$
@@ -1146,7 +1146,7 @@
     \end{itemize}
 \end{itemize}
 
-\section{Tutorial N/A (7/11/2025)}
+\section{Tutorial N/A (07/11/2025)}
 \begin{itemize}
     \item Did not have tutorial (midterm exam)
 \end{itemize}
@@ -2559,6 +2559,74 @@
     \end{itemize}
 \end{itemize}
 
+\section{Lecture 12 (11/12/2025)}
+\begin{itemize}
+    \item 1. A system consists of four components which work independently with probabilities 0.9, 0.8, 0.7, and 0.6. Let $X$ be the number of components that work. Find:
+    \begin{itemize}
+        \item (a) $E[X]$
+        \begin{flalign*}
+            E[X] = \sum_{i}x_ip(x_i) = 
+        \end{flalign*}
+        \item $Var(X)$
+        \item $P(X > 0)$
+        \item $P(X=2)$
+    \end{itemize}
+    \item 2. Suppose that 16 digits are chosen at random with replacement from the set $\{0,1,2\dots,9\}$. Use the normal distribution to approximate the probability that their average will lie between 4 and 6.
+    \begin{itemize}
+        \item Independent and identically distributed
+        \begin{itemize}
+            \item Each $x_i$ is a discrete distribution with equal probability
+        \end{itemize}
+        \item To use the Central Limit Theorem (CLT), we need to know the mean and the variance
+        \begin{itemize}
+            \item $\mu = E[\overline{X}]=E[X]=4.5$
+            \item $\sigma^2 = Var(\overline{X}) = \frac{1}{n} Var(X_i) = \frac{1}{16} (E[X_i^2]-E[X_i]^2)=\frac{1}{16}(28.5 - 20.25) = \frac{8.25}{16} = 0.515625$
+            \begin{itemize}
+                \item $E[X_i^2] = 0^2 \cdot \frac{1}{10} + 1^2 \cdot \frac{1}{10} + \dots + 9^2 \cdot \frac{1}{10} = 28.5$
+            \end{itemize}
+            \item $Z = \frac{X - 4.5}{\sqrt{0.515625}} \approx \mathcal{N}(0,1)$
+            \item $P\left(\frac{4-4.5}{\sqrt{0.515625}} < \frac{X - 4.5}{\sqrt{0.515625}} < \frac{6-4.5}{\sqrt{0.515625}}\right) = P\left(-0.6963 < Z < 2.089 \right) = P(Z < 2.089) - P(Z < -0.6963) = 0.9817 - 0.2420 = 0.7397$
+        \end{itemize}
+    \end{itemize}
+    \item 3. Let $X,Y,Z$ be three mutually independent standard normal variables. Calculate:
+    \begin{itemize}
+        \item (a) $P(\vert X \vert \le 1, \vert Y \vert \le 2, \vert Z \vert \le 3)$
+        \item (b) $E[(X+Y+Z)^2]$
+        \item (c) $P(X+Y \le 2Z)$
+    \end{itemize}
+    \item 4. Suppose the manager of an online retail store runs a price experiment for a single product. When a customer $i$ clicks on the product's page, the price of the product they see, $X_i$, is randomly determined between two levels $X_i = x_{low}$ or $X_i = x_{high}$. The manager collects data on each customer's assigned price and whether they purchase the product $Y_i$ ($Y_i=1$ if customer $i$ buys, and $Y_i=0$ if not) for all customers clicking the product's page over a week. The estimated $Y_i, \hat{Y}_i$ is often interpreted as customer $i$'s purchase probability. The manager then runs a linear regression of $Y_i$ on $X_i$ to understand how price affects customer's purchase probability. State the three assumptions of the linear regression model. For each assumption, explain why they are likely or unlikely to hold in this setting.
+    \begin{itemize}
+        \item Assumption 1: $X_i$ and $Y_i$ are independent and identically distributed
+        \begin{itemize}
+            \item Independence assumption might not hold since the sample is collected from people clicking on the product page, who might share a particular trait
+        \end{itemize}
+        \item Assumption 2: $E[u_i \mid X_i] = 0$
+        \begin{itemize}
+            \item This is likely to hold since the $X_i$ value is randomly determined, meaning that the $u_i$ will be independent of $X_i$.
+        \end{itemize}
+        \item Assumption 3: $E[X_i^4] < \infty$ and $E[u_i^4] < \infty$
+        \begin{itemize}
+            \item This is likely to hold because the $X_i$ is fixed between two levels, so there won't be any outliers and $Y_i$ is either 0 or 1, so there won't be any outliers, so $E[u_i^4]$ must also be finite.
+        \end{itemize}
+        \item Say we run the regression with a relaxation of $X_i$ to a variety of price levels. We get $\hat{Y}_i$. Do we get a reasonable estimator for $Y_i$?
+        \begin{itemize}
+            \item Because this is a linear regression, predictions of $\hat{Y}_i$ may be below 0 or above 1 for certain values of $X_i$, which is a nonsensical result.
+        \end{itemize}
+    \end{itemize}
+    \item 5. Let $N$ be a random variable taking any single value in $\{1,2,3,\dots,10\}$ with equal probability, and let $X \sim Bernoulli(p)$, and $Y \sim Bernoulli(q)$, where $p = P(N \le 5), q = P(N \text{ is even})$. In other words, $X$ and $Y$ are indicators of the events $\{N \le 5\}$ and $\{N \text{ is even}\}$, respectively.
+    \begin{itemize}
+        \item (a) Find $E[X]$ and $E[Y]$.
+        \item (b) Are $X$ and $Y$ independent? Explain your answer.
+        \item (c) Find $Var(X+Y)$.
+        \item (d) Find $E[(X+Y)^2]$
+    \end{itemize}
+    \item 6. Suppose a point $(X,Y)$ is chosen according to a bivariate uniform distribution on a triangle with vertices $(0,0)$, $(0,1)$, and $(1,)$. Calculate:
+    \begin{itemize}
+        \item (a) The mean and variance of $X$.
+        \item (b) The conditional mean and variance of $X$ given $Y = \frac{1}{3}$
+    \end{itemize}
+\end{itemize}
+
 \section{Textbook Material}
 \begin{itemize}
     \item Slide 1: LM 2.1-2.3, 2.6-2.7
@@ -2576,5 +2644,4 @@
     \item Slide 10: SW 4
     '\item Slide 11: SW4
 \end{itemize}
-
-\end{document}
+\end{documen
