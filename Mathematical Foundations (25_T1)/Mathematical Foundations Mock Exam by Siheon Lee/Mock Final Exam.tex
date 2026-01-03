@@ -1,0 +1,243 @@
+\documentclass{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+
+\usepackage{fancyhdr}
+
+\setlength{\parindent}{0pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\headrulewidth}{0pt}
+
+\fancypagestyle{firstpage}{
+  \fancyfoot[C]{%
+    \raisebox{8ex}[0pt][0pt]{%
+      \footnotesize
+      \begin{tabular}{c}
+        BSc Examinations 2025/2026: Mathematics Foundations BUSI40001 \\
+        Author: Siheon Lee \\[1em]
+        © Imperial College London 2025/2026 \\[2.6em]
+        Page \thepage\ of 4
+      \end{tabular}
+    }
+  }
+}
+
+\fancypagestyle{normal}{
+  \fancyhf{} % clear header and footer
+  \fancyfoot[C]{%
+      \footnotesize
+      Page \thepage\ of 4
+  }
+}
+
+\pagestyle{normal}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+\begin{figure}
+    \includegraphics[width=0.3\linewidth]{Imperial Business School Logo.png}
+    \label{fig:placeholder}
+\end{figure}
+Student-created mock exam (\textbf{NOT OFFICIAL}) \\
+For internal students of Imperial College. \\
+Mathematics Foundations (BUSI40001) \\
+\textbf{3 hours} \\
+{\large \textbf{Saturday 3rd January 2026, 14:00 – 17:00}} \\ \\ \\
+\textbf{Instructions for the exam}
+
+\begin{itemize}
+    \item Section A is closed-book and paper-based.
+    \item For Section B, internet access with ChatGPT is allowed and a computer with R or Python is needed.
+    \item Answer ALL questions (The mark breakdown is indicated throughout the exam).
+    \item It is important to write neatly and clearly.
+    \item If a question or part of a question is unclear to you, state any assumptions you need in order to complete the question.
+\end{itemize}
+
+
+\newpage
+\section*{SECTION A}
+You have 2 hours 15 minutes for Section A. Answer all \textbf{FOUR} questions. \\
+
+\textbf{Question 1 (25 marks)}
+
+\begin{enumerate}[label=(\alph*)]
+    \item Consider the so-called harmonic series
+    \[
+    \sum_{n=1}^\infty \frac{1}{n}
+    \]
+    and show that it does not converge. [2 marks]
+
+    \item Consider the sequence \((x_n)\) defined recursively by  
+    \[
+    x_1 = 3, \quad x_{n+1} = \frac{1}{3}\left(2x_n + \frac{5}{x_n^2}\right).
+    \]
+    Show that $x_n > 0$ for all $n$, and then use this to prove that $x_n - x_{n+1} \ge 0$. Conclude that $\lim x_n = \sqrt[3]{5}$.
+    You may use the Algebraic Limit Theorem without proof. [10 marks]
+
+    \item The limit superior $(a_n)$, or $\limsup a_n$ is defined by
+    \[
+    \limsup a_n = \lim y_n
+    \]
+    where $y_n = \sup \{ a_k : k \ge n \}$. Similarly, The limit inferior $(a_n)$, or $\liminf a_n$ is defined by
+    \[
+    \liminf a_n = \lim z_n
+    \]
+    where $z_n = \inf \{ a_k : k \ge n \}$.
+    
+    Show that $\liminf a_n = \limsup a_n$ if and only if $\lim a_n$ exists. In this case, all three share the same value. [8 marks]
+
+    \item Let \((a_n)\) be a bounded sequence defined by  
+    \[
+    a_n = \cos\left(\frac{n\pi}{4}\right) + \frac{(-1)^n}{n}.
+    \]
+    Prove or disprove that \((a_n)\) converges. [5 marks]
+\end{enumerate}
+
+\bigskip
+
+%---------------- Question 2 ----------------
+
+\textbf{Question 2 (20 marks)}
+\begin{enumerate}[label=(\alph*)]
+
+    \item Let
+    \[
+    U = \{ (x,y,z) \in \mathbb{R}^3 \mid x+y+z = 0 \}, \quad V = \{(x,y,z) \in \mathbb{R}^3 \mid x-y = 0 \}.
+    \]
+    Find a basis for $U \cap V$. [5 marks]
+
+    \item State the dimension of $U \cap V$. [5 marks]
+    
+    \item Find a basis for $U+V$. [6 marks]
+    
+    \item Determine whether $U+V = \mathbb{R}^3$. [4 marks]
+\end{enumerate}
+
+\bigskip
+
+%---------------- Question 2 ----------------
+
+\textbf{Question 3 (20 marks)}
+\begin{enumerate}[label=(\alph*)]
+    \item Let $V$ be the vector space of all real-valued continuous functions on $\mathbb{R}$ of the form
+    \[
+    f(x) = acos(x) + bsin(x) + c,
+    \]
+    where $a,b,c \in \mathbb{R}$.
+
+    Define a mapping $T : V \rightarrow \mathbb{R}^3$ by
+    \[
+    T(f) = \left[ \begin{array}{c}
+        f(0) \\ f\left(\frac{\pi}{2}\right) \\ f(\pi)
+    \end{array}\right]
+    \]
+    Prove that $T$ is a linear map. [5 marks]
+    
+    \item Prove that $T$ is bijective. [7 marks]
+    
+    \item Determine whether the following set of vectors in $\mathbb{R}^3$ is linearly independent. 
+    \[
+    \bm{x}_1 = \left[ \begin{array}{c}
+        1 \\ 1 \\ 0
+    \end{array}\right], \quad \bm{x}_2 = \left[ \begin{array}{c}
+        2 \\ 3 \\ 1
+    \end{array}\right], \quad \bm{x}_3 = \left[ \begin{array}{c}
+        3 \\ 4 \\ 1
+    \end{array}\right]
+    \]
+    [2 marks]
+
+    \item Show that the determinant equals the product of the eigenvalues, i.e.
+    \[
+    det(A) = \prod_{i=1}^n \lambda_i
+    \]
+    (Hint: use the characteristic polynomial of $A$) [6 marks]
+\end{enumerate}
+
+\bigskip
+
+%---------------- Question 2 ----------------
+
+\textbf{Question 4 (15 marks)}
+
+Consider the function $f(x,y)=x^2y$ subject to the constraint $g(x,y) = x^2+y^2-1 = 0$.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Set up the Lagrangian function $\mathcal{L}(x,y,\lambda)$ for this constrained optimization problem. [3 marks]
+
+    \item Find the critical points by solving the system of equations given by the partial derivatives of the Lagrangian. [4 marks]
+
+    \item Classify the critical points as local minima, maxima, or saddle points. [4 marks]
+
+    \item Verify your result by substituting the critical points into $f(x, y)$ and interpreting the values. [4 marks]
+
+\end{enumerate}
+
+
+\newpage
+\section*{SECTION B}
+You have 45 minutes for Section B. Answer all questions. You must close your laptop after 45 minutes.
+
+\bigskip
+
+\textbf{1.} (20 marks) The weights (in kg) of mothers and their child are recorded in the table below.
+\[
+\begin{array}{c|ccccccc}
+\text{Person} & A & B & C & D & E & F & G\\
+\hline
+\text{mother} & 68 & 75 & 60 & 55 & 80 & 72 & 65\\
+\text{child} & 70 & 78 & 62 & 57 & 85 & 74 & 68
+\end{array}
+\]
+
+This question concerns predicting child's weight given mother's weight.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Write out the linear regression in the matrix form
+    \[
+    \underline{y} = \bm{X}\underline{\beta} + \underline{\varepsilon},
+    \]
+    where $\underline{y}$, $\bm{X}$, $\underline{\beta}$, and $\underline{\varepsilon}$ are to be defined. [2 marks]
+
+    \item (b) Show that the expression for $\underline{\beta}$ which minimizes $\underline{\varepsilon}^{\top}\underline{\varepsilon}$ is given by
+    \[
+    \hat{\underline{\beta}} = (\bm{X}^{\top}\bm{X})^{-1} \bm{X}^{\top} \underline{y}.
+    \]
+    [5 marks]
+
+    \item Show that the fitted values can be written as
+    \[
+    \hat{\underline{y}} = \bm{H} \underline{y}
+    \]
+    where
+    \[
+    \bm{H} \equiv \bm{X} (\bm{X}^{\top} \bm{X})^{-1} \bm{X}^{\top}.
+    \]
+    [3 marks]
+
+    \item Show that $\bm{H}$ is idempotent and symmetric. [5 marks]
+
+    \item Estimate the weight of a child whose mother weighs 78 kg. You should use R or Python for the calculation. [5 marks]
+\end{enumerate}
+
+\bigskip
+
+%---------------- Question 2 ----------------
+
+\textbf{2.} (20 marks: 10 marks explanation, 10 marks code)
+
+Find and classify the critical points of the function
+\[
+f(x,y) = 2x^3 - 3xy^2 + 6x - y
+\]
+using either R or Python. Explain your answers using the eigenvalues of the Hessian.
+
+\end{document}
