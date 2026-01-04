@@ -3123,11 +3123,75 @@
         \item Matrix maps vectors into linear combination of its columns
         \item Inverting matrix is hard and tedious
         \item Instead, we solve by eliminating variables from system of equations one by one using Gaussian elimination
+        \[
+        \alpha_1 \left[ \begin{array}{c}
+            1 \\ 1 \\ 1
+        \end{array} \right] + \alpha_2 \left[ \begin{array}{c}
+            1 \\ 2 \\ 3
+        \end{array} \right] + \alpha_3 \left[ \begin{array}{c}
+            2 \\ -1 \\ 1
+        \end{array} \right] = \left[ \begin{array}{c}
+            1 \\ -2 \\ 5
+        \end{array} \right]
+        \]
+        \item The unique solution is
+        \[
+        \alpha_1 = -6, \alpha_2 = 3, \alpha_3 = 2
+        \]
     \end{itemize}
     \item Every matrix can be uniquely represented by its set of eigenvalues and eigenvectors
-    \item Probelm 7
+    \item Exercise 5.7. (a) Consider the general $2 \times 2$ matrix
+    \[
+    A = \left[ \begin{array}{cc}
+        a_{11} & a_{12} \\
+        a_{21} & a_{22}
+    \end{array} \right]
+    \]
+    The trace of the above matrix is just the sum of all the elements along the leading diagonal, i.e.
+    \[
+    Tr(A) = \sum_{i=1}^2 a_{ii}
+    \]
+    Show that the eigenvalues of $A$ satisfy the polynomial equation $f(\lambda)=0$, where
+    \[
+    f(\lambda) = \lambda^2 - (Tr(A))\lambda + \det(A)
+    \]
     \begin{itemize}
-        \item Similar results hold for larger matrices as well, and this is called the Cayley-Hamilton Tehorem
+        \item Start with the characteristic equation
+        \[
+        \det(A - \lambda I) = 0
+        \]
+        \item Substituting in the general form of $2 \times 2$ $A$, we find that
+        \begin{flalign*}
+            0 &= \det(A - \lambda I) = \det\left( \left[ \begin{array}{cc}
+                a_{11} - \lambda & a_{12} \\
+                a_{21} & a_{22} - \lambda
+            \end{array} \right] \right) \\
+            &= (a_{11}-\lambda)(a_{22}-\lambda) - a_{12}a_{21} \\
+            &= \lambda^2 - (a_{11} + a_{22}) \lambda + a_{11}a_{22} - a_{12}a_{21} \\
+            &= \lambda^2 - (Tr(A))\lambda + \det(A) \\
+            &= f(\lambda)
+        \end{flalign*}
+        as desired. Now we know that the eigenvalues of $A$ satisfy $f(\lambda)$.
+    \end{itemize}
+    \item Exercise 5.7. (b) Now show that $f(A) = \bm{0}$, where $\bm{0}$ is a $2 \times 2$ zero matrix.
+    \begin{itemize}
+        \item Note that $f(A) = A^2 - (Tr(A))A + \det(A)$
+        \[
+        = \left[ \begin{array}{cc}
+            a_{11} & a_{12} \\
+            a_{21} & a_{22}
+        \end{array} \right]^2 - (a_{11} + a_{22}) \left[ \begin{array}{cc}
+                a_{11} & a_{12} \\
+                a_{21} & a_{22}
+            \end{array} \right] + (a_{11}a_{22} - a_{12}a_{21})I_{2\times2}
+        \]
+        \item For example, the top left component simplifies as
+        \[
+        a_{11}^2 + a_{12}a_{21} - a_{11} (a_{11}+a_{22}) + a_{11}a_{22} - a_{12}a_{21} = 0
+        \]
+    \end{itemize}
+    \item Similar results hold for larger matrices as well, and this is called the Cayley-Hamilton Theorem
+    \begin{itemize}
         \item For any matrix $A$, we can define the polynomial $f(\lambda)=\det(A-\lambda I)$ and $f(A)=0$ always
         \item This theorem has infamous erroneous one-line proof:
         \[
@@ -3135,70 +3199,86 @@
         \]
         \item This proof is wrong because $\lambda$ is a scalar and so we can't necessary substitute a matrix in without being careful. The determinant of a matrix must be a scalar, but $f(A)$ should be a matrix
     \end{itemize}
+    \item Exercise 5.9. (a) In there dimensions, the vectors $x,y,a$ satisfy
+    \[
+    x + y(x \cdot y) = a
+    \]
+    Show that
+    \[
+    (x \cdot y)^2 = \frac{\vert a \vert^2 - \vert x \vert^2}{2 + \vert y \vert^2}
+    \]
+    \begin{itemize}
+        \item We compute
+        \begin{flalign*}
+            \vert a \vert^2 &= a \cdot a = (x + y(x \cdot y)) \cdot (x + y(x \cdot y)) \\
+            &= x \cdot x + 2(x \cdot y)^2 + (y \cdot y)(x \cdot y)^2 \\
+            &= \vert x \vert^2 + (2 + \vert y \vert^2)(x \cdot y)^2 \\
+            &\Rightarrow (x \cdot y)^2 = \frac{\vert a \vert^2 - \vert x \vert^2}{2 + \vert y \vert^2}
+        \end{flalign*}
+    \end{itemize}
+    \item Exercise 5.9. (b) Use an inequality involving $x \cdot y$ and the lengths $x$ and $y$ to deduce that
+    \[
+    \vert x \vert \left( 1 + \vert y \vert^2 \right) \ge \vert a \vert \ge \vert x \vert
+    \]
+    \begin{itemize}
+        \item Note that $0 \le \vert x \cdot y \vert \le \vert x \vert \vert y \vert$. Using this, we find
+        \begin{flalign*}
+            &0 \le \frac{\vert a \vert^2 - \vert x \vert^2}{2 + \vert y \vert^2} \le \vert x \vert^2 \vert y \vert^2 \\
+            \Longrightarrow \ &0 \le \vert a \vert^2 - \vert x \vert^2 \le \vert x \vert^2 \vert y \vert^2 (2+\vert y \vert^2) \\
+            \Longrightarrow \ &\vert x \vert^2 \le \vert a \vert^2 \le \vert x \vert^2 (1 + 2 \vert y \vert^2 + \vert y \vert^2) \\
+            \Longrightarrow \ &\vert x \vert^2 \le \vert a \vert^2 \le \vert x \vert^2 (1 + \vert y \vert^2)^2 \\
+        \end{flalign*}
+        From this, taking the square root, we obtain that
+        \[
+        \vert x \vert \le \vert a \vert \le \vert x \vert (1 + \vert y \vert^2)
+        \]
+    \end{itemize}
+    \item Exercise 5.9. (c) Explain the circumstances in which either of the inequalities above become equalities, and describe the relation between $x,y,a$ in these circumstances.
+    \begin{itemize}
+        \item Recall that $x \cdot y = \vert x \vert \vert y \vert \cos(\theta)$. So if $x$ and $y$ are orthogonal, then $x \cdot y = 0$. In this case, we obtain $a = x$, which means their lengths are also equal ($\vert a \vert = \vert x \vert$).
+        \item On the other hand, if $x$ and $y$ are parellel, then $x \cdot y = \vert x \vert \vert y \vert$. Then, the length of $a$ is equal to the sum of the lengths of $x$ and $y$. This gives
+        \[
+        \vert a \vert = \vert x \vert + \vert x \vert \vert y \vert^2 = \vert x \vert \left( 1+ \vert y \vert^2 \right).
+        \]
+    \end{itemize}
 \end{itemize}
 
 \section{Lecture 11 (25/11/2025)}
 \begin{itemize}
-    \item The range of $f : V \rightarrow W$ is:
-    \[
-    ran(f) = f(V) = \{f(v) : v \in V\} \subset W
-    \]
-    \item The kernel (null space) of a linear map $L : V \rightarrow W$ is:
-    \[
-    ker(L) = \{v \in V : L(v) = 0 \}
-    \]
-    \item Key Result: A linear map $L$ is injective if and only if $ker(L) = \{0\}$
     \item $L = \frac{1}{2} \sigma^2 \frac{d^2}{dx^2} + \mu \frac{d}{dx} - r, L: V \rightarrow V$
-    \item $V$ is the space of twice differentiable functions (cannot describe it properly; don't know enough)
-    \item Want to find $Ker(L)$
-    \item We also show that $L$ is a linear map
-    \begin{flalign*}
-        &(\forall f \in V)(\forall V \in \mathbb{C}) \ L(\lambda f) = \lambda L(f) \\
-        &L(\lambda f) = \left( \frac{1}{2} \sigma^2 \frac{d^2}{dx^2} + \mu \frac{d}{dx} - r \right) \lambda f = \lambda \left( \frac{1}{2} \sigma^2 \frac{d^2}{dx^2} + \mu \frac{d}{dx} - r \right) f = \lambda L(f) \\
-        &(\forall f,g \in V) L(f+g) = Lf + Lg
-    \end{flalign*}
-    \item $ker(L) = \{ f \in V : L(f) = 0 \in V \}$
     \begin{itemize}
-        \item $\frac{1}{2} \sigma^2 f''(x) + \mu f'(x) - rf(x) = 0$
-        \item Guess $f(x) = e^{kx}$
-        \item $\left( \frac{1}{2} \sigma^2 k^2 + \mu k - r \right) e^{kx} = 0$
-        \item $\Rightarrow \frac{1}{2} \sigma^2k^2 + \mu k -r = 0$ (characteristic equation)
-        \item $\Rightarrow k^2 + \frac{2\mu}{\sigma^2} k - \frac{2r}{\sigma^2} = 0$
-        \item $\Rightarrow \left( k + \frac{\mu}{\sigma^2} \right)^2 - \frac{\mu^2}{\sigma^4} - \frac{2r\sigma^2}{\sigma^4} = 0$
-        \item $\Rightarrow k = \frac{-\mu \pm \sqrt{\mu^2 - 2r\sigma^2}}{\sigma^2}$
+        \item $V$ is the space of twice differentiable functions (cannot describe it properly; don't know enough)
+        \item Want to find $Ker(L)$
+        \item We also show that $L$ is a linear map
+        \begin{flalign*}
+            &(\forall f \in V)(\forall V \in \mathbb{C}) \ L(\lambda f) = \lambda L(f) \\
+            &L(\lambda f) = \left( \frac{1}{2} \sigma^2 \frac{d^2}{dx^2} + \mu \frac{d}{dx} - r \right) \lambda f = \lambda \left( \frac{1}{2} \sigma^2 \frac{d^2}{dx^2} + \mu \frac{d}{dx} - r \right) f = \lambda L(f) \\
+            &(\forall f,g \in V) L(f+g) = Lf + Lg
+        \end{flalign*}
+        \item $ker(L) = \{ f \in V : L(f) = 0 \in V \}$
         \begin{itemize}
-            \item Two solutions to go into kernel
-            \item $e^{k(-x)}$ and $e^{k(+x)}$
-        \end{itemize}
-        \item $ker(L) = \{ A_{-}e^{k(-x)} + A_{+} e^{k(+x)} : A_{-}, A_{+} \in \mathbb{C} \}$
-    \end{itemize}
-    \item Scalar (Dot) Product Review
-    \begin{itemize}
-        \item Recall: $x,y \in \mathbb{R}^n, \quad x \cdot y = \sum_{i=1}^n x_i y_i, \quad \vert \vert x \vert \vert = \sqrt{x \cdot x}$
-        \item Consider $a,b \in \mathbb{R}^n$
-        \item Define $\hat{b} = \frac{b}{\vert \vert b \vert \vert} \Rightarrow \vert \vert \hat{b}  \vert \vert = 1$
-        \item Think about $a \cdot \hat{b} = $
-        \begin{itemize}
-            \item If $\theta$ is angle between $a$ and $b$, $\vert proj_{\hat{b}}(a) \vert = \vert \vert a \vert \vert \cos(\theta) = \vert a \cdot \hat{b} \vert$
-            \item The horizontal component of $a$ is $(a \cdot \hat{b})\hat{b}$
+            \item $\frac{1}{2} \sigma^2 f''(x) + \mu f'(x) - rf(x) = 0$
+            \item Guess $f(x) = e^{kx}$
+            \item $\left( \frac{1}{2} \sigma^2 k^2 + \mu k - r \right) e^{kx} = 0$
+            \item $\Rightarrow \frac{1}{2} \sigma^2k^2 + \mu k -r = 0$ (characteristic equation)
+            \item $\Rightarrow k^2 + \frac{2\mu}{\sigma^2} k - \frac{2r}{\sigma^2} = 0$
+            \item $\Rightarrow \left( k + \frac{\mu}{\sigma^2} \right)^2 - \frac{\mu^2}{\sigma^4} - \frac{2r\sigma^2}{\sigma^4} = 0$
+            \item $\Rightarrow k = \frac{-\mu \pm \sqrt{\mu^2 - 2r\sigma^2}}{\sigma^2}$
             \begin{itemize}
-                \item The vertical component is $a - (a \cdot \hat{b})\hat{b}$
+                \item Two solutions to go into kernel
+                \item $e^{k(-x)}$ and $e^{k(+x)}$
             \end{itemize}
+            \item $ker(L) = \{ A_{-}e^{k(-x)} + A_{+} e^{k(+x)} : A_{-}, A_{+} \in \mathbb{C} \}$
         \end{itemize}
-        \item Define the orthogonal projection of $x$ onto $b$: $p_b : \mathbb{R}^n \rightarrow \mathbb{R}^n. \quad \forall x \in \mathbb{R}^n$
-        \begin{itemize}
-            \item $p_b(x) = (x \cdot \hat{b})\hat{b}$
-        \end{itemize}
-        \item $a = p_b(a) + a - p_b(a) = (p_b + I - p_b)a$
     \end{itemize}
     \item Definition (Inner Product) - an inner product on a vector space $V$ over a field $\mathbb{F}$ is a map $\langle \cdot, \cdot \rangle : V \times V \rightarrow \mathbb{F}$
     \begin{itemize}
         \item Positive definiteness: $(\forall x \in V) \ \langle x, x \rangle \ge 0$ with equality iff $x = 0$
-        \item Homogeneity: $(\forall a \in V)(\forall x \in y) \ \langle ax, y \rangle = a \langle x,y \rangle$
+        \item Homogeneity: $(\forall a \in \mathbb{F})(\forall x,y \in V) \ \langle ax, y \rangle = a \langle x,y \rangle$
         \item Additivity: $(\forall x,y,z \in V) \ \langle x+y,z \rangle = \langle x,z \rangle + \langle y,z \rangle$
-        \item Conjugate Symmetry: $(\forall x,y \in V) \ \langle x,y \rangle = \langle y,x \rangle$
+        \item Conjugate Symmetry: $(\forall x,y \in V) \ \langle x,y \rangle = \overline{\langle y,x \rangle}$
     \end{itemize}
-    \item Vector space $V$ over $\mathbb{F}$ with an inner product $\langle \cdot,\cdot \rangle \rightarrow$ inner product space ($(V(\mathbb{F}), \langle \cdot,\cdot \rangle)$ or $(V,\langle \cdot,\cdot \rangle)$)
+    \item Vector space $V$ over $\mathbb{F}$ with an inner product $\langle \cdot,\cdot \rangle$ can be denoted as the inner product space: ($(V(\mathbb{F}), \langle \cdot,\cdot \rangle)$ or $(V,\langle \cdot,\cdot \rangle)$)
     \item Definition (Orthogonal) - in an inner product space $(V,\langle \cdot,\cdot \rangle)$, vectors $x,y \in V \backslash \{0\}$ are orthogonal if
     \[
     \langle x,y \rangle = 0
@@ -3207,7 +3287,9 @@
     \[
     U^{\perp} = \{ y \in V : \forall x \in U, \langle y,x \rangle = 0 \}
     \]
-    \item Key Property: $U^{\perp}$ is also a subspace of $V$
+    \begin{itemize}
+        \item Key Property: $U^{\perp}$ is also a subspace of $V$
+    \end{itemize}
     \item Example:
     \begin{itemize}
         \item $V = \mathbb{R}^2, \mathbb{F} = \mathbb{R}, \quad X = \{ \left[ \begin{array}{cc}
@@ -3222,7 +3304,7 @@
     \begin{itemize}
         \item $(\forall x \in \mathbb{R}) \ \vert \vert x \vert \vert \ge 0$ with equality iff $x = 0$
         \item $\vert \vert x+y \vert \vert \le \vert \vert x \vert \vert + \vert \vert y \vert \vert$ (triangle inequality)
-        \item $\vert \lambda x \vert \vert = \vert \lambda \vert \vert \vert x \vert \vert$
+        \item $\vert \vert \lambda x \vert \vert = \vert \lambda \vert \vert \vert x \vert \vert$
         \item Connection: an inner product induces a norm: $\vert \vert x \vert \vert = \sqrt{\langle x,x \rangle}$
     \end{itemize}
     \item Definition (Metric) - a metric on a set $X$ is $d : X \times X \rightarrow \mathbb{R}$ satisfying:
@@ -3248,13 +3330,14 @@
     \begin{itemize}
         \item Alternative statement: $V = U \oplus U^{\perp}$
     \end{itemize}
-    \item Definition (Orthogonal Projection) - the orthogonal projection of $v \in V$ onto subspace $W$ is the unique $w \in W$ such that $v = w+u$ where $u \in W^{\perp}$
-    \item Example:
+    \item Definition (Orthogonal Projection) - the orthogonal projection of $v \in V$ onto subspace $U$ is the unique $w \in U$ such that $v = w+u$ where $u \in U^{\perp}$
+    \item Example of finding orthonormal basis for vector space:
     \begin{itemize}
         \item Consider the set of polynomials of degree less than equal to 2 with real coefficients:
         \[
-        V = \{ a_0 + a_1 x + a_2 x^2 : a_0,a_1,a_2 \in \mathbb{R} \} \text{ over } \mathbb{R}
+        V = \{ a_0 + a_1 x + a_2 x^2 : a_0,a_1,a_2 \in \mathbb{R} \} \text{ over field } \mathbb{R}
         \]
+        \item Define the inner product to be $\langle a,b \rangle = \int_0^1 ab dx$.
         \item $\langle 1, a_0 + a_1x \rangle = \int_0^1 1(a_0 + a_1x)dx = \left[ a_0x + \frac{1}{2} a_1 x^2 \right]_0^1 = a_0 + \frac{1}{2}a_1 = 0 \Rightarrow a_0 = -\frac{1}{2} a_1$
         \item $a_0 + a_1x = a_0 - 2a_0x = a_0(1-2x)$
         \item Now we pick $a_0$ so that the norm is equal to 1
@@ -3270,7 +3353,7 @@
         \begin{itemize}
             \item Therefore, it is a basis
         \end{itemize}
-        \item Find $a_0,a_1,a_2$ such that $\langle 1,a_0+a_1x+a_2x^2 \rangle = 0 \Longleftrightarrow \langle 1-2x, a_0 + a_1x + a_2x^2 \rangle$
+        \item Find $a_0,a_1,a_2$ such that $\langle 1,a_0+a_1x+a_2x^2 \rangle = 0 \Longleftrightarrow \langle 1-2x, a_0 + a_1x + a_2x^2 \rangle = 0$
         \item $e_1(x) = 1$
         \item $e_2(x) = \sqrt{3} (2x-1)$
         \item $e_3(x) = 6 \sqrt{5} \left( x^2 - x + \frac{1}{6} \right)$
@@ -3290,7 +3373,7 @@
                 2\frac{1}{4} - \frac{1}{3} + b \left( 2\frac{1}{3} - \frac{1}{2} \right) + c \left( 2 \frac{1}{2} - 1 \right) &= 0 \\
                 \Rightarrow \frac{1}{6} + \frac{1}{6}b &= 0 \\
                 \Rightarrow 1 + b &= 0 \Rightarrow b = -1 \\
-                \Rightarrow c = \frac{1}{6} \\
+                \Rightarrow 2 + 3(-1) + 6c = 6c - 1 &= 0 \Rightarrow c = \frac{1}{6} \\
                 x^2 - x + \frac{1}{6} \text{ is orthogonal to } e_1(x) \text{ and } e_2(x) \\
                 \text{Find } \vert \vert x^2 - x + \frac{1}{6} \vert \vert &= \langle x^2-x+\frac{1}{6},x^2-x+\frac{1}{6} \rangle \\
                 &= (6\sqrt{5})^{-2} \Rightarrow \vert \vert x^2-x+\frac{1}{6} \vert \vert = (6\sqrt{5})^{-1} \\
@@ -3298,6 +3381,28 @@
             \end{flalign*}
             \item $\{e_1(x),e_2(x),e_3(x)\}$ is an orthonormal basis of $V$ with dimensionality 3
         \end{itemize}
+    \end{itemize}
+\end{itemize}
+\subsection{Lecture Notes}
+\begin{itemize}
+    \item Scalar (Dot) Product Review
+    \begin{itemize}
+        \item Recall: $x,y \in \mathbb{R}^n, \quad x \cdot y = \sum_{i=1}^n x_i y_i, \quad \vert \vert x \vert \vert = \sqrt{x \cdot x}$
+        \item Consider $a,b \in \mathbb{R}^n$
+        \item Define $\hat{b} = \frac{b}{\vert \vert b \vert \vert} \Rightarrow \vert \vert \hat{b}  \vert \vert = 1$
+        \item Think about $a \cdot \hat{b}$
+        \begin{itemize}
+            \item If $\theta$ is angle between $a$ and $b$, we can define the length of the projection as follows: $\vert proj_{\hat{b}}(a) \vert = \vert \vert a \vert \vert \cos(\theta) = \vert a \cdot \hat{b} \vert$
+            \item The horizontal component of $a$ is $(a \cdot \hat{b})\hat{b}$
+            \begin{itemize}
+                \item The vertical component is $a - (a \cdot \hat{b})\hat{b}$
+            \end{itemize}
+        \end{itemize}
+        \item Define the orthogonal projection of $x$ onto $b$: $p_b : \mathbb{R}^n \rightarrow \mathbb{R}^n. \quad \forall x \in \mathbb{R}^n$
+        \begin{itemize}
+            \item $p_b(x) = (x \cdot \hat{b})\hat{b}$
+        \end{itemize}
+        \item $a = p_b(a) + a - p_b(a) = (p_b + I - p_b)a$
     \end{itemize}
 \end{itemize}
 
@@ -3331,7 +3436,7 @@
         \end{array}\right] , \quad P^2 = P \Rightarrow (\forall n \in \mathbb{N}) \ P^n = P$
     \end{itemize}
     \item Definition (Idempotent) - a matrix $A \in \mathbb{R}^{n \times n}$ is idempotent if $A^2 = A$
-    \item Consider orthogonal projection of $b = \left[ \begin{array}{c}
+    \item Rewrite the above question of the orthogonal projection of $b$ onto the $xy$ plane as the orthogonal projection of $b = \left[ \begin{array}{c}
         b_1 \\ b_2 \\ b_3
     \end{array}\right] \in \mathbb{R}^3$ onto $span(a_1,a_2) = \{x_1a_1+x_2a_2 : x_1,x_2 \in \mathbb{R} \}$ where $a_1,a_2 \in \mathbb{R}^3$
     \item Define $A = \left[ \begin{array}{cc}
@@ -3345,7 +3450,7 @@
         \item Project $b$ onto column space (span of $a_1,a_2$) of $A$ (want $Ax$ to be orthogonal projection)
         \item Decompose $b = Ax + \epsilon$
         \item Want $\epsilon \perp Ax \Rightarrow \underset{=\epsilon}{\underbrace{(b-Ax)}} \cdot Ax = 0$
-        \item Recall $a \cdot b = a^Tb$
+        \item Recall $a \cdot b = a^Tb$, so this means $(Ax)^\top \epsilon = x^\top A^\top \epsilon = 0$
         \item Want $\epsilon \cdot a_1 = 0$ and $\epsilon \cdot a_2 = 0$
         \begin{itemize}
             \item $\epsilon \cdot Ax = \epsilon \cdot (x_1a_1+x_2a_2) = 0$
@@ -3363,6 +3468,9 @@
             \[
             P_A = A(A^TA)^{-1}A^T
             \]
+            \begin{itemize}
+                \item Properties: $P_A^2=P_a$ (idempotent) and $P_A^\top=P_A$ (symmetric)
+            \end{itemize}
         \end{itemize}
     \end{itemize}
     \item Check: $a_1 = \left[ \begin{array}{c}
@@ -3390,19 +3498,18 @@
         0 & 1 & 0 \\
         0 & 0 & 0
     \end{array}\right]$
-    \begin{itemize}
-        \item Not invertible
-    \end{itemize}
     \item Linear Regression:
     \begin{itemize}
         \item Consider $n$ measurements of a variable $y = (y_1, \dots, y_n)^T \in \mathbb{R}^n$, which we wish to explain in terms of the $n$ observations of another variable $x = (x_1, \dots, x_n)^T \in \mathbb{R}^n$ via the following set of linear equations:
         \begin{flalign*}
-            &y_1=\beta_1& &+\beta_2x_1+& &\epsilon_1 \\
-            &\vdots& &\vdots& &\vdots \\
-            &y_n = \beta_1& &+\beta_2x_n+& &\epsilon_n
+            \left\{ \begin{array}{ccc}
+                 y_1=\beta_1 &+\beta_2x_1 &+\epsilon_1  \\
+                 \vdots &\vdots& \vdots \\
+                 y_n = \beta_1 &+\beta_2x_n &+\epsilon_n
+            \end{array} \right.           
         \end{flalign*}
         where $\epsilon = (\epsilon_1,\dots,\epsilon_n)^T \in \mathbb{R}^n$ is the vector of errors
-        \item We are trying to find $\beta_1,\beta_2$ in $y=\beta_1 + \beta_2 x$ to minimize $\sqrt{\frac{1}{n}\sum_{i=1}^n \epsilon_i^2}$ (root mean squared error) or $\vert \vert \epsilon \vert \vert$ is minimized
+        \item We are trying to find $\beta_1,\beta_2$ in $y=\beta_1 + \beta_2 x$ to minimize $\sqrt{\frac{1}{n}\sum_{i=1}^n \epsilon_i^2}$ (root mean squared error/MSE) or equivalently minimize $\vert \vert \epsilon \vert \vert$ for the scalar inner product
         \begin{itemize}
             \item The error is as follows: $\epsilon_n = y_n - (\beta_1+\beta_2x)$
             \item Equivalent to minimizing $\sum_{i=1}^n \epsilon_i^2 = \epsilon \cdot \epsilon$ where $\epsilon = (\epsilon_1, \dots, \epsilon_n)^T \in \mathbb{R}^n$
@@ -3419,8 +3526,220 @@
             \begin{itemize}
                 \item OLS: Euclidean norm (standard dot product)
                 \item WLS: Weighted norm with diagonal matrix $W$
-                \item GLS: General symmetrix matrix $W$
+                \item GLS: General symmetric matrix $W$
             \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\section{Tutorial 8 (27/11/2025)}
+\begin{itemize}
+    \item To check if $W$ is a subspace, you only have to check three conditions, namely the inclusion of zero and closure under addition and scalar multiplication
+    \begin{itemize}
+        \item The other axioms are automatically inherited from $V$ being vector space
+    \end{itemize}
+    \item Quick Question: For a linear map $L: V \rightarrow W$, is the kernel
+    \[
+    \ker(L) = \{ v \in V : L(v) = 0 \} \subseteq V
+    \]
+    a subspace of $V$?
+    \begin{itemize}
+        \item Note that $L(0) = L(0 \cdot u) = 0 L(u) = 0$ so $0 \in \ker(L)$
+        \item By linearity of $L$, $u,v \in \ker(L) \Longrightarrow L(u+v) = L(u) + L(v) = 0 \Longrightarrow u+v \in \ker(L)$
+        \item Similarly, by linearity of $L$ again, $u \in \ker(L) \wedge \lambda \in \mathbb{F} \Longrightarrow L(\lambda u) = \lambda L(u) = 0 \Longrightarrow \lambda u \in \ker(L)$
+    \end{itemize}
+    \item Exercise 6.2. Find the orthogonal projection of the column vector $(3,1)^\top$ onto the vector $(1,1)^\top$ using the dot product.
+    \begin{itemize}
+        \item Remember that we are projecting onto the direction described by $b = (1,1)^\top$, so we first construct a unit vector in that direction:
+        \[
+        \hat{b} = \frac{b}{\vert \vert b \vert \vert} = \frac{1}{\sqrt{2}} (1,1)^\top
+        \]
+        \item Then, the orthogonal projection of $a = (3,1)T\top$ onto $b$ is
+        \[
+        proj_b(a) = (a\cdot\hat{b})\hat{b} = 2\sqrt{2} \cdot \frac{1}{\sqrt{2}}(1,1)^\top = (2,2)^\top
+        \]
+    \end{itemize}
+    \item Exercise 6.7. (a) The general unit vector in $\mathbb{R}^2$ can be written as $\hat{n} = (\cos(\theta),\sin(\theta))^\top$ with respect to the standard basis, where $\theta \in [0,2\pi)$. Work out the matrix $P$ which represents an orthogonal projection onto $\hat{n}$ (with respect to the standard basis).
+    \begin{itemize}
+        \item We are going to look at this from two angles. For this part, let us consider any $v \in \mathbb{R}^2$. This can be written in the standard basis as $v = (v_1,v_2)^\top = v_1e_1+v_2e_2$. Then, by linearity,
+        \[
+        Pv = v_1(Pe_1) + v_2(Pe_2)
+        \]
+        \item Recall that a matrix maps a vector to the corresponding linear combination of its columns. Thus, the above tells us that the matrix of $P$ must look like:
+        \[
+        P = \left[ \begin{array}{cc}
+            \uparrow & \uparrow \\
+            Pe_1 & Pe_2 \\
+            \downarrow & \downarrow
+        \end{array}\right]
+        \]
+        i.e. with columns $Pe_1$ and $Pe_2$ written in standard basis themselves.
+        \item We see that $e_1 \cdot \hat{n} = \cos(\theta)$ and $e_2 \cdot \hat{n} = \sin(\theta)$. So
+        \[
+        Pe_1 = (\cos^2(\theta), \cos(\theta)\sin(\theta))^\top
+        \]
+        and
+        \[
+        Pe_2 = (\cos(\theta)\sin(\theta),\sin^2(\theta))^\top
+        \]
+        \item Hence
+        \[
+        P = \left[ \begin{array}{cc}
+            \cos^2(\theta) & \cos(\theta)\sin(\theta) \\
+            \cos(\theta)\sin(\theta) & \sin^2(\theta)
+        \end{array} \right]
+        \]
+        \item We can also say $A = (\cos(\theta), \sin(\theta))^\top$ and $P=A(A^\top A)^{-1}A^\top$ and calculate:
+        \[
+        \left[ \begin{array}{c}
+            \cos(\theta) \\ \sin(\theta)
+        \end{array}\right] \left( \left[ \begin{array}{cc}
+            \cos(\theta) & \sin(\theta)
+        \end{array}\right]\left[ \begin{array}{c}
+            \cos(\theta) \\ \sin(\theta)
+        \end{array}\right] \right)^{-1} \left[ \begin{array}{cc}
+            \cos(\theta) & \sin(\theta)
+        \end{array}\right]
+        \]
+        \[
+        = (\cos^2(\theta) + \sin^2(\theta)) \left[ \begin{array}{cc}
+            \cos^2(\theta) & \cos(\theta)\sin(\theta) \\
+            \cos(\theta)\sin(\theta) & \sin^2(\theta)
+        \end{array} \right] = \left[ \begin{array}{cc}
+            \cos^2(\theta) & \cos(\theta)\sin(\theta) \\
+            \cos(\theta)\sin(\theta) & \sin^2(\theta)
+        \end{array} \right]
+        \]
+    \end{itemize}
+    \item Exercise 6.7. (b) Show that $P^2 = P$.
+    \begin{itemize}
+        \item Here, we can use the explicit $P$ that we wrote down.
+    \end{itemize}
+    \begin{flalign*}
+        &\left[ \begin{array}{cc}
+            \cos^2(\theta) & \cos(\theta)\sin(\theta) \\
+            \cos(\theta)\sin(\theta) & \sin^2(\theta)
+        \end{array} \right] \left[ \begin{array}{cc}
+            \cos^2(\theta) & \cos(\theta)\sin(\theta) \\
+            \cos(\theta)\sin(\theta) & \sin^2(\theta)
+        \end{array} \right] \\ &= \left[ \begin{array}{cc}
+            \cos^4(\theta) + \cos^2(\theta)\sin^2(\theta) & \cos^3(\theta)\sin(\theta) + \cos(\theta)\sin^3(\theta) \\
+            \cos^3(\theta)\sin(\theta) + \cos(\theta)\sin^3(\theta) & \sin^4(\theta) + \cos^2(\theta)\sin^2(\theta)
+        \end{array} \right] \\
+        &= \left[ \begin{array}{cc}
+            \cos^2(\theta)(\cos^2(\theta) + \sin^2(\theta)) & \cos(\theta)\sin(\theta)(\cos^2(\theta) + \sin^2(\theta)) \\
+            \cos(\theta)\sin(\theta)(\cos^2(\theta) + \sin^2(\theta)) & \sin^2(\theta)(\sin^2(\theta) + \cos^2(\theta))
+        \end{array} \right] \\
+        &= \left[ \begin{array}{cc}
+            \cos^2(\theta) & \cos(\theta)\sin(\theta) \\
+            \cos(\theta)\sin(\theta) & \sin^2(\theta)
+        \end{array} \right]
+    \end{flalign*}
+    \begin{itemize}
+        \item We can also look at the projection matrix from a second angle. Note that $\forall v \in \mathbb{R}^2$
+        \begin{flalign*}
+            Pv &= (v \cdot \hat{n}) \hat{n} = \hat{n} (\hat{n} \cdot v) \\
+            &= \hat{n} (\hat{n}^\top v) \\
+            &= (\hat{n} \hat{n}^\top) v
+        \end{flalign*}
+        \item Since this is true $\forall v \in \mathbb{R}^2$, we find that
+        \[
+        P = \hat{n}\hat{n}^\top
+        \]
+        \item This object is known as the outer product of $\hat{n}$ with itself. From this, we easily find
+        \[
+        P^2 = (\hat{n}\hat{n}^\top)(\hat{n}\hat{n}^\top) = \hat{n}(\hat{n}^\top \hat{n})\hat{n}^\top = \vert \vert \hat{n} \vert \vert^2 \hat{n}\hat{n}^\top = \hat{n}\hat{n}^\top = P 
+        \]
+    \end{itemize}
+    \item Exercise 6.7. (c) Find the eigenvectors and eigenvalues of $P$.
+    \begin{itemize}
+        \item We can do this via the characteristic equation $\det(P-\lambda I) = 0$. However, we can instead observe that
+        \[
+        Pv=\lambda v \Longrightarrow P^2v = \lambda Pv = \lambda^2 v
+        \]
+        \item But since $P^2=P$, this tells us that
+        \[
+        \lambda v = \lambda^2 v
+        \]
+        \item Since eigenvectors must be non-zero, we conclude that the eigenvalues must be $\lambda = \{0,1\}$
+        \item The corresponding eigenvectors can be identified by thinking about the nature of the projection operator. We are looking for a non-zero vector unchanged by projection $(\lambda=1)$ and a non-zero vector sent to zero by projection ($\lambda=0$).
+        \begin{itemize}
+            \item Vectors which have zero projection along $\hat{n}$ must be orthogonal to it. A unit vector orthogonal to $\hat{n}$ is $\hat{n}^\perp = (-\sin(\theta),\cos(\theta))^\top$, and so the eigenvectors with eignevalue $\lambda=0$ are proportional to $\hat{n}^\perp$.
+            \item On the other hand, vectors which are unchanged by projection must already lie fully along $\hat{n}$. Thus, the eigenvectors with eigenvalue $\lambda=1$ are simply scalar multiples of $\hat{n} = (\cos(\theta),\sin(\theta))^\top$ itself.
+        \end{itemize}
+    \end{itemize}
+    \item Exercise 6.7. (d) Find a $2 \times 2$ matrix $Q$ (not the zero matrix) such that $PQ=0$.
+    \begin{itemize}
+        \item There are many solutions to this. A particularly instructive solution is to first recall that
+        \[
+        P = \hat{n}\hat{n}^\top
+        \]
+        \item Let $Q$ be the projector onto the orthogonal complement, which in this case is the direction $\hat{n}^\top$. Then,
+        \[
+        Q = \hat{n}^\perp (\hat{n}^\perp)\top
+        \]
+        \item Then,
+        \[
+        PQ = (\hat{n}\hat{n}^\top)(\hat{n}^\perp (\hat{n}^\perp)^\top) = \hat{n}(\hat{n}^\top\hat{n}^\perp)(\hat{n}^\perp)^\top = 0
+        \]
+        since $\hat{n}$ and $\hat{n}^\top$ are orthogonal.
+    \end{itemize}
+    \item Exercise 6.4. The following matrices are representations of linear maps with respect to the standard basis of $\mathbb{R}^3$. Describe the action of each linear map in words.
+    \begin{itemize}
+        \item (a)
+        \[
+        T_1 = \left[ \begin{array}{ccc}
+            \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} & 0 \\
+            \frac{1}{\sqrt{2}} & \sqrt{1}{\sqrt{2}} & 0 \\
+            0 & 0 & 1
+        \end{array} \right]
+        \]
+        \begin{itemize}
+            \item This keeps the $z$ direction invariant (around the $z$-axis) while rotating things in the $xy$ plane $\frac{\pi}{4}$ radians counterclockwise
+        \end{itemize}
+        \item (b)
+        \[
+        T_2 = \left[ \begin{array}{ccc}
+            \frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}} \\
+            0 & 1 & 0 \\
+            -\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}
+        \end{array} \right]
+        \]
+        \begin{itemize}
+            \item Rotation of $\frac{\pi}{4}$ radians clockwise about the $y$-axis
+        \end{itemize}
+        \item (c)
+        \[
+        T_3 = \left[ \begin{array}{ccc}
+            -1 & 0 & 0 \\
+            0 & 1 & 0 \\
+            0 & 0 & 1
+        \end{array} \right]
+        \]
+        \begin{itemize}
+            \item Reflection through the $yz$-plane
+        \end{itemize}
+        \item (d)
+        \[
+        T_4 = \left[ \begin{array}{ccc}
+            1 & 0 & 0 \\
+            0 & -1 & 0 \\
+            0 & 0 & 1
+        \end{array} \right]
+        \]
+        \begin{itemize}
+            \item Reflection through the $xz$-plane
+        \end{itemize}
+        \item (e)
+        \[
+        T_5 = \left[ \begin{array}{ccc}
+            0 & 0 & -1 \\
+            0 & 1 & 0 \\
+            -1 & 0 & 0
+        \end{array} \right]
+        \]
+        \begin{itemize}
+            \item $T_5$ sends $x$ to $-z$ and $z$ to $-x$ without changing $y$. This is a reflection through the plan perpendicular to the vector $\hat{n} = \frac{1}{\sqrt{2}}(1,0,1)^\top$.
         \end{itemize}
     \end{itemize}
 \end{itemize}
@@ -3434,7 +3753,7 @@
         \item Choose $\beta = \left[ \begin{array}{c}
             \beta_1 \\
             \beta_2
-        \end{array} \right]$ too minimize $\vert \vert \epsilon \vert \vert = \sum_{i=1}^n \epsilon_i^k$
+        \end{array} \right]$ to minimize $\vert \vert \epsilon \vert \vert = \sum_{i=1}^n \epsilon_i^k$
         \item Geometrically, obtain the orthogonal projection of $y$ onto $\{ 1\lambda_1 + x \lambda_2 : \lambda_1, \lambda_2 \in \mathbb{R} \}$
         \item Suppose the $k$th observation is an outlier
         \begin{itemize}
@@ -3510,7 +3829,7 @@
         \item Case 1: $1 \in A$
         \begin{flalign*}
             V_\epsilon(1) &= \{ x : \vert x-1 \vert < \epsilon \} \\
-            (V_\epsilon(1) - \{1\}) \cap A &= \{ x : 0 < x < min(\epsilon,1)\} \neq \emptyset
+            (V_\epsilon(1) - \{1\}) \cap A &= \{ x : 1-\epsilon < x < 1\} \neq \emptyset
         \end{flalign*}
         Hence, 1 is a limit point of $A$
         \item Case 2: $0 \notin A$
@@ -3520,8 +3839,7 @@
         \end{flalign*}
         Hence, 0 is a limit point of $A$
     \end{itemize}
-    \item Definition (Functional Limit) - Let $f: A \rightarrow \mathbb{R}$ and let $c$ be a limit point of $A$
-    \item We say $\lim_{x \rightarrow c} f(x) = L$ if
+    \item Definition (Functional Limit) - Let $f: A \rightarrow \mathbb{R}$ and let $c$ be a limit point of $A$. We say $\lim_{x \rightarrow c} f(x) = L$ if
     \[
     (\forall \epsilon > 0)(\exists \delta > 0)(0 < \vert x-c \vert < \delta \rightarrow \vert f(x) - L \vert < \epsilon)
     \]
@@ -3532,10 +3850,10 @@
     if this limit exists. If $g'(c)$ exists for all $c \in A$, we say $g$ is differentiable on $A$
     \item Theorem (Taylor's Theorem 1D) - Let $f: \mathbb{R} \rightarrow \mathbb{R}$ be $k$ times differentiable at $a$. Then
     \[
-        f(x) = \sum_{i=0}^k \frac{(x-a)^n}{n!} f^{(n)}(a) + (x-a)^k h_k(x) = f(a) + (x-a)f'(a) + \frac{(x-a)^2}{2!} f''(a) + \dots + \frac{(x-a)^k}{k!}f^{(k)}(a) + (x-a)^k h_k(x)
+        f(x) = \sum_{n=0}^k \frac{(x-a)^n}{n!} f^{(n)}(a) + (x-a)^k h_k(x) = f(a) + (x-a)f'(a) + \frac{(x-a)^2}{2!} f''(a) + \dots + \frac{(x-a)^k}{k!}f^{(k)}(a) + (x-a)^k h_k(x)
     \]
     where $\lim_{x \rightarrow a} h_k(x) = 0$ (Peano form of the remainder)
-    \item Example: Taylor Expansion of $f(x)=x^2$
+    \item Example: Taylor Expansion of $f(x)=x^2$ around $x=1$
     \begin{itemize}
         \item $x^2 = 1 + 2(x-1) + (x-1)^2 + (x-1)^3 h_2(x), \qquad \lim_{x \rightarrow 1} h_2(x) = 0$
         \item Direct computation shows $h_2(x)=0$, so
@@ -3566,14 +3884,15 @@
     \item For 1D, $y = f(x)$
     \begin{itemize}
         \item We know $f(a) = f'(a) a + c$
-        \item Then $y= f'(a) x + (f(a) - f'(a)a) = f(a) + (x-a)f'(a)$
+        \item Then $y= f'(a) x + (f(a) - af'(a)) = f(a) + (x-a)f'(a)$
         \item Expanding out, we get the Taylor Series expansion for 1D
     \end{itemize}
     \item Example: Taylor expansion of $f(x) = x(x+1)(x-1)=x(x^2-1)=x^3-x$ around $x=\frac{1}{\sqrt{3}}$
     \begin{itemize}
         \item $f'(x) = 3x^2 - 1 \Rightarrow f'(\pm \frac{1}{\sqrt{3}}) = 0$
         \item $f(a) + (x-a)\underset{0}{\underbrace{f'(a)}} + \frac{(x-a)^2}{2!} f''(a) = f(a) + \frac{(x-a)^2}{2!}f''(a) = \frac{1}{\sqrt{3}}(\frac{1}{3}-1) + \frac{(x-\frac{1}{\sqrt{3}})^2}{2} \frac{6}{\sqrt{3}}$
-        \item Since $f''(a) = \frac{6}{\sqrt{3}} > 0$ for all $x$, $x=a$ is a local minimum9     \end{itemize}
+        \item Since $f''(a) = \frac{6}{\sqrt{3}} > 0$ for all $x$, $x=a$ is a local minimum
+    \end{itemize}
     \item Definition (Optimum Values) - Let $I = \{ x \in \mathbb{R} : a \le x \le b \}$
     \begin{itemize}
         \item A function $f : I \rightarrow \mathbb{R}$ has:
@@ -3608,28 +3927,31 @@
         x \\
         y
     \end{array}\right] = r^2$
-    \item Gradient/slope depends on the direction of travel (directional derivative)
-    \item Suppose we are at the point $(a,b)$. What is the slope in the $x$-direction?
     \begin{itemize}
-        \item To answer this, consider moving away from $(a,b)$ in the $x$-direction from $(a,b)$ to $(a+h,b)$
-        \item Height will change by $\frac{f(a+h,b)-f(a,b)}{h}$ per unit I move
-        \item Define $\frac{\partial f}{\partial x}(a,b) = \lim_{h \rightarrow 0} \frac{f(a+h,b)-f(a,b)}{h}$ and $\frac{\partial f}{\partial y}(a,b) = \lim_{h \rightarrow 0} \frac{f(a,b+h)-f(a,b)}{h}$
-    \end{itemize}
-    \item $\frac{f(a+h,b)-f(a,b)}{h} = \frac{(a+h)^2 + b^2 - (a^2 + b^2)}{h} = \frac{(a+h)^2 - a^2}{h} \underset{h \rightarrow 0}{\rightarrow} 2a$
-    \begin{itemize}
-        \item To work $\frac{\partial f(x,y)}{\partial x}$, hold $y$ constant and proceed on
-    \end{itemize}
-    \item $\nabla f(x,y) = \left[ \begin{array}{cc}
-        \frac{\partial f(x,y)}{\partial x} & \frac{\partial f(x,y)}{\partial y}
-    \end{array} \right] = \left[ \begin{array}{cc}
-        2x & 2y
-    \end{array} \right]$
-    \begin{itemize}
-        \item The gradient vector of $f$ at $(a,b)$: $\nabla f(a,b) = \left[ \begin{array}{cc}
-            2a & 2b
+        \item Gradient/slope depends on the direction of travel (directional derivative)
+        \item Suppose we are at the point $(a,b)$. What is the slope in the $x$-direction?
+        \begin{itemize}
+            \item To answer this, consider moving away from $(a,b)$ in the $x$-direction from $(a,b)$ to $(a+h,b)$
+            \item Height will change by $\frac{f(a+h,b)-f(a,b)}{h}$ per unit I move
+            \item Define $\frac{\partial f}{\partial x}(a,b) = \lim_{h \rightarrow 0} \frac{f(a+h,b)-f(a,b)}{h}$ and $\frac{\partial f}{\partial y}(a,b) = \lim_{h \rightarrow 0} \frac{f(a,b+h)-f(a,b)}{h}$
+        \end{itemize}
+        \item $\frac{f(a+h,b)-f(a,b)}{h} = \frac{(a+h)^2 + b^2 - (a^2 + b^2)}{h} = \frac{(a+h)^2 - a^2}{h}  = \frac{2ah + h^2}{h} \underset{h \rightarrow 0}{\rightarrow} 2a$
+        \begin{itemize}
+            \item To work $\frac{\partial f(x,y)}{\partial x}$, hold $y$ constant and proceed on
+        \end{itemize}
+        \item $\nabla f(x,y) = \left[ \begin{array}{cc}
+            \frac{\partial f(x,y)}{\partial x} & \frac{\partial f(x,y)}{\partial y}
+        \end{array} \right] = \left[ \begin{array}{cc}
+            2x & 2y
         \end{array} \right]$
-        \item Gradient is normal to the tangent of the contour at $(a,b)$
+        \begin{itemize}
+            \item The gradient vector of $f$ at $(a,b)$: $\nabla f(a,b) = \left[ \begin{array}{cc}
+                2a & 2b
+            \end{array} \right]$
+            \item Gradient is normal to the tangent of the contour at $(a,b)$
+        \end{itemize}
     \end{itemize}
+    
     \item Definition (Partial Derivative) - For a function $f: \mathbb{R}^n \rightarrow \mathbb{R}, x \mapsto f(x), x \in \mathbb{R}^n$ of $n$ variables $x_1,\dots,x_n$, we define the partial derivatives as:
     \begin{flalign*}
         \frac{\partial f}{\partial x_1} &= \lim_{h\rightarrow 0} \frac{f(x_1+h,x_2,\dots,x_n)-f(x)}{h}, \\
@@ -3662,7 +3984,7 @@
     \begin{itemize}
         \item $f: \mathbb{R}^n \rightarrow \mathbb{R}^m$
         \item $f(x) = Ax$, where $A \in \mathbb{R}^{m \times n}, \quad x \in \mathbb{R}^n$
-        \item What is the $i$th element of $f(x)$?
+        \item What is the $i$th element of $f(x)$ (row multiplication of $A_{i, \cdot}$ with $x$)?
         \begin{itemize}
             \item $f_i(x) = \sum_{j=1}^n A_{ij}x_j = A_{i1}x_1 + A_{i2}x_2 + \cdots + A_{in}x_n$
         \end{itemize}
@@ -3691,7 +4013,11 @@
     V_\epsilon(a) = \{ x \in V : \vert \vert x - a \vert \vert < \epsilon \}
     \]
     where $\vert \vert x \vert \vert \sqrt{\langle x, x \rangle}$
-    \item Definition (Optimum Values in Several Variables) - Let $I = \{ x \in \mathbb{R}^n : (\forall i \in \{1,\dots, n\}) \ a_i \le x_i \le b_i\}$ be an interval and $f: I \rightarrow \mathbb{R}$ be a function on $I$. Then $f$ has a
+    \item Definition (Optimum Values in Several Variables) - Let
+    \[
+    I = \{ x \in \mathbb{R}^n : (\forall i \in \{1,\dots, n\}) \ a_i \le x_i \le b_i\}
+    \]
+    be an interval and $f: I \rightarrow \mathbb{R}$ be a function on $I$. Then $f$ has a
     \begin{itemize}
         \item Global maximum at $c$ if $(\forall x \in I) \ f(x) \le f(x)$
         \item Global minimum at $c$ if $(\forall x \in I) \ f(x) \ge f(c)$
@@ -3711,7 +4037,9 @@
     \begin{itemize}
         \item $f(x) = f(a) + \nabla f(a) (x-a) +\frac{1}{2} 
         (x-a)^T H_f(a) (x-a) + \dots$
-        \item $f(x,y) = x^2 + y^2$
+    \end{itemize}
+    \item $f(x,y) = x^2 + y^2$
+    \begin{itemize}
         \item $a = \left[ \begin{array}{c}
             0 \\ 0
         \end{array} \right]$
@@ -3807,21 +4135,24 @@
         \]
         is a quadratic form and tells us about the local behavior of $f$ around $a$
     \end{itemize}
-    \item We note that $H_f(a) \in \mathbb{R}^{n \times n}$ is a real symmetric matrix and so its $N$ eigenvectors $\{ e_1, \dots, e_n\}$ form an orthonormal basis for $\mathbb{R}^n$ (we can always normalize so that $(\forall i \in \{1, \dots, n\}) \lvert \lvert e_i \rvert \rvert = 1$). Let the corresponding eigenvalues be $\{ \lambda_1, \dots, \lambda_n\}$
+    \item We note that $H_f(a) \in \mathbb{R}^{n \times n}$ is a real symmetric matrix and so its $n$ eigenvectors $\{ e_1, \dots, e_n\}$ form an orthonormal basis for $\mathbb{R}^n$ (we can always normalize so that $(\forall i \in \{1, \dots, n\}) \lvert \lvert e_i \rvert \rvert = 1$). Let the corresponding eigenvalues be $\{ \lambda_1, \dots, \lambda_n\}$. We can represetn this with
+    \[
+    H_f(a) e = \lambda e
+    \]
     \begin{itemize}
         \item Hence, there exists unique $b_1, \dots, b_n \in \mathbb{R}$ such that
         \begin{flalign*}
             x-a &=\sum_{i=1}^n b_ie_i \\
-            (x-a)^T H_f(a) (x-a) &= (\sum_{i=1}^n b_ie_i)^T H_f(a) (\sum_{i=1}^n b_ie_i) \\
-            &= (\sum_{i=1}^n b_ie_i)^T \sum_{i=1}^n b_i H_f(a) e_i \\
-            &= (\sum_{i=1}^n b_ie_i)^T \sum_{i=1}^n b_i \lambda_i e_i \\
+            (x-a)^T H_f(a) (x-a) &= (\sum_{i=1}^n b_ie_i)^T H_f(a) (\sum_{j=1}^n b_je_j) \\
+            &= (\sum_{i=1}^n b_ie_i)^T \sum_{j=1}^n b_j H_f(a) e_j \\
+            &= (\sum_{i=1}^n b_ie_i)^T \sum_{j=1}^n b_j \lambda_j e_j \\
             &= \sum_{i=1}^n b_i \sum_{j=1}^n \lambda_j b_j e_i^T e_j \\
-            &= (b_1e_1 + \dots + b_ne_n) \cdot (b_1\lambda_1 e_1 + \dots + b_n \lambda_n e_n) \\
-            &\text{Since basis is orthonormal, } e_i^Te_j \neq 0 \Longleftrightarrow i=j \\
+            &= (b_1e_1 + \dots + b_ne_n)^\top \cdot (b_1\lambda_1 e_1 + \dots + b_n \lambda_n e_n) \\
+            &\text{Since basis is orthonormal, } e_i^Te_j = 0 \text{ if } i \neq j, \qquad e_i^\top e_i = 1 \\
             &= b_1^2 \lambda_1 + b_2^2 \lambda_2  + \dots + b_n^2 \lambda_n \\
             &= \sum_{i=1}^n b_i^2 \lambda_i
         \end{flalign*}
-        \item It follows that if the eigenvalues of the Hessian are all positive (with at least one strictly positive), then $(\forall x - a \in \mathbb{R}^n)$
+        \item It follows that if the eigenvalues of the Hessian are all positive (with at least one strictly positive), then $(\forall (x - a) \in \mathbb{R}^n)$
         \[
         (x-a)^T H_f(a) (x-a) \ge 0
         \]
@@ -3834,7 +4165,7 @@
         (x-a)^T H_f(a) (x-a) \ge 0
         \]
         with strict inequality for some direction. Then $a$ is a local minimum
-        \item Local minimum: if all eigenvalues of the Hessian are negative (with at least one strictly negative), then $(\forall x - a \in \mathbb{R}^n)$
+        \item Local maximum: if all eigenvalues of the Hessian are negative (with at least one strictly negative), then $(\forall x - a \in \mathbb{R}^n)$
         \[
         (x-a)^T H_f(a) (x-a) \le 0
         \]
@@ -3882,6 +4213,189 @@
             \frac{\partial L}{\partial \lambda} &= a - g(x,y) \\
         \end{flalign*}
         \item Therefore the first order conditions 
+        \[
+        \frac{\partial L}{\partial x} = 0,
+        \]
+        \[
+        \frac{\partial L}{\partial y} = 0,
+        \]
+        \[
+        \frac{\partial L}{\partial \lambda} = 0
+        \]
+        imply that
+        \[
+        \nabla f = \lambda \nabla g, \quad g(x,y) = a
+        \]
+    \end{itemize}
+\end{itemize}
+
+\section{Tutorial 9 (04/12/2025)}
+\begin{itemize}
+    \item Definition (Orthogonal Matrix) - a square matrix $A$ whose transpose is also its inverse:
+    \[
+    A^\top A = A A^\top = A^{-1}A = A^{-1}A = I
+    \]
+    \item Exercise 6.14. (a) Consider the vector space $\mathbb{R}^N$ with the following inner product:
+    \[
+    \forall x,y \in \mathbb{R}^N, \langle x,y \rangle = \sum_{n=1}^N x_ny_n
+    \]
+    Let $O$ be an $N \times N$ orthogonal matrix. That is, $O^\top O = I_N$. Show that
+    \[
+    \langle Ox,Oy \rangle = \langle x,y \rangle.
+    \]
+    How would you interpret this result geometrically?
+    \begin{itemize}
+        \item We note that
+        \[
+        \langle Ox,Oy \rangle = (Ox)^\top(Oy) = x^\top O^\top O y = x^\top (O^\top O) y = x^\top I_N y = x^\top y = \langle x,y \rangle
+        \]
+        \item Geometrically, an orthogonal matrix preserves lengths and angles.
+    \end{itemize}
+    \item Exercise 6.14. (b) The orthogonal matrix $O$ from above can be written as
+    \[
+    O = [v_1,v_2,\dots,v_N],
+    \]
+    where $v_1,\dots,v_N$ are column vectors in $\mathbb{R}^N$. What does the condition $O^\top O = I_N$ tell us about $\langle v_i,v_j\rangle$.
+    \begin{itemize}
+        \item Notice that the $ij$-entry of $AB$ is computed by taking the inner product of the $i$th row of $A$ with the $j$th column of $B$
+        \item Moreover, $v_i^\top$ is the $i$th row of $O^\top$ and $v_j$ is the $j$th column of $O$.
+        \item So indeed, $\langle v_i,v_j\rangle$ is nothing but the $ij$-entry of the identity matrix $I_N$.
+        \item Therefore,
+        \[
+        \langle v_i,v_j \rangle = \left\{ \begin{array}{lr}
+            1 & i=j \\
+            0 & i \neq j
+        \end{array} \right.
+        \]
+        \item In other words, the columns of an orthogonal matrix are orthonormal.
+    \end{itemize}
+    \item 2023 Sample Final Exam Question 2 (a) Find the orthogonal projection of the vector $b = (1,2,6)^\top$ onto the plane $x+y+z = 0$ in $\mathbb{R}^3$, where the inner product is the standard scalar product.
+    \begin{itemize}
+        \item The easiest way to do this is to project $b$ onto the one-dimensional orthogonal complement of the plane first, and then subtract that off.
+        \item Note that the equation of the plane is $r \cdot n = 0$, where $r = (x,y,z)^\top$ and $n = (1,1,1)^\top$ is the normal vector. A unit vector in the normal direction is therefore $\hat{n} = \frac{1}{\sqrt{3}} (1,1,1)^\top$, and projecting $b$ onto this gives
+        \[
+        b_\perp = (b \cdot \hat{n})\hat{n} = \frac{9}{\sqrt{3}} \times \frac{1}{\sqrt{3}} (1,1,1)^\top = (3,3,3)^\top
+        \]
+        \item Thus, the orthogonal projection onto the plane is the rest of $b$, which is
+        \[
+        b_{\vert \vert} = b - (b \cdot \hat{n})\hat{n} = (1,2,6)^\top - (3,3,3)^\top = (-2,-1,3)^\top
+        \]
+    \end{itemize}
+    \item 2023 Sample Final Exam Question 2 (b) Let $V$ be the vector space of real polynomials of degree $\le 2$ and define the inner product as follows
+    \[
+    \langle \cdot,\cdot \rangle : V \times V \longrightarrow \mathbb{R}
+    \]
+    \[
+    \langle f,g \rangle \longmapsto \frac{1}{3} \sum_{k \in \{-1,0,1\}} f(k) \cdot g(k)
+    \]
+    Let $U$ be the subspace spanned by $1$ and $x$.
+    \begin{itemize}
+        \item (i) Show that $1$ and $x$ are orthogonal and use this to find an orthonormal basis for $U$.
+        \begin{itemize}
+            \item $\langle 1,x \rangle = \frac{1}{3}(1(-1)+1(0)+1(1))=0$ and so $1$ and $x$ are orthogonal. To get an orthonormal basis, we just need to normalise them. We have:
+            \[
+            \vert \vert 1 \vert \vert^2 = \langle 1,1 \rangle = \frac{1}{3}(1+1+1) = 1
+            \]
+            \[
+            \vert \vert x \vert \vert^2 = \langle x,x \rangle = \frac{1}{3} ((-1)(-1)+(0)(0)+(1)(1)) = \frac{2}{3}
+            \]
+            so $\vert \vert 1 \vert \vert=1$ and $\vert \vert x \vert \vert = \sqrt{\frac{2}{3}}$. Thus an orthonormal basis for $U$ is
+            \[
+            \left\{ 1, \sqrt{\frac{3}{2}}x \right\}.
+            \]
+            \item Note that this set is clearly linearly independent since $1$ and $x$ are not proportional to each other, and it clearly spans $U$ since $U$ contains all polynomials fo the form $a+bx$. Therefore, this set is indeed a basis.
+        \end{itemize}
+        \item (ii) Find a set which serves as an orthonormal basis for $V$ and then prove it is indeed a basis of $V$.
+        \begin{itemize}
+            \item $f \in V$ takes the form $f(x) = ax^2+bx+c$. We want to find $f$ such that it is orthogonal to both $1$ and $x$. Note that
+            \[
+            \langle f,1 \rangle = \frac{1}{3}[(a-b+c) + c + (a+b+c)] = \frac{1}{3}(2a+3c)
+            \]
+            \[
+            \langle f,x \rangle = \frac{1}{3} [-(a-b+c)+0\cdot c + (a+b+c)] = \frac{2b}{3}
+            \]
+            \item For both of the above to be zero, we need $b=0$ and $a=\frac{-3c}{2}$.
+            \item Thus, vectors orthogonal to both $1$ and $x$ take the form
+            \[
+            f(x) = -c\left(\frac{3}{2}x^2 - 1\right).
+            \]
+            \item We need this to be normalised, which determines $c$. Note that
+            \[
+            \vert \vert f \vert \vert^2 = \langle f,f \rangle = \frac{c^2}{3} \left( \frac{1}{2}\cdot\frac{1}{2} + (-1)(-1) + \frac{1}{2}\cdot\frac{1}{2} \right) = \frac{c^2}{2}
+            \]
+            So
+            \[
+            \vert \vert f \vert \vert = 1 \Longrightarrow c^2 = 2 \Longleftrightarrow c = \pm\sqrt{2}
+            \]
+            \item Picking $c=-\sqrt{2}$ (either choice works), we obtain the orthonormal set
+            \[
+            \left\{ 1, \sqrt{\frac{3}{2}}x, \sqrt{2}\left(\frac{3}{2}x^2-1\right) \right\}.
+            \]
+            \item We just need to check that this is actually a basis. First suppose that
+            \[
+            \lambda_1(1) + \lambda_2\sqrt{\frac{3}{2}} x + \sqrt{2}\lambda_3 \left(\frac{3}{2}x^2 - 1\right) = 0.
+            \]
+            Then, comparing $x$ terms, $\lambda_2 = 0$, comparing $x^2$ terms, $\lambda_3 = 0$, and comparing constant terms, $\lambda_1 = 0$. Thus, our set is linearly independent
+            \item For spanning, let $g(x) = kx^2 + lx + m$ be arbitrary. We want to find $\lambda_i$s such that
+            \[
+            \lambda_1(1) + \lambda_2\sqrt{\frac{3}{2}} x + \sqrt{2}\lambda_3 \left(\frac{3}{2}x^2 - 1\right) = kx^2+lx+m
+            \]
+            Clearly, this can always be solved, with
+            \[
+            \lambda_3 =\frac{\sqrt{2}}{3} k, \quad \lambda_2 = \sqrt{\frac{2}{3}} l, \lambda_1 = m + \frac{2}{3}k
+            \]
+            and so our set spans $V$. Thus, it is an orthonormal basis of $V$.
+        \end{itemize}
+    \end{itemize}
+    \item Bonus Question: Let $(V,\langle\cdot,\cdot\rangle)$ be an inner product space. Is it true that if the vectors $\{v_1,\dots,v_n\} \subset V$ are all non-zero and pairwise orthogonal, then those vectors are also linearly independent?
+    \begin{itemize}
+        \item Yes. Suppose that
+        \[
+        \lambda_1 v_1 + \lambda_2 v_2 + \cdots + \lambda_n v_n =0
+        \]
+        \item Now note that $\forall i$,
+        \begin{flalign*}
+            &\langle \lambda_1 v_1 + \lambda_2 v_2 + \cdots + \lambda_n v_n, v_i \rangle = \langle 0,v_i \rangle = 0 \\
+            \Rightarrow &\lambda_1 \langle v_1,v_i \rangle + \lambda_2 \langle v_2,v_i \rangle + \cdots + \lambda_n \langle v_n,v_i \rangle = 0 \\
+            \Rightarrow &\lambda_i \vert \vert v_i \vert \vert^2 = 0 \\
+            \Rightarrow &\lambda_i = 0
+        \end{flalign*}
+        since $\langle v_i,v_j\rangle \neq 0 \Longleftrightarrow i=j$. Hence the vectors are linearly independent.
+    \end{itemize}
+    \item 2023 Sample Final Exam Question 2 (c) Consider a finite dimensional vector space $V$ over a field $\mathbb{F}$ with subspaces $U$ and $W$.
+    \begin{itemize}
+        \item (i) What is meant by the sum $U+W$ of $U$ and $W$?
+        \[
+        U+W = \{ u+w : u \in U \text{ and } w \in W \}.
+        \]
+        \item (ii) Show that $U+W = span(U \cup W)$. When is $U+W = U \cup W$? Justify your answer.
+        \begin{itemize}
+            \item First suppose that $v \in U+W$. Then $\exists u \in U$ and $\exists w \in W$ such that $v=u+w$. Since $u,w \in U \cup W$, we find that $v \in span(U \cup W)$ and so conclude that
+            \[
+            U+W \subseteq span(U \cup W).
+            \]
+            \item Now suppose that $v \in span(U \cup W)$. Then $\exists \lambda_1,\dots,\lambda_n \in \mathbb{F}$, $\exists \mu_1,\dots,\mu_m \in \mathbb{F}$ and $\exists u_1,\dots,u_n \in U$, $\exists w_1,\dots,w_m \in W$ such that
+            \[
+            v = \sum_{i=1}^n \lambda_i u_i + \sum_{i=1}^m \mu_i w_i
+            \]
+            \item Since $U$ and $W$ are subspaces, they are closed under addition and scalar multiplication. So,
+            \[
+            u = \sum_{i=1}^n \lambda_i u_i \in U \text{ and } w = \sum_{i=1}^m \mu_i w_i \in W.
+            \]
+            \item Thus, $v \in span(U \cup W)$ can be written as $v = u+w$, where $u \in U$ and $w \in W$. In other words, $v \in U+W$ and so $span(U \cup W) \subseteq U+W$.
+            \item Note that $U+W = U \cup W \Longleftrightarrow span(U \cup W) = U \cup W$.
+            \item We will now show that this can happen if any only if $U \subseteq W$ or $W \subseteq U$.
+            \item If $U \subseteq W$, then $U \cup W = W$. Furthermore, since $W$ is a vector space, $span(W)=W$. Therefore,
+            \[
+            U \subseteq W \Rightarrow span(U \cup W) = U \cup W \Rightarrow U+W = U \cup W.
+            \]
+            \item Similarly, $W \subseteq U$ also implies that $U+W = U \cup W$.
+            \item For the other direction, we consider the contrapositive. Suppose that $U \nsubseteq W$ and $W \nsubseteq U$. Then $\exists u \in U$ and $\exists w \in W$ such that $u \notin W$ and $w \notin U$.
+            \item Then, since $U$ and $W$ are closed under addition, it must be that $u+w \notin U$ and $u+w \notin W$. Hence $u+w \notin U \cup W$.
+            \item However, $u+w \in U + W$ and so under these assuptions, $U+W \neq span(U \cup W)$.
+            \item Thus, conversely, $U+W = U \cup W$ implies that $U \subseteq W$ or $W \subseteq U$.
+            \item This completes the proof of both directions.
+        \end{itemize}
     \end{itemize}
 \end{itemize}
 
@@ -4001,6 +4515,20 @@
             (a^*,b^*) &= \left( \frac{\alpha I}{p_a}, \frac{\beta I}{p_b} \right)
         \end{flalign*}
     \end{itemize}
+    \item Show that
+    \[
+    \frac{p_a a^*}{p_b b^*} = \frac{\alpha}{\beta}.
+    \]
+    \begin{itemize}
+        \item Using the optimal quantities:
+        \[
+        (a^*,b^*) = \left( \frac{\alpha I}{p_a}, \frac{\beta I}{p_b} \right)
+        \]
+        we compute the expenditure ratio:
+        \[
+        \frac{p_aa^*}{p_bb^*} = \frac{p_a\frac{\alpha I}{p_a}}{p_b \frac{\beta I}{p_b}} = \frac{\alpha}{\beta}
+        \]
+    \end{itemize}
     \item Suppose the price of good $B$ increases to $kp_b$ with $k>1$. How does the optimal quantity $b$ change?
     \begin{itemize}
         \item Original optimal quantity: $b_1 = \frac{\beta I}{p_b}$
@@ -4016,15 +4544,15 @@
     \]
     be a finite non-empty subset.
     \begin{itemize}
-        \item What does it mean for $\mathcal{S}$ to be a linearly independent set?
+        \item (a) What does it mean for $\mathcal{S}$ to be a linearly independent set?
         \begin{itemize}
             \item $(\forall v_i \in \mathcal{S}) (\exists \lambda_i \in \mathbb{R}) \ \sum_{i=1}^n \lambda_iv_i = \bm{0} \Longleftrightarrow (\forall i \in \{1,\dots,n\}) \lambda_i = 0$
         \end{itemize}
-        \item What does it mean for $\mathcal{S}$ to be a spanning set for $V$?
+        \item (b) What does it mean for $\mathcal{S}$ to be a spanning set for $V$?
         \begin{itemize}
             \item $(v_i : v_i \in \mathcal{S})(\forall v \in V)(\exists \lambda_i \in \mathbb{R}) \ \sum_{i=1}^n \lambda_iv_i = v$
         \end{itemize}
-        \item What does it mean for $\mathcal{S}$ to be a basis for $V$?
+        \item (c) What does it mean for $\mathcal{S}$ to be a basis for $V$?
         \begin{itemize}
             \item $\mathcal{S}$ is a spanning set and a linearly independent set
             \item Equivalently, $\mathcal{S}$ is a minimal spanning set of $V$, or a maximal linearly independent subset of $V$
@@ -4042,7 +4570,7 @@
     \]
     where $\cdot$ is the standard dot product
     \begin{itemize}
-        \item Show that $\phi$ is a linear map
+        \item (a) Show that $\phi$ is a linear map
         \begin{itemize}
             \item Additivity: For all $u,v \in \mathbb{R}^3$:
             \begin{flalign*}
@@ -4058,38 +4586,43 @@
             \end{flalign*}
             \item Therefore, $\phi$ is linear
         \end{itemize}
-        \item Find the matrix of $\phi$ with respect to the standard basis of $\mathbb{R}^3$
+        \item (b) Find the matrix of $\phi$ with respect to the standard basis of $\mathbb{R}^3$
         \begin{itemize}
             \item Let $v = (x,y,z)^T$.
             \begin{flalign*}
-                a \cdot v = \left[ \begin{array}{c}
+                a \cdot v &= \left[ \begin{array}{c}
                 1 \\ 2 \\ 0 
                 \end{array} \right]^T \left[ \begin{array}{ccc}
-                        1 & 0 & 0 \\
-                        0 & 1 & 0 \\
-                        0 & 0 & 1
-                    \end{array}\right]  = \left[ \begin{array}{c}
+                       x \\ y \\ z
+                    \end{array}\right]  = 2y \\
+                (a \cdot v) a &= (x+2y)\left[ \begin{array}{c}
                     1 \\ 2 \\ 0 
-                \end{array} \right]^T \\
-                (a \cdot v) a = \left[ \begin{array}{c}
-                    1 \\ 2 \\ 0 
-                \end{array} \right]^T \left[ \begin{array}{c}
-                    1 \\ 2 \\ 0 
-                \end{array} \right] = 
+                \end{array} \right] =  \left[ \begin{array}{c}
+                    x+2y \\ 2x+4y \\ 0 
+                \end{array} \right] \\
+                \phi(v) &= 5 \left[ \begin{array}{c}
+                    x \\ y \\ z 
+                \end{array} \right] - \left[ \begin{array}{c}
+                    x+2y \\ 2x+4y \\ 0 
+                \end{array} \right] = \left[ \begin{array}{c}
+                    4x-2y \\ -2x+y \\ 5z 
+                \end{array} \right]
             \end{flalign*}
-            \[
-            \phi(v) = 5 \left[ \begin{array}{c}
-                x \\ y \\ z 
-            \end{array} \right]
-            \]
         \end{itemize}
-        \item Hence or otherwise, derive bases for $\text{ker}(\phi)$ and $\text{im}(\phi)$
+        \item (c) Hence or otherwise, derive bases for $\text{ker}(\phi)$ and $\text{im}(\phi)$
         \begin{itemize}
             \item To find $\text{ker}(\phi)$, we solve $A \bm{v} = \bm{0}$ for $\bm{v} = (x,y,z)^T$
             \begin{flalign*}
                 ker(\phi) &= \{ v \in \mathbb{R}^3: \phi(v) = \bm{0} \in \mathbb{R}^3 \} \\
-                Av &= 0 \\
+                Av &= 0
             \end{flalign*}
+            \[
+            \left\{ \begin{array}{r}
+                4x-2y = 0 \\
+                -2x+y = 0 \\
+                5z =0
+            \end{array} \right.
+            \]
             \begin{itemize}
                 \item From the third equation: $z=0$
                 \item The first two equations are equivalent and given $y=2x$
@@ -4139,6 +4672,19 @@
                     \end{array} \right] \right\}
                 \end{flalign*}
                 \item Orthogonal decomposition:
+                \item Since $\phi(v) = 5v - (a \cdot v)a$ and $\vert \vert a \vert \vert^2 = 5$, we can decompose:
+                \[
+                v = v_\perp + v_{\vert \vert}, \text{ where } v_{\vert \vert} = \frac{(a \cdot v)}{\vert \vert a \vert \vert^2} a = \frac{(a \cdot v)}{5} a
+                \]
+                \item Then: $\phi(v) = 5 v_\perp + 5 v_{\vert \vert} - 5v_{\vert \vert} = 5 v_\perp$
+                \item So $\phi$ scales the component orthogonal to $a$ by 5:
+                \[
+                im(\phi) = \{ w \in \mathbb{R}^3 : a \cdot w = 0 \}
+                \]
+                \item Solving $w_1+2w_2=0$ gives $w_1=-2w_2$. A basis is:
+                \[
+                im(\phi) = span \left\{ (-2,1,0)^\top, (0,0,1)^\top \right\}
+                \]
             \end{itemize}
         \end{itemize}
     \end{itemize}
@@ -4149,7 +4695,7 @@
     \end{array} \right]
     \]
     \begin{itemize}
-        \item Show that $\phi$ is surjective
+        \item (a) Show that $\phi$ is surjective
         \begin{itemize}
             \item For $f(x) = a_0 + a_1x + a_2x^2 + a_3x^3 + a_4x^4 \in \mathbb{R}[x]_4$
             \begin{flalign*}
@@ -4170,7 +4716,53 @@
             \end{array} \right]$
             \item Therefore $\phi$ is surjective
         \end{itemize}
-        \item Find a basis for $ker(\phi)$
+        \item (b) Find a basis for $ker(\phi)$
+        \begin{itemize}
+            \item We find all $f$ such that $\phi(f) = (0,0,0)^\top$.
+            \item From $\phi(f) = (a_0,a_1,2a_2)^\top = (0,0,0)^\top$:
+            \[
+            a_0 = 0, a_1 = 0, a_2 = 0.
+            \]
+            \item Thus any $f \in ker(\phi)$ has the form $f(x) = a_3x^3 + a_4x^4$.
+            \item Therefore:
+            \[
+            ker(\phi) = span\{x^3,x^4\}
+            \]
+            \item Since $dim\mathbb{R}[x]_4 = 5$ and $rank(\phi)-3$, we have $dim \ ker(\phi)=2$, confirming our result.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\section{Tutorial 10 (11/12/2025)}
+\begin{itemize}
+    \item Exercise 7.4. Find the equations of the tangent plane and the normal line to the graph of the specified function at the specified point.
+    \begin{itemize}
+        \item (a) $f(x,y) = x^2-y^2$ at $(-2,1)$
+        \begin{itemize}
+            \item Let $z=f(x,y)$. Then, the graph of $f$ can be written as $F(x,y,z)=0$, where $F(x,y,z) = f(x,y)-z$. Note that $f(-2,1)=3$.
+            \item The gradient of $F$ is $\nabla F(x,y,z) = (2x,-2y,-1)$, which is $(-4,-2,-1)$ at $(x,y,z)=(-2,1,3)$. This is normal to the graph of $f$.
+            \item So, the normal line is
+            \[
+            r = (-2,1,3) + \lambda(-4,-2,-1).
+            \]
+            \item The tangent plane is then
+            \[
+            4x+2y+z = (-2,1,3)^\top \cdot (4,2,1)^\top = -3.
+            \]
+        \end{itemize}
+        \item $f(x,y)=e^{xy}$ at $(2,0)$.
+        \begin{itemize}
+            \item Again, define $F(x,y,z) = f(x,y) - z$. The graph is then $F(x,y,z)=0$. Note that $f(2,0)=1$.
+            \item This time, $\nabla F = (ye^{xy},xe^{xy},-1)$ is the normal direction. So, at $(2,0,1)$, the normal direction is $(0,2,-1)$.
+            \item So, the normal line is
+            \[
+            r = (2,0,1) + \lambda(0,2,-1).
+            \]
+            \item The tangent plane is then
+            \[
+            2y-z = (2,0,1)^\top \cdot (0,2,-1)^\top = -1.
+            \]
+        \end{itemize}
     \end{itemize}
 \end{itemize}
 
