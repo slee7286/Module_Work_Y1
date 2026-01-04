@@ -1,0 +1,1511 @@
+\documentclass{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mdframed}
+\usepackage{bm}
+
+\usepackage{fancyhdr}
+
+\setlength{\parindent}{0pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\headrulewidth}{0pt}
+
+\fancypagestyle{firstpage}{
+  \fancyfoot[C]{%
+    \raisebox{8ex}[0pt][0pt]{%
+      \footnotesize
+      \begin{tabular}{c}
+        BSc Examinations 2025/2026: Mathematics Foundations BUSI40001 \\
+        Author: Siheon Lee \\[1em]
+        © Imperial College London 2025/2026 \\[2.6em]
+        Page \thepage\ of 20
+      \end{tabular}
+    }
+  }
+}
+
+\fancypagestyle{normal}{
+  \fancyhf{} % clear header and footer
+  \fancyfoot[C]{%
+      \footnotesize
+      Page \thepage\ of 20
+  }
+}
+
+\pagestyle{normal}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+\begin{figure}
+    \includegraphics[width=0.3\linewidth]{Imperial Business School Logo.png}
+    \label{fig:placeholder}
+\end{figure}
+Student-created mock exam (\textbf{NOT OFFICIAL}) \\
+For internal students of Imperial College. \\
+Mathematics Foundations (BUSI40001) \\
+\textbf{3 hours} \\
+{\large \textbf{Saturday 3rd January 2026, 14:00 – 17:00}} \\ \\ \\
+\textbf{Instructions for the exam}
+
+\begin{itemize}
+    \item Section A is closed-book and paper-based.
+    \item For Section B, internet access with ChatGPT is allowed and a computer with R or Python is needed.
+    \item Answer ALL questions (The mark breakdown is indicated throughout the exam).
+    \item It is important to write neatly and clearly.
+    \item If a question or part of a question is unclear to you, state any assumptions you need in order to complete the question.
+\end{itemize}
+
+
+\newpage
+\section*{SECTION A}
+You have 2 hours 15 minutes for Section A. Answer all \textbf{FOUR} questions. \\
+
+\textbf{Question 1 (25 marks)}
+
+\begin{enumerate}[label=(\alph*)]
+    \item Consider the so-called harmonic series
+    \[
+    \sum_{n=1}^\infty \frac{1}{n}
+    \]
+    and show that it does not converge. [2 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+    
+    Group terms:
+    \[
+    \sum_{n=1}^\infty \frac{1}{n}
+    = 1 + \frac12
+    + \Bigl(\frac13 + \frac14\Bigr)
+    + \Bigl(\frac15 + \frac16 + \frac17 + \frac18\Bigr)
+    + \Bigl(\frac19 + \cdots + \frac1{16}\Bigr) + \cdots
+    \]
+    On each block we lower–bound the terms.
+    
+    \begin{itemize}
+      \item For $\frac13+\frac14$, each term is $\ge \frac14$, so
+      \[
+      \frac13 + \frac14 > \frac14 + \frac14 = \frac12.
+      \]
+      \item For $\frac15+\frac16+\frac17+\frac18$, each term is $\ge \frac18$, so
+      \[
+      \frac15+\frac16+\frac17+\frac18 > 4\cdot\frac18 = \frac12.
+      \]
+      \item From $1/9$ to $1/16$ there are $8$ terms, each $\ge 1/16$, so the sum is $>8\cdot\frac1{16}=\frac12$.
+    \end{itemize}
+    
+    In general, in the block
+    \[
+    \sum_{k=2^m+1}^{2^{m+1}} \frac{1}{k}
+    \]
+    there are $2^m$ terms, each at least $\frac{1}{2^{m+1}}$, so the block sum exceeds $\frac{2^m}{2^{m
+    +1}} = \frac{1}{2}$.
+    
+    Hence, after the first two terms,
+    \[
+    \sum_{n=1}^\infty \frac{1}{n}
+    > 1 + \frac12 + \sum_{m=1}^\infty \frac12 = \infty,
+    \]
+    so the series diverges.
+    \end{mdframed}
+
+    \item Consider the sequence \((x_n)\) defined recursively by  
+    \[
+    x_1 = 3, \quad x_{n+1} = \frac{1}{3}\left(2x_n + \frac{5}{x_n^2}\right).
+    \]
+    Show that $x_n > 0$ for all $n$, and then use this to prove that $x_n - x_{n+1} \ge 0$. Conclude that $\lim x_n = \sqrt[3]{5}$.
+    You may use the Algebraic Limit Theorem without proof. [10 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+    
+    \textbf{Step 1: Positivity $x_n>0$ (2 marks).}
+    We use induction.
+    
+    Base case: $x_1=3>0$. \hfill (0.5)
+    
+    Induction step: Assume $x_n>0$. Then $x_n^2>0$ and $5/x_n^2>0$, so
+    \[
+    2x_n + \frac{5}{x_n^2} > 0
+    \quad\Rightarrow\quad
+    x_{n+1} = \frac13\left(2x_n + \frac{5}{x_n^2}\right) > 0.
+    \]
+    Thus $x_n>0$ for all $n$. \hfill (1.5)
+    
+    \medskip
+    \textbf{Step 2: Show $x_n-x_{n+1}\ge0$ (4 marks).}
+    
+    Compute
+    \[
+    \begin{aligned}
+    x_n - x_{n+1}
+    &= x_n - \frac13\left(2x_n + \frac{5}{x_n^2}\right) \\
+    &= \frac13\left(3x_n - 2x_n - \frac{5}{x_n^2}\right) \\
+    &= \frac13\left(x_n - \frac{5}{x_n^2}\right)
+     = \frac13\cdot\frac{x_n^3-5}{x_n^2}.
+    \end{aligned}
+    \]
+    Since $x_n^2>0$, we have
+    \[
+    x_n - x_{n+1} \ge 0
+    \quad\Longleftrightarrow\quad
+    x_n^3-5 \ge 0
+    \quad\Longleftrightarrow\quad
+    x_n^3 \ge 5.
+    \]
+    
+    So it suffices to show $x_n^3\ge5$ for all $n$ (equivalently $x_n\ge\sqrt[3]{5}$ for all $n$).
+    
+    One acceptable route (any logically complete version gets full marks):
+    
+    \begin{itemize}
+      \item Base: $x_1 = 3 > \sqrt[3]{5}$, so $x_1^3\ge 5$.
+      \item Induction step: Assume $x_n\ge\sqrt[3]{5}$. Note that the function
+      \[
+      f(t) = \frac13\left(2t + \frac{5}{t^2}\right)
+      \]
+      is decreasing on $(0,\infty)$ for $t\ge\sqrt[3]{5}$ and has local minima at $t=\sqrt[3]{5}$ (see below). Thus $x_{n+1}=f(x_n)\ge f(\sqrt[3]{5}) = \sqrt[3]{5}$.
+    \end{itemize}
+
+    Proof that $f(t)$ has critical point at $\sqrt[5]{3}$: $f'(t) = \frac{2}{3} - \frac{10}{3}t^{-3}=0 \Rightarrow t = \sqrt[3]{5}$.
+    
+    Proof that $\sqrt[5]{3}$ is a local minima: $f''(t) = 10t^{-4}, \quad f''(\sqrt[3]{5}) = \frac{10}{5^{\frac{4}{3}}} > 0$.
+    
+    Therefore $x_n\ge\sqrt[3]{5}$ for all $n$, and hence $x_n^3\ge 5$ so $x_n-x_{n+1}\ge0$ for all $n$. Thus $(x_n)$ is monotone decreasing.  
+    
+    Marks: 2 for the difference formula, 2 for a correct argument that $x_n^3\ge5$ for all $n$.
+    
+    \medskip
+    \textbf{Step 3: Boundedness and existence of the limit (2 marks).}
+    
+    From Step 1, $x_n>0$ and from Step 2 we have $x_n\ge\sqrt[3]{5}$ for all $n$, and $(x_n)$ is decreasing. So $(x_n)$ is bounded below and monotone decreasing, hence convergent by the Monotone Convergence Theorem. Let
+    \[
+    \lim_{n\to\infty} x_n = L.
+    \]
+    \hfill (2)
+    
+    \medskip
+    \textbf{Step 4: Identify the limit (2 marks).}
+    
+    Take limits in the recursion and use the algebra of limits:
+    \[
+    L = \frac13\left(2L + \frac{5}{L^2}\right).
+    \]
+    Multiply by 3:
+    \[
+    3L = 2L + \frac{5}{L^2}
+    \quad\Rightarrow\quad
+    L = \frac{5}{L^2}
+    \quad\Rightarrow\quad
+    L^3 = 5.
+    \]
+    Since $x_n>0$ for all $n$, the limit must be the positive root, so
+    \[
+    \lim_{n\to\infty} x_n = \sqrt[3]{5}.
+    \]
+    
+    \textbf{Marking scheme (10):}
+    \begin{itemize}
+      \item 2 marks: proof that $x_n>0$ for all $n$ (induction).
+      \item 2 marks: correct computation $x_n-x_{n+1} = \frac13\frac{x_n^3-5}{x_n^2}$.
+      \item 2 marks: justification that $x_n^3\ge5$ (or $x_n\ge\sqrt[3]{5}$) for all $n$.
+      \item 2 marks: monotone decreasing and bounded below $\Rightarrow$ convergence.
+      \item 2 marks: limit equation, solve $L^3=5$ and choose positive root.
+    \end{itemize}
+    \end{mdframed}
+
+    \item The limit superior $(a_n)$, or $\limsup a_n$ is defined by
+    \[
+    \limsup a_n = \lim y_n
+    \]
+    where $y_n = \sup \{ a_k : k \ge n \}$. Similarly, The limit inferior $(a_n)$, or $\liminf a_n$ is defined by
+    \[
+    \liminf a_n = \lim z_n
+    \]
+    where $z_n = \inf \{ a_k : k \ge n \}$.
+    
+    Show that $\liminf a_n = \limsup a_n$ if and only if $\lim a_n$ exists. In this case, all three share the same value. [8 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+    
+    \textbf{Direction 1: If $\lim a_n$ exists then $\liminf a_n = \limsup a_n = \lim a_n$ (4 marks).}
+
+    Assume $\lim a_n = L$.
+    
+    Letting $y_n = \sup \{ a_k : k \ge n \}$ as usual, I claim that $(\forall n \ge N) \ \vert y_n - a \vert \le \frac{\epsilon}{2}$
+    
+    Suppose for contradiction that my claim is false. That is, suppose
+    \[
+    (\exists n \ge N) \ \vert y_n - a \vert > \frac{\epsilon}{2} \Longleftrightarrow a + \frac{\epsilon}{2} < y_n < a - \frac{\epsilon}{2}
+    \]
+    
+    This implies that $y_n > a + \frac{\epsilon}{2}$. Note that the other possibility $y_n < a - \frac{\epsilon}{2}$ is not possible since $(\forall n \in \mathbb{N}) y_n \ge a_n$.
+    
+    But since $y_n$ is the supremum, $\exists k \ge n$ such that $a_k \ge a + \frac{\epsilon}{2}$ (otherwise $a + \frac{\epsilon}{2}$ would be a smaller upper bound).
+    
+    But this implies that $\vert a_k - a \vert \ge \frac{\epsilon}{2}$ for some $k \ge n \ge N$, which contradicts how $N$ was previously defined.
+    
+    Thus, the original claim that $(\forall n \ge N) \ \vert y_n - a \vert \le \frac{\epsilon}{2}$ must be true.
+    Since
+    \[
+    (\forall \epsilon > 0)(\exists N \in \mathbb{N})(\forall n \ge N) \ \vert y_n - a \vert \le \frac{\epsilon}{2} < \epsilon
+    \]
+    we can now conclude that $y_n \rightarrow a$.
+
+    By using very similar arguments, we can also show that $\liminf a_n = a$.
+    
+    \medskip
+    \textbf{Direction 2: If $\liminf a_n = \limsup a_n$ then $\lim a_n$ exists and equals them (4 marks).}
+    
+    Assume $\limsup a_n$ and $\liminf a_n$ exist and
+    \[
+    \limsup a_n = \liminf a_n = L.
+    \]
+    So $y_n\to L$ and $z_n\to L$.
+    
+    For all $n$ we have
+    \[
+    z_n = \inf\{a_k : k \ge n\} \le a_n \le \sup \{a_k : k \ge n\} = y_n.
+    \]
+    
+    We conclude using the Sequence Squeeze Theorem that since $(\forall n \in \mathbb{N}) \ z_n \le a_n \le y_n$ and $y_n \rightarrow L$ and $z_n \rightarrow L$, $a_n \rightarrow L$ as well.
+    
+    \medskip
+    \textbf{Marking scheme (8):}
+    \begin{itemize}
+      \item 4 marks: ``$\lim a_n$ exists $\Rightarrow$ $\limsup=\liminf=\lim a_n$'' with correct $\varepsilon$ argument for $y_n,z_n$.
+      \item 4 marks: converse direction using $z_n\le a_n\le y_n$ and convergence of $y_n,z_n$ to deduce $a_n\to L$ using the Sequence Squeeze Theorem.
+    \end{itemize}
+    \end{mdframed}
+    
+    \item Let \((a_n)\) be a bounded sequence defined by  
+    \[
+    a_n = \cos\left(\frac{n\pi}{4}\right) + \frac{(-1)^n}{n}.
+    \]
+    Prove or disprove that \((a_n)\) converges. [5 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+    
+    We use the identity that the limit of a sequence converges if and only if all the limits of the subsequence converge to the same limit. In symbols:
+    \[
+    a_n \rightarrow a \Longleftrightarrow (\text{for every subsequence } a_{n_k}) \ a_{n_k} \rightarrow a
+    \]
+    
+    Examine $\cos\left(\frac{n\pi}{4}\right)$. The values of $\cos\left(\frac{n\pi}{4}\right)$ are periodic:
+    \[
+    \cos\left(\frac{n\pi}{4}\right) = 1,\ \frac{\sqrt2}{2},\ 0,\ -\frac{\sqrt2}{2},\ -1,\ -\frac{\sqrt2}{2},\ 0,\ \frac{\sqrt2}{2},\ 1,\dots
+    \]
+    In particular, let us form the subsequences:
+    \[
+    n_k := 8k, \quad a_{8k} = \cos(8k\cdot \tfrac{\pi}{4}) + \frac{(-1)^{8k}}{8k} = \cos(2k\pi) + \frac{1}{8k} = 1 + \frac{1}{8k},
+    \]
+    and
+    \[
+    n_k := 8k+4, \quad a_{8k+4} = \cos\big((8k+4)\tfrac{\pi}{4}\big) + \frac{(-1)^{8k+4}}{8k+4} = \cos(\pi+2k\pi) + \frac{1}{8k+4} = \frac{1}{8k+4} -1.
+    \]
+    Taking the limit of both subsequences, we find:
+    \[
+    \lim a_{8k} = \lim \frac{1}{8k} + 1 = 1
+    \]
+    and
+    \[
+    \lim a_{8k+4} = \lim \frac{1}{8k+4} -1 = -1.
+    \]
+    Thus $(a_n)$ has subsequences converging to $1$ and to $-1$ and so does not converge. (2 marks)
+    
+    \textbf{Marking scheme (5):}
+    \begin{itemize}
+      \item 3 marks: show $\cos(n\pi/4)$ is non-convergent (e.g.\ by giving subsequences with limits $1$ and $-1$).
+      \item 2 marks: deduce non-convergence of $(a_n)$ via subsequences.
+    \end{itemize}
+    \end{mdframed}
+    
+\end{enumerate}
+
+\bigskip
+
+%---------------- Question 2 ----------------
+
+\textbf{Question 2 (20 marks)}
+\begin{enumerate}[label=(\alph*)]
+
+    \item Let
+    \[
+    U = \{ (x,y,z) \in \mathbb{R}^3 \mid x+y+z = 0 \}, \quad V = \{(x,y,z) \in \mathbb{R}^3 \mid x-y = 0 \}.
+    \]
+    Find a basis for $U \cap V$. [5 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+    
+    We need all $(x,y,z)\in\mathbb{R}^3$ that satisfy \emph{both}
+    \[
+    x+y+z=0,
+    \qquad
+    x-y=0.
+    \]
+    
+    From $x-y=0$ we get $x=y$. Substituting into $x+y+z=0$:
+    \[
+    x + x + z = 0 \quad\Rightarrow\quad 2x + z = 0 \quad\Rightarrow\quad z = -2x.
+    \]
+    
+    So every vector in $U\cap V$ has the form
+    \[
+    (x,x,-2x) = x(1,1,-2), \quad x\in\mathbb{R}.
+    \]
+    
+    Thus
+    \[
+    U\cap V = \{\,x(1,1,-2): x\in\mathbb{R}\,\},
+    \]
+    and a basis is, for example,
+    \[
+    \{(1,1,-2)\}.
+    \]
+    
+    \textbf{Marks (5):}
+    \begin{itemize}
+      \item 2 marks: correctly sets up and solves the system $x-y=0$, $x+y+z=0$ to obtain $(x,x,-2x)$ or equivalent parametric description.
+      \item 2 marks: identifies the intersection as $\{x(1,1,-2):x\in\mathbb{R}\}$ (or an equivalent one‑dimensional subspace).
+      \item 1 mark: explicitly states a basis, e.g.\ $\{(1,1,-2)\}$.
+    \end{itemize}
+    \end{mdframed}
+    
+    \item State the dimension (number of vectors in basis) of $U \cap V$. [2 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+
+    From part (a), a basis for $U\cap V$ is $\{(1,1,-2)\}$, which consists of a single nonzero vector. Therefore
+    \[
+    \dim(U\cap V) = 1.
+    \]
+    
+    \textbf{Marks (2):}
+    \begin{itemize}
+      \item 2 marks: correctly identifies that there is exactly one basis vector, hence the dimension is $1$.
+    \end{itemize}
+    \end{mdframed}
+    
+    \item Find a basis for $U+V$. [8 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+
+    We have
+    \[
+    U = \{(x,y,z)\in\mathbb{R}^3 : x+y+z=0\},
+    \qquad
+    V = \{(x,y,z)\in\mathbb{R}^3 : x=y\}.
+    \]
+    
+    \textbf{Step 1: Find bases for $U$ and $V$.}
+    
+    For $U$: Equation $x+y+z=0$ gives $z=-x-y$, so any vector in $U$ can be written as
+    \[
+    (x,y,z) = (x,y,-x-y) = x(1,0,-1) + y(0,1,-1).
+    \]
+    Thus one basis for $U$ is
+    \[
+    B_U = \{(1,0,-1),(0,1,-1)\}.
+    \]
+    
+    For $V$: Equation $x-y=0$ gives $x=y$. So any vector in $V$ has the form
+    \[
+    (x,y,z) = (t,t,s) = t(1,1,0) + s(0,0,1),
+    \]
+    and a basis is
+    \[
+    B_V = \{(1,1,0),(0,0,1)\}.
+    \]
+    
+    \textbf{Step 2: Find a spanning set for $U+V$.}
+    
+    By definition,
+    \[
+    U+V = \{u+v : u\in U,\ v\in V\},
+    \]
+    and hence $U+V$ is spanned by all vectors in $B_U\cup B_V$:
+    \[
+    S = \{(1,0,-1),(0,1,-1),(1,1,0),(0,0,1)\}.
+    \]
+    
+    \textbf{Step 3: Extract a basis (remove linear dependence).}
+    
+    We test for linear independence. Note first that
+    \[
+    (1,1,0) = (1,0,-1) + (0,1,-1) + 2(0,0,1),
+    \]
+    since
+    \[
+    (1,0,-1) + (0,1,-1) + 2(0,0,1) = (1,1,-2+2) = (1,1,0).
+    \]
+    Therefore $(1,1,0)$ is a linear combination of the other three vectors in $S$, so it is not needed in a basis.
+    
+    Now check that the remaining three vectors
+    \[
+    (1,0,-1),\quad (0,1,-1),\quad (0,0,1)
+    \]
+    are linearly independent. Suppose
+    \[
+    \alpha(1,0,-1) + \beta(0,1,-1) + \gamma(0,0,1) = (0,0,0).
+    \]
+    Writing out coordinates:
+    \[
+    (\alpha, \beta, -\alpha-\beta+\gamma) = (0,0,0).
+    \]
+    Hence $\alpha=0$, $\beta=0$ and then $-\alpha-\beta+\gamma = \gamma = 0$, so $\gamma=0$. Therefore only the trivial combination gives zero, so they are linearly independent.
+    
+    Thus a basis for $U+V$ is
+    \[
+    \{(1,0,-1),(0,1,-1),(0,0,1)\}.
+    \]
+    
+    \textbf{Marks (8):}
+    \begin{itemize}
+      \item 2 marks: correct basis for $U$, e.g.\ $\{(1,0,-1),(0,1,-1)\}$, with justification.
+      \item 2 marks: correct basis for $V$, e.g.\ $\{(1,1,0),(0,0,1)\}$, with justification.
+      \item 3 mark: form $S = B_U\cup B_V$ and observe redundancy (e.g.\ express $(1,1,0)$ as combination of the others).
+      \item 1 mark: state a correct basis for $U+V$, e.g.\ $\{(1,0,-1),(0,1,-1),(0,0,1)\}$, and note linear independence.
+    \end{itemize}
+    \end{mdframed}
+    
+    \item Determine whether $U+V = \mathbb{R}^3$. [4 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+
+    From part (c), a basis for $U+V$ has three linearly independent vectors:
+    \[
+    \{(1,0,-1),(0,1,-1),(0,0,1)\}.
+    \]
+    Hence
+    \[
+    \dim(U+V) = 3.
+    \]
+    
+    Since $U+V$ is a subspace of $\mathbb{R}^3$ and has dimension $3$, it spans all directions in $\mathbb{R}^3$. Hence,it must equal $\mathbb{R}^3$. Therefore
+    \[
+    U+V = \mathbb{R}^3.
+    \]
+    Remark: this means that $\{(1,0,0),(0,1,0),(0,0,1)\}$ is another basis for $U+V$
+
+    Another way to show this is to show that a linear combination of the basis forms a surjective map onto $\mathbb{R}^3$.
+    
+    \textbf{Marks (4):}
+    \begin{itemize}
+      \item 2 marks: correctly computes or states that $\dim(U+V)=3$ based on the basis from (c).
+      \item 2 marks: correct conclusion that any $3$‑dimensional subspace of $\mathbb{R}^3$ is all of $\mathbb{R}^3$, so $U+V=\mathbb{R}^3$.
+    \end{itemize}
+    \end{mdframed}
+    
+\end{enumerate}
+
+\bigskip
+
+%---------------- Question 2 ----------------
+
+\textbf{Question 3 (20 marks)}
+\begin{enumerate}[label=(\alph*)]
+    \item Let $V$ be the vector space of all real-valued continuous functions on $\mathbb{R}$ of the form
+    \[
+    f(x) = acos(x) + bsin(x) + c,
+    \]
+    where $a,b,c \in \mathbb{R}$.
+
+    Define a mapping $T : V \rightarrow \mathbb{R}^3$ by
+    \[
+    T(f) = \left[ \begin{array}{c}
+        f(0) \\ f\left(\frac{\pi}{2}\right) \\ f(\pi)
+    \end{array}\right]
+    \]
+    Prove that $T$ is a linear map. [5 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+
+    To show $T$ is linear, we must prove:
+    \[
+    T(f+g) = T(f) + T(g), \qquad
+    T(\alpha f) = \alpha\,T(f)
+    \]
+    for all $f,g\in V$ and all $\alpha\in\mathbb{R}$. This is known as additivity and homogeneity, respectively.
+    
+    Let $f,g\in V$. Then for each $x$,
+    \[
+    (f+g)(x) = f(x)+g(x).
+    \]
+    Hence
+    \begin{flalign*}
+        T(f+g) &= \begin{bmatrix}
+        (f+g)(0) \\[0.2em]
+        (f+g)\!\left(\dfrac{\pi}{2}\right) \\[0.2em]
+        (f+g)(\pi)
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+        f(0)+g(0) \\[0.2em]
+        f\!\left(\dfrac{\pi}{2}\right)+g\!\left(\dfrac{\pi}{2}\right) \\[0.2em]
+        f(\pi)+g(\pi)
+        \end{bmatrix} \\
+        &=
+        \begin{bmatrix}
+        f(0) \\[0.2em] f\!\left(\dfrac{\pi}{2}\right) \\[0.2em] f(\pi)
+        \end{bmatrix}
+        +
+        \begin{bmatrix}
+        g(0) \\[0.2em] g\!\left(\dfrac{\pi}{2}\right) \\[0.2em] g(\pi)
+        \end{bmatrix}
+        = T(f)+T(g).
+    \end{flalign*}
+    
+    Similarly, for any $\alpha\in\mathbb{R}$ and $f\in V$,
+    \[
+    (\alpha f)(x) = \alpha f(x),
+    \]
+    so
+    \[
+    T(\alpha f) =
+    \begin{bmatrix}
+    (\alpha f)(0) \\[0.2em]
+    (\alpha f)\!\left(\dfrac{\pi}{2}\right) \\[0.2em]
+    (\alpha f)(\pi)
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+    \alpha f(0) \\[0.2em] \alpha f\!\left(\dfrac{\pi}{2}\right) \\[0.2em] \alpha f(\pi)
+    \end{bmatrix}
+    =
+    \alpha
+    \begin{bmatrix}
+    f(0) \\[0.2em] f\!\left(\dfrac{\pi}{2}\right) \\[0.2em] f(\pi)
+    \end{bmatrix}
+    = \alpha\,T(f).
+    \]
+    
+    Thus $T$ is linear.
+    
+    \textbf{Marks (5):}
+    \begin{itemize}
+      \item 2 marks: correct verification that $T(f+g)=T(f)+T(g)$ using componentwise evaluation.
+      \item 2 marks: correct verification that $T(\alpha f)=\alpha T(f)$.
+      \item 1 mark: clear statement that both properties hold and therefore $T$ is linear.
+    \end{itemize}
+    \end{mdframed}
+    
+    \item Prove that $T$ is bijective. [7 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+
+    \textbf{Solution and marking scheme.}
+
+    We show that $T$ is injective and surjective. First, note that $V$ is the set of all functions
+    \[
+    f(x) = a\cos x + b\sin x + c
+    \]
+    with $(a,b,c)\in\mathbb{R}^3$; thus $\dim V = 3$.
+    
+    \medskip
+    \textbf{Injectivity.}
+    
+    Assume $T(f)=\mathbf{0}$, where $\mathbf{0}=(0,0,0)^{\top}$ in $\mathbb{R}^3$. Writing $f(x)=a\cos x + b\sin x + c$, the condition $T(f)=0$ means
+    \[
+    f(0)=0,\quad f\!\left(\frac{\pi}{2}\right)=0,\quad f(\pi)=0.
+    \]
+    Compute these values:
+    \[
+    f(0) = a\cos0 + b\sin0 + c = a + c = 0,
+    \]
+    \[
+    f\!\left(\frac{\pi}{2}\right) = a\cos\frac{\pi}{2} + b\sin\frac{\pi}{2} + c = b + c = 0,
+    \]
+    \[
+    f(\pi) = a\cos\pi + b\sin\pi + c = -a + c = 0.
+    \]
+    
+    So we have the linear system
+    \[
+    a + c = 0,\quad
+    b + c = 0,\quad
+    -a + c = 0.
+    \]
+    From $a+c=0$ and $-a+c=0$ we get $a+c = -a+c \Rightarrow a=-a \Rightarrow a=0$. Then $c=0$ from $a+c=0$, and $b=0$ from $b+c=0$. Thus $a=b=c=0$, so $f(x)\equiv0$.
+    
+    Hence $\ker T = \{0\}$ and $T$ is injective.
+    
+    \medskip
+    \textbf{Surjectivity.}
+
+    From the previous result, we have
+    \[
+    T(f) = \left[ \begin{array}{c}
+        a+c \\ b+c \\ -a+c
+    \end{array} \right]
+    \]
+    For any $(y_1,y_2,y_3)^\top \in \mathbb{R}^3$, choose:
+    \[
+    a+c = y_1, \quad b+c= y_2, \quad -a+c = y_3
+    \]
+    We need to see if we can pick $a,b,c$ for any vector $\underline{y}$. From the first two equations,
+    \[
+    (a+c)+(-a+c)=2c=y_1+y_3 \Rightarrow c = \frac{y_1+y_3}{2}
+    \]
+    Substituting back to find $a$:
+    \[
+    a = y_1 - c = y_1 - \frac{y_1+y_3}{2} = \frac{y_1-y_3}{2}
+    \]
+    From the second equation:
+    \[
+    b+c = y_2 \Rightarrow b = y_2 - c = y_2 - \frac{y_1+y_3}{2}
+    \]
+    Then $T(f)=(y_1,y_2,y_3)^\top$. In other words, $(\forall \underline{y} \in \mathbb{R}^3)(\exists f \in V) \ T(f) = \underline{y}$.
+    Thus $T$ is surjective.
+    
+    \medskip
+    Therefore $T$ is bijective.
+    
+    \textbf{Marks (7):}
+    \begin{itemize}
+      \item 3 marks: correct computation of $f(0)$, $f(\pi/2)$, $f(\pi)$ and solution of the resulting linear system to show $a=b=c=0$ when $T(f)=0$ (injectivity).
+      \item 3 marks: recognition that $V$ has dimension $3$ (via parameters $a,b,c$) and hence a linear injective map $V\to\mathbb{R}^3$ is automatically surjective (dimension argument).
+      \item 1 marks: clear final statement that $T$ is bijective (injective and surjective).
+    \end{itemize}
+    
+    \end{mdframed}
+    
+    \item Determine whether the following set of vectors in $\mathbb{R}^3$ is linearly independent. 
+    \[
+    \bm{x}_1 = \left[ \begin{array}{c}
+        1 \\ 1 \\ 0
+    \end{array}\right], \quad \bm{x}_2 = \left[ \begin{array}{c}
+        2 \\ 3 \\ 1
+    \end{array}\right], \quad \bm{x}_3 = \left[ \begin{array}{c}
+        3 \\ 4 \\ 1
+    \end{array}\right]
+    \]
+    [2 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+
+    \textbf{Solution and marking scheme.}
+    
+    Consider a linear combination
+    \[
+    \alpha_1\mathbf{x}_1 + \alpha_2\mathbf{x}_2 + \alpha_3\mathbf{x}_3 = \mathbf{0}.
+    \]
+    This means
+    \[
+    \alpha_1
+    \begin{bmatrix}1\\1\\0\end{bmatrix}
+    +
+    \alpha_2
+    \begin{bmatrix}2\\3\\1\end{bmatrix}
+    +
+    \alpha_3
+    \begin{bmatrix}3\\4\\1\end{bmatrix}
+    =
+    \begin{bmatrix}0\\0\\0\end{bmatrix}.
+    \]
+    
+    Equating components, we get
+    \[
+    \begin{cases}
+    \alpha_1 + 2\alpha_2 + 3\alpha_3 = 0,\\
+    \alpha_1 + 3\alpha_2 + 4\alpha_3 = 0,\\
+    0\cdot\alpha_1 + \alpha_2 + \alpha_3 = 0.
+    \end{cases}
+    \]
+    
+    From the third equation: $\alpha_2 + \alpha_3 = 0\Rightarrow \alpha_2 = -\alpha_3$.
+    
+    Substitute into the first two equations:
+    
+    First equation:
+    \[
+    \alpha_1 + 2(-\alpha_3) + 3\alpha_3 = \alpha_1 + \alpha_3 = 0
+    \quad\Rightarrow\quad \alpha_1 = -\alpha_3.
+    \]
+    
+    Second equation:
+    \[
+    \alpha_1 + 3(-\alpha_3) + 4\alpha_3 = \alpha_1 + \alpha_3 = 0,
+    \]
+    which is the same condition.
+    
+    Thus
+    \[
+    \alpha_1 = -\alpha_3,\quad \alpha_2 = -\alpha_3,
+    \]
+    so
+    \[
+    (\alpha_1,\alpha_2,\alpha_3) = (-\alpha_3,-\alpha_3,\alpha_3) = \alpha_3(-1,-1,1).
+    \]
+    There is a nontrivial solution (take e.g.\ $\alpha_3=1$), so the vectors are linearly \emph{dependent}.
+    
+    Equivalently, note directly that
+    \[
+    \mathbf{x}_1 + \mathbf{x}_2 - \mathbf{x}_3 = \mathbf{0},
+    \]
+    so $\mathbf{x}_3 = \mathbf{x}_1+\mathbf{x}_2$ and the set is not linearly independent.
+    
+    \textbf{Marks (2):}
+    \begin{itemize}
+      \item 1 mark: sets up and solves the system, or explicitly finds a nontrivial relation such as $\mathbf{x}_1 + \mathbf{x}_2 - \mathbf{x}_3=0$.
+      \item 1 mark: clearly states the conclusion that the vectors are linearly \emph{dependent}.
+    \end{itemize}
+    
+    \end{mdframed}
+    
+    \item Show that the determinant equals the product of the eigenvalues, i.e.
+    \[
+    det(A) = \prod_{i=1}^n \lambda_i
+    \]
+    (Hint: use the characteristic polynomial of $A$) [6 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+
+    Let $A$ be an $n\times n$ matrix over $\mathbb{R}$ (or $\mathbb{C}$) with eigenvalues $\lambda_1,\dots,\lambda_n$, counted with algebraic multiplicity. The \emph{characteristic polynomial} of $A$ is
+    \[
+    p_A(\lambda) = \det(A - \lambda I_n).
+    \]
+    
+    It is a monic polynomial of degree $n$, and its roots are exactly the eigenvalues of $A$. Hence we can factor
+    \[
+    p_A(t) = \det(A - \lambda I_n) = (\lambda_1 - \lambda)(\lambda_2 - \lambda) \cdots (\lambda_n - \lambda) = \prod_{i=1}^n (\lambda_i - \lambda),
+    \]
+    or equivalently
+    \[
+    p_A(t) = \det(\lambda I_n - A) =  \prod_{i=1}^n (\lambda - \lambda_i),
+    \]
+    depending on the chosen sign convention.
+    
+    Now evaluate the characteristic polynomial at $t=0$:
+    \[
+    p_A(0) = \det(A - 0 \cdot I_n) = \det(A).
+    \]
+    
+    From the factorization, we have
+    \[
+    p_A(0) = \prod_{i=1}^n (\lambda_i - 0)
+           = \prod_{i=1}^n \lambda_i.
+    \]
+    
+    Thus
+    \[
+    \det(A) = p_A(0) = \prod_{i=1}^n \lambda_i,
+    \]
+    which is the desired result.
+    
+    \textbf{Marks (6):}
+    \begin{itemize}
+      \item 2 marks: correctly states or uses that the characteristic polynomial is $p_A(\lambda)=\det(A-\lambda I)$ and its roots are the eigenvalues.
+      \item 2 marks: writes a correct factorization of $p_A(\lambda)$ in terms of the eigenvalues (up to a global sign, which is then handled).
+      \item 1 mark: evaluates $p_A(0)=\det(A)$.
+      \item 1 mark: uses the factorization at $t=0$ to conclude $\det(A)=\prod_{i=1}^n\lambda_i$ and states the result clearly.
+    \end{itemize}
+    \end{mdframed}
+    
+\end{enumerate}
+
+\bigskip
+
+%---------------- Question 2 ----------------
+
+\textbf{Question 4 (15 marks)}
+
+Consider the function $f(x,y)=x^2y$ subject to the constraint $g(x,y) = x^2+y^2-1 = 0$.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Set up the Lagrangian function $\mathcal{L}(x,y,\lambda)$ for this constrained optimization problem. [3 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+
+    For a constraint $g(x,y)=0$, the Lagrangian is
+    \[
+    \mathcal{L}(x,y,\lambda) = f(x,y) + \lambda (0 - g(x,y)) =  f(x,y) -\lambda g(x,y).
+    \]
+    
+    Here $f(x,y)=x^2y$ and $g(x,y)=x^2+y^2-1$. Thus
+    \[
+    \mathcal{L}(x,y,\lambda)
+    = x^2y - \lambda(x^2 + y^2 - 1).
+    \]
+    
+    \textbf{Marks (3):}
+    \begin{itemize}
+      \item 1 mark: correct general idea $\mathcal{L}=f+\lambda(a-g)$ (or $f+\lambda(a-g)$ with consistent sign).
+      \item 1 mark: correctly substitutes $f(x,y)=x^2y$.
+      \item 1 mark: correctly substitutes $g(x,y)=x^2+y^2-1$ and writes $\mathcal{L}(x,y,\lambda)=x^2y-\lambda(x^2+y^2-1)$ (up to an overall sign convention).
+    \end{itemize}
+    \end{mdframed}
+
+    \item Find the critical points by solving the system of equations given by the partial derivatives of the Lagrangian. [4 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+
+    Compute the partial derivatives:
+    \[
+    \frac{\partial\mathcal{L}}{\partial x}
+    = 2xy - \lambda(2x),
+    \quad
+    \frac{\partial\mathcal{L}}{\partial y}
+    = x^2 - \lambda(2y),
+    \quad
+    \frac{\partial\mathcal{L}}{\partial\lambda}
+    = -(x^2 + y^2 -1).
+    \]
+    
+    We must solve
+    \[
+    \frac{\partial\mathcal{L}}{\partial x}=0,\quad
+    \frac{\partial\mathcal{L}}{\partial y}=0,\quad
+    \frac{\partial\mathcal{L}}{\partial\lambda}=0.
+    \]
+    
+    That is
+    \[
+    \begin{cases}
+    2x(y - \lambda) = 0,\\[0.2em]
+    x^2 - 2\lambda y = 0,\\[0.2em]
+    x^2 + y^2 - 1 = 0.
+    \end{cases}
+    \]
+    
+    We consider cases.
+    
+    \textbf{Case 1:} $x=0$.
+    
+    Then the constraint gives
+    \[
+    0^2 + y^2 -1 = 0 \Rightarrow y^2=1 \Rightarrow y = \pm 1.
+    \]
+    From $x^2 - 2\lambda y = 0$ we get $0 - 2\lambda y=0 \Rightarrow \lambda y = 0$. Since $y\neq 0$, we have $\lambda=0$.
+    
+    Thus two critical points:
+    \[
+    (0,1),\ \lambda=0; \qquad (0,-1),\ \lambda=0.
+    \]
+    
+    \textbf{Case 2:} $x\neq 0$.
+    
+    Then from $2x(y-\lambda)=0$ we must have $y=\lambda$. Substitute into $x^2 - 2\lambda y=0$:
+    \[
+    x^2 - 2\lambda y = x^2 - 2y^2 = 0
+    \quad\Rightarrow\quad
+    x^2 = 2y^2.
+    \]
+    Using the constraint $x^2 + y^2 = 1$:
+    \[
+    2y^2 + y^2 = 1 \Rightarrow 3y^2 = 1 \Rightarrow y^2 = \frac13.
+    \]
+    So $y = \pm\frac{1}{\sqrt{3}}$ and then
+    \[
+    x^2 = 2y^2 = \frac{2}{3} \Rightarrow x = \pm\sqrt{\frac{2}{3}}.
+    \]
+    
+    Also $y=\lambda$, so $\lambda = \pm\frac{1}{\sqrt{3}}$ with the same sign as $y$.
+    
+    Therefore, four more critical points:
+    \[
+    \left(\sqrt{\frac{2}{3}},\ \frac{1}{\sqrt{3}}\right),\quad
+    \left(-\sqrt{\frac{2}{3}},\ \frac{1}{\sqrt{3}}\right),\quad
+    \left(\sqrt{\frac{2}{3}},\ -\frac{1}{\sqrt{3}}\right),\quad
+    \left(-\sqrt{\frac{2}{3}},\ -\frac{1}{\sqrt{3}}\right).
+    \]
+    
+    \textbf{Marks (4):}
+    \begin{itemize}
+      \item 1 mark: correct partial derivatives.
+      \item 1 mark: sets up the system $2x(y-\lambda)=0$, $x^2-2\lambda y=0$, $x^2+y^2-1=0$.
+      \item 1 mark: correctly handles $x=0$ case and finds $(0,\pm1)$.
+      \item 1 mark: correctly handles $x\neq 0$ case, derives $x^2=2y^2$, $y^2=1/3$, and the four critical points with $x^2=2/3$.
+    \end{itemize}
+    \end{mdframed}
+
+    \item Classify the critical points as local minima, maxima, or saddle points. [4 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+
+    To classify the critical point using first principles, we parameterize the constraint and analyze the behavior of $f$ along it.
+
+    From the constraint $x^2+y^2=1$, we can express $x^2 = 1-y^2$. Substituting this into $f(x,y)=x^2y$:
+    \[
+    f(y) = (1-y^2)y = y - y^3
+    \]
+    To find the critical point, we differentiate with respect to $y$:
+    \[
+    f'(y) = 1-3y^2 = 0 \Rightarrow y = \pm \frac{1}{\sqrt{3}}
+    \]
+    This gives $x = \pm \sqrt{1-y^2} = \pm \sqrt{1 - \left(\pm \frac{1}{\sqrt{3}}\right)^2} = \pm \sqrt{\frac{2}{3}}$, confirming our critical points.
+
+    To classify critical points, we compute the second derivative:
+    \[
+    f''(y) = -6y
+    \]
+
+    At $y= \frac{1}{\sqrt{3}} > 0$,
+    \[
+    f''\left(\frac{1}{\sqrt{3}}\right) = -6 \cdot \frac{1}{\sqrt{3}} = -\frac{6}{\sqrt{3}} < 0
+    \]
+    so $f$ has a local maximum at $y=\frac{1}{\sqrt{3}}$.
+
+    At At $y= -\frac{1}{\sqrt{3}} < 0$,
+    \[
+    f''\left(\frac{1}{\sqrt{3}}\right) = -6 \cdot \left( -\frac{1}{\sqrt{3}}\right) = \frac{6}{\sqrt{3}} > 0
+    \]
+    so $f$ has a local minimum at $y=-\frac{1}{\sqrt{3}}$.
+
+    Therefore, we conclude that 
+    \[
+    \left(\sqrt{\frac{2}{3}},\ \frac{1}{\sqrt{3}}\right),\quad
+    \left(-\sqrt{\frac{2}{3}},\ \frac{1}{\sqrt{3}}\right)
+    \]
+    are local maximums and
+    \[
+    \quad
+    \left(\sqrt{\frac{2}{3}},\ -\frac{1}{\sqrt{3}}\right),\quad
+    \left(-\sqrt{\frac{2}{3}},\ -\frac{1}{\sqrt{3}}\right)
+    \]
+    are local minimums. Finally, at $y=\pm1$, we see that 
+    \[
+    f(\pm1) = (1-(\pm1)^2)(\pm1) = 0
+    \]
+    Nearby $(0,\pm1)$, we see that along the y-axis, $f(x,y)=0$, meaning that the function is flat. For a maxima or minima, you would need all nearby values to lie on one side of $f(x,y)$ (either positive or negative). However, since $f(x,y)=0$ for the y-axis, this makes $(0,\pm1)$ saddle points.
+
+    Accept answers that use the signs of the eigenvalues of the Hessian (more long-winded way).
+    
+    \textbf{Marks (4):}
+    \begin{itemize}
+      \item 2 marks: Correct identification of four critical points at $y = \pm \frac{1}{\sqrt{3}}$ and classification into maxima and minima by second derivative test.
+      \item 1 mark: recognising that the points $(0,\pm1)$ give intermediate values $0$ and hence are saddle points (neither maxima nor minima under the constraint).
+      \item 1 mark: clearly summarising the classification of all critical points.
+    \end{itemize}
+    \end{mdframed}
+
+    \item Verify your result by substituting the critical points into $f(x, y)$ and interpreting the values. [4 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+
+    From parts (b) and (c), the critical points on $x^2+y^2=1$ are
+    \[
+    (0,1),\ (0,-1),\ 
+    \left(\pm\sqrt{\frac{2}{3}},\ \pm\frac{1}{\sqrt{3}}\right).
+    \]
+    
+    Evaluate $f(x,y)=x^2y$:
+    
+    \[
+    f(0,1) = 0,\qquad f(0,-1) = 0,
+    \]
+    \[
+    f\left(\pm\sqrt{\frac{2}{3}}, \frac{1}{\sqrt{3}}\right) = \frac{2}{3\sqrt{3}},
+    \qquad
+    f\left(\pm\sqrt{\frac{2}{3}}, -\frac{1}{\sqrt{3}}\right) = -\frac{2}{3\sqrt{3}}.
+    \]
+    
+    Thus on the unit circle:
+    \begin{itemize}
+      \item the largest value of $f$ is $\displaystyle \frac{2}{3\sqrt{3}}$ (attained at two points);
+      \item the smallest value is $\displaystyle -\frac{2}{3\sqrt{3}}$ (attained at two points);
+      \item $f=0$ is achieved at $(0,\pm1)$ and is strictly between the min and max values.
+    \end{itemize}
+    
+    Hence the direct evaluation confirms:
+    \begin{itemize}
+      \item two global constrained maxima,
+      \item two global constrained minima,
+      \item two saddle points on the constraint.
+    \end{itemize}
+    
+    \textbf{Marks (4):}
+    \begin{itemize}
+      \item 2 marks: correct substitution of \emph{all} critical points into $f$ and correct numerical values.
+      \item 1 mark: clear identification of which values are maximal and which are minimal on the circle.
+      \item 1 mark: explicit statement that this confirms the classification obtained in part (c).
+    \end{itemize}
+    \end{mdframed}
+
+\end{enumerate}
+
+
+\newpage
+\section*{SECTION B}
+You have 45 minutes for Section B. Answer all questions. You must close your laptop after 45 minutes.
+
+\bigskip
+
+\textbf{1.} (20 marks) The weights (in kg) of mothers and their child are recorded in the table below.
+\[
+\begin{array}{c|ccccccc}
+\text{Person} & A & B & C & D & E & F & G\\
+\hline
+\text{mother} & 68 & 75 & 60 & 55 & 80 & 72 & 65\\
+\text{child} & 70 & 78 & 62 & 57 & 85 & 74 & 68
+\end{array}
+\]
+
+This question concerns predicting child's weight given mother's weight.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Write out the linear regression in the matrix form
+    \[
+    \underline{y} = \bm{X}\underline{\beta} + \underline{\varepsilon},
+    \]
+    where $\underline{y}$, $\bm{X}$, $\underline{\beta}$, and $\underline{\varepsilon}$ are to be defined. [2 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+
+    We treat the children's weights as the response and the mothers' weights as the predictor.
+
+    \[
+    \underline{x}
+    =
+    \begin{bmatrix}
+    68 \\ 75 \\ 60 \\ 55 \\ 80 \\ 72 \\ 65
+    \end{bmatrix}
+    \in\mathbb{R}^7
+    \quad\text{(mother weights)},
+    \]
+    
+    \[
+    \underline{y}
+    =
+    \begin{bmatrix}
+    70\\ 78\\ 62\\ 57\\ 85\\ 74\\ 68
+    \end{bmatrix}
+    \in\mathbb{R}^7
+    \quad\text{(child weights)},
+    \]
+    
+    \[
+    \bm{X}
+    =
+    \begin{bmatrix}
+    1 & 68\\
+    1 & 75\\
+    1 & 60\\
+    1 & 55\\
+    1 & 80\\
+    1 & 72\\
+    1 & 65
+    \end{bmatrix}
+    \in\mathbb{R}^{7\times 2}
+    \quad\text{(design matrix with intercept and mother weights)},
+    \]
+    
+    \[
+    \underline{\beta} =
+    \begin{bmatrix}
+    \beta_0\\
+    \beta_1
+    \end{bmatrix}
+    \in\mathbb{R}^2
+    \quad\text{(intercept and slope)},
+    \]
+    
+    \[
+    \underline{\varepsilon} =
+    \begin{bmatrix}
+    \varepsilon_1\\ \vdots\\ \varepsilon_7
+    \end{bmatrix}
+    \in\mathbb{R}^7
+    \quad\text{(error terms)}.
+    \]
+    
+    \textbf{Marks (2):}
+    \begin{itemize}
+      \item 1/2 mark for each vector $\underline{x}, \underline{y}, \bm{X}, \underline{\beta}$
+    \end{itemize}
+    \end{mdframed}
+    
+    \item (b) Show that the expression for $\underline{\beta}$ which minimizes $\underline{\varepsilon}^{\top}\underline{\varepsilon}$ is given by
+    \[
+    \hat{\underline{\beta}} = (\bm{X}^{\top}\bm{X})^{-1} \bm{X}^{\top} \underline{y}.
+    \]
+    [5 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+
+    We define the residuals
+    \[
+    \underline{\varepsilon} = \underline{y} - \bm{X}\underline{\beta}.
+    \]
+    We want to minimize the sum of squared residuals
+    \[
+    S(\underline{\beta}) = \underline{\varepsilon}^{\top}\underline{\varepsilon}
+                          = (\underline{y} - \bm{X}\underline{\beta})^{\top}
+                            (\underline{y} - \bm{X}\underline{\beta}).
+    \]
+    
+    Expand $S$:
+    \begin{flalign*}
+        S(\underline{\beta}) &= (\underline{y}^\top - \underline{\beta}^\top\bm{X}^\top)(\underline{y} - \bm{X}\underline{\beta}) \\
+        &= \underline{y}^\top \underline{y} - \underline{y}^\top \bm{X} \underline{\beta} - \underline{\beta}^\top \bm{X}^\top \underline{y} + \underline{\beta}^\top \bm{X}^\top \bm{X} \underline{\beta} \\
+        &\text{Notice that } \underline{\beta}^\top \bm{X}^\top \underline{y} \text{ is a scalar} \Rightarrow \underline{\beta}^\top \bm{X}^\top \underline{y} = (\underline{\beta}^\top \bm{X}^\top \underline{y})^\top = \underline{y}^\top \bm{X} \underline{\beta} \\
+        &\text{Substitute } \underline{y}^\top \bm{X} \underline{\beta} \text{ for } \underline{\beta}^\top \bm{X}^\top \underline{y}: \\
+        &= \underline{y}^{\top}\underline{y} - 2 \underline{y}^{\top}\bm{X}\underline{\beta} + \underline{\beta}^{\top}\bm{X}^{\top}\bm{X}\underline{\beta}.
+    \end{flalign*}
+    
+    Differentiate w.r.t.\ $\underline{\beta}$ and set to zero:
+    \[
+    \nabla_{\underline{\beta}}S(\underline{\beta})
+    = -2\bm{X}^{\top}\underline{y} + 2\bm{X}^{\top}\bm{X}\underline{\beta}
+    = 0.
+    \]
+    
+    So we obtain the normal equations
+    \[
+    \bm{X}^{\top}\bm{X}\,\underline{\beta} = \bm{X}^{\top}\underline{y}.
+    \]
+    
+    Assuming $\bm{X}^{\top}\bm{X}$ is invertible (which holds here since there are two parameters and the mothers' weights are not all identical), we solve:
+    \[
+    \hat{\underline{\beta}} = (\bm{X}^{\top}\bm{X})^{-1}\bm{X}^{\top}\underline{y}.
+    \]
+    
+    \textbf{Marks (5):}
+    \begin{itemize}
+      \item 1 mark: defines residuals $\underline{\varepsilon} = \underline{y}-\bm{X}\underline{\beta}$.
+      \item 2 marks: expands $S(\underline{\beta}) = (\underline{y}-\bm{X}\underline{\beta})^{\top}(\underline{y}-\bm{X}\underline{\beta})$ and differentiates to obtain $\bm{X}^{\top}\bm{X}\underline{\beta}=\bm{X}^{\top}\underline{y}$.
+      \item 1 mark: states invertibility condition for $\bm{X}^{\top}\bm{X}$ (or implicitly assumes full rank).
+      \item 1 mark: solves to get $\hat{\underline{\beta}} = (\bm{X}^{\top}\bm{X})^{-1}\bm{X}^{\top}\underline{y}$.
+    \end{itemize}
+    \end{mdframed}
+
+    \item Show that the fitted values can be written as
+    \[
+    \hat{\underline{y}} = \bm{H} \underline{y}
+    \]
+    where
+    \[
+    \bm{H} \equiv \bm{X} (\bm{X}^{\top} \bm{X})^{-1} \bm{X}^{\top}.
+    \]
+    [3 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+
+    The fitted (predicted) values are given by $\underline{\hat{y}} = \bm{X} \underline{\hat{\beta}}$ (without the error term):
+    \[
+    \hat{\underline{y}} = \bm{X}\hat{\underline{\beta}}
+                        = \bm{X}(\bm{X}^{\top}\bm{X})^{-1}\bm{X}^{\top}\underline{y}.
+    \]
+    Define
+    \[
+    \bm{H} = \bm{X}(\bm{X}^{\top}\bm{X})^{-1}\bm{X}^{\top},
+    \]
+    then
+    \[
+    \hat{\underline{y}} = \bm{H}\underline{y}.
+    \]
+    
+    \textbf{Marks (3):}
+    \begin{itemize}
+      \item 1 mark: starts from $\hat{\underline{y}} = \bm{X}\hat{\underline{\beta}}$.
+      \item 1 mark: substitutes $\hat{\underline{\beta}}$ from part (b) to get $\hat{\underline{y}} = \bm{X}(\bm{X}^{\top}\bm{X})^{-1}\bm{X}^{\top}\underline{y}$.
+      \item 1 mark: defines $\bm{H}$ and states $\hat{\underline{y}}=\bm{H}\underline{y}$.
+    \end{itemize}
+    \end{mdframed}
+
+    \item Show that $\bm{H}$ is idempotent and symmetric. [5 marks]
+    
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+
+    Recall
+    \[
+    \bm{H} = \bm{X}(\bm{X}^{\top}\bm{X})^{-1}\bm{X}^{\top}.
+    \]
+    
+    \textbf{Idempotent:} $\bm{H}^2=\bm{H}$.
+    
+    \[
+    \begin{aligned}
+    \bm{H}^2
+    &= \left[ \bm{X}(\bm{X}^{\top}\bm{X})^{-1}\bm{X}^{\top} \right]
+       \left[ \bm{X}(\bm{X}^{\top}\bm{X})^{-1}\bm{X}^{\top} \right] \\
+    &= \bm{X}(\bm{X}^{\top}\bm{X})^{-1}
+       \underbrace{\bm{X}^{\top}\bm{X}}_{2\times 2}
+       (\bm{X}^{\top}\bm{X})^{-1}\bm{X}^{\top}\\
+    &= \bm{X}(\bm{X}^{\top}\bm{X})^{-1}\bm{X}^{\top}\\
+    &= \bm{H}.
+    \end{aligned}
+    \]
+    
+    \textbf{Symmetric:} $\bm{H}^{\top}=\bm{H}$.
+    
+    \[
+    \begin{aligned}
+    \bm{H}^{\top}
+    &= \left[\bm{X}(\bm{X}^{\top}\bm{X})^{-1}\bm{X}^{\top}\right]^{\top}\\
+    &= \left(\bm{X}^{\top}\right)^{\top}
+       \left[(\bm{X}^{\top}\bm{X})^{-1}\right]^{\top}
+       \bm{X}^{\top}\\
+    &= \bm{X}\left[(\bm{X}^{\top}\bm{X})^{\top}\right]^{-1}\bm{X}^{\top}
+      \quad\text{(since $(A^{-1})^{\top}=(A^{\top})^{-1}$)}\\
+    &= \bm{X}(\bm{X}^{\top}(\bm{X}^\top)^\top)^{-1}\bm{X}^{\top}\\
+    &= \bm{X}(\bm{X}^{\top}\bm{X})^{-1}\bm{X}^{\top}\\
+    &= \bm{H},
+    \end{aligned}
+    \]
+    using that $\bm{X}^{\top}\bm{X}$ is symmetric.
+    
+    \textbf{Marks (5):}
+    \begin{itemize}
+      \item 3 marks: correct computation showing $\bm{H}^2 = \bm{H}$ (idempotence).
+      \item 2 marks: correct transpose argument showing $\bm{H}^{\top} = \bm{H}$ (symmetry).
+    \end{itemize}
+    \end{mdframed}
+    
+    \item Estimate the weight of a child whose mother weighs 78 kg. You should use R or Python for the calculation. [5 marks]
+
+    \begin{mdframed}[linecolor=black, linewidth=1pt]
+    \textbf{Solution and marking scheme.}
+
+    We fit the linear model
+    \[
+    \text{child} = \beta_0 + \beta_1\,\text{mother} + \varepsilon.
+    \]
+    
+    Using R/Python (any correct code/description accepted), we compute
+    \[
+    \hat{\underline{\beta}} = 
+    \begin{bmatrix}
+    \hat{\beta}_0\\
+    \hat{\beta}_1
+    \end{bmatrix}
+    = (\bm{X}^{\top}\bm{X})^{-1}\bm{X}^{\top}\underline{y}.
+    \]
+    
+    \textit{Illustrative R code (not required exactly in this form):}
+    \begin{verbatim}
+    mother <- c(68, 75, 60, 55, 80, 72, 65)
+    child  <- c(70, 78, 62, 57, 85, 74, 68)
+    fit <- lm(child ~ mother)
+    coef(fit)
+    \end{verbatim}
+    
+    This yields approximately
+    \[
+    \hat{\beta}_0 \approx 2.2857,\qquad
+    \hat{\beta}_1 \approx 1.0286
+    \]
+    (you may get slightly different rounded values depending on software/precision).
+    
+    The estimated child weight for a mother weighing $78$ kg is
+    \[
+    \hat{y}(78) = \hat{\beta}_0 + \hat{\beta}_1\cdot 78
+                \approx 2.2857 + 1.0286\times 78
+                \approx 82.5\ \text{kg}.
+    \]
+    
+    Any numerically close answer with correct method earns full marks.
+    
+    \textbf{Marks (5):}
+    \begin{itemize}
+      \item 2 marks: correctly uses the fitted linear regression (either via formula or software) to obtain $\hat{\beta}_0,\hat{\beta}_1$.
+      \item 2 marks: correctly substitutes $\text{mother}=78$ into $\hat{y} = \hat{\beta}_0+\hat{\beta}_1\cdot 78$.
+      \item 1 mark: clear final numerical estimate (e.g.\ $\hat{y}\approx 82.5$ kg) with units or interpretation.
+    \end{itemize}
+    \end{mdframed}
+    
+\end{enumerate}
+
+\bigskip
+
+%---------------- Question 2 ----------------
+
+\textbf{2.} (20 marks: 10 marks explanation, 10 marks code)
+
+Find and classify the critical points of the function
+\[
+f(x,y) = 2x^3 - 3xy^2 + 6x - y
+\]
+using either R or Python. Explain your answers using the eigenvalues of the Hessian.
+
+\begin{mdframed}[linecolor=black, linewidth=1pt]
+\textbf{Solution and marking scheme (analytical explanation, 10 marks).}
+
+To find the critical points, we first compute the first-order partial derivatives of $f$ with respect to $x$ and $y$, set them equal to zero, and solve for $x$ and $y$.
+\[
+f_x = \frac{\partial f}{\partial x} = 6x^2 - 3y^2 + 6 = 0, \qquad
+f_y = \frac{\partial f}{\partial y} = -6xy - 1 = 0.
+\]
+
+From $f_y=0$:
+\[
+-6xy - 1 = 0 \quad\Rightarrow\quad xy = -\frac{1}{6}.
+\]
+From $f_x=0$:
+\[
+6x^2 - 3y^2 + 6 = 0 \quad\Rightarrow\quad 2x^2 - y^2 + 2 = 0
+\quad\Rightarrow\quad y^2 = 2x^2 + 2.
+\]
+
+Using $xy=-1/6$, we can write $y = -\dfrac{1}{6x}$ (assuming $x\neq 0$, which will be confirmed). Substitute into $y^2=2x^2+2$:
+\[
+\frac{1}{36x^2} = 2x^2 + 2.
+\]
+
+Multiply by $36x^2$:
+\[
+1 = 72x^4 + 72x^2.
+\]
+Let $t=x^2\ge 0$, then
+\[
+72t^2 + 72t - 1 = 0.
+\]
+Solve:
+\[
+t = \frac{-72 \pm \sqrt{72^2 - 4\cdot 72\cdot (-1)}}{2\cdot 72}
+= \frac{-72 \pm \sqrt{5184 + 288}}{144}
+= \frac{-72 \pm \sqrt{5472}}{144}.
+\]
+Note $\sqrt{5472}=24\sqrt{38}$, so
+\[
+t = \frac{-72 \pm 24\sqrt{38}}{144}
+  = \frac{-3 \pm \sqrt{38}}{18}.
+\]
+Since $t=x^2\ge0$, we must take the plus sign:
+\[
+x^2 = \frac{-3 + \sqrt{38}}{18} > 0.
+\]
+Thus $x = \pm \sqrt{\dfrac{-3 + \sqrt{38}}{18}}$, and from $y=-1/(6x)$ we get corresponding $y$ values. Hence we obtain two critical points:
+\[
+(x_1,y_1) = \left(\sqrt{\frac{-3 + \sqrt{38}}{18}},\ -\frac{1}{6x_1}\right),
+\quad
+(x_2,y_2) = \left(-\sqrt{\frac{-3 + \sqrt{38}}{18}},\ -\frac{1}{6x_2}\right).
+\]
+
+\medskip
+\textbf{Hessian and classification by eigenvalues.}
+
+Compute second derivatives:
+\[
+f_{xx} = \frac{\partial^2 f}{\partial x^2} = 12x,\qquad
+f_{yy} = \frac{\partial^2 f}{\partial y^2} = -6x,\qquad
+f_{xy} = f_{yx} = -6y.
+\]
+
+The Hessian matrix is
+\[
+H(x,y) =
+\begin{bmatrix}
+12x & -6y\\
+-6y & -6x
+\end{bmatrix}.
+\]
+
+At a critical point $(x_c,y_c)$, the eigenvalues of $H(x_c,y_c)$ determine the type:
+\begin{itemize}
+  \item both eigenvalues $>0$: local minimum;
+  \item both eigenvalues $<0$: local maximum;
+  \item eigenvalues of opposite sign: saddle point.
+\end{itemize}
+
+One may compute eigenvalues analytically (messy) or numerically in R/Python. The trace and determinant are:
+\[
+\operatorname{tr}H = 12x_c - 6x_c = 6x_c,\qquad
+\det H = (12x_c)(-6x_c) - (-6y_c)^2 = -72x_c^2 - 36y_c^2.
+\]
+Using $y_c^2 = 2x_c^2 + 2$, we get
+\[
+\det H = -72x_c^2 - 36(2x_c^2+2) = -144x_c^2 - 72 < 0.
+\]
+So at every critical point the determinant of $H$ is negative, implying that the eigenvalues have opposite signs. Therefore, \emph{both} critical points are \textbf{saddle points}.
+
+\textbf{Marks for explanation (10):}
+\begin{itemize}
+  \item 3 marks: correct first derivatives $f_x$, $f_y$ and system $f_x=f_y=0$.
+  \item 3 marks: correct reduction to equations $xy=-1/6$, $y^2=2x^2+2$, and solving to obtain two real critical points (an explicit numerical approximation is acceptable).
+  \item 2 marks: correct Hessian $H(x,y)$.
+  \item 2 marks: uses $\det H<0$ at both critical points to conclude they are saddle points (or equivalently, shows eigenvalues of opposite sign).
+\end{itemize}
+
+\bigskip
+\textbf{Illustrative R/Python code (10 marks).}
+
+Any correct script that:
+\begin{enumerate}
+  \item defines $f$,
+  \item computes symbolic or numerical derivatives,
+  \item solves $f_x=f_y=0$ for the critical points,
+  \item computes the Hessian at each critical point,
+  \item computes eigenvalues and classifies each point,
+\end{enumerate}
+earns up to 10 marks, for example:
+
+\medskip
+\textit{Python (SymPy) example:}
+\begin{verbatim}
+import sympy as sp
+
+# Symbols
+x, y = sp.symbols('x y', real=True)
+
+# Function
+f = 2*x**3 - 3*x*y**2 + 6*x - y
+
+# First derivatives
+fx = sp.diff(f, x)
+fy = sp.diff(f, y)
+
+# Solve for critical points
+crit_points = sp.solve([fx, fy], (x, y), dict=True)
+
+print("Critical points:")
+for cp in crit_points:
+    print(cp)
+
+# Second derivatives and Hessian
+f_xx = sp.diff(fx, x)
+f_xy = sp.diff(fx, y)
+f_yy = sp.diff(fy, y)
+
+H = sp.Matrix([[f_xx, f_xy],
+               [f_xy, f_yy]])
+
+for cp in crit_points:
+    H_cp = H.subs(cp)
+    eigvals = H_cp.eigenvals()
+    print("\nAt critical point:", cp)
+    print("Hessian:\n", H_cp)
+    print("Eigenvalues:", eigvals)
+
+    # Classification from eigenvalues
+    eig_list = list(eigvals.keys())
+    if eig_list[0] > 0 and eig_list[1] > 0:
+        print("Classification: local minimum")
+    elif eig_list[0] < 0 and eig_list[1] < 0:
+        print("Classification: local maximum")
+    else:
+        print("Classification: saddle point")
+\end{verbatim}
+
+\textbf{Marks for code (10):}
+\begin{itemize}
+  \item 2 marks: defines $f$ correctly and computes $f_x$, $f_y$.
+  \item 3 marks: solves for critical points (symbolically or numerically) and prints them.
+  \item 3 marks: defines the Hessian, evaluates it at critical points, computes eigenvalues.
+  \item 2 marks: correct classification logic based on eigenvalues (min/max/saddle), and prints a clear description.
+\end{itemize}
+\end{mdframed}
+
+\end{document}
