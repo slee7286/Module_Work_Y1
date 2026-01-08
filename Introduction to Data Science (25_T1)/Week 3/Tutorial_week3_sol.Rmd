@@ -1,0 +1,125 @@
+---
+title: |
+  | Introduction to Data Science
+  | R Tutorial
+  | Week 3
+author: |
+  | Ilse Cuevas Andrade and Dr. Gah-Yi Ban
+  | Imperial College Business School
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+```
+
+
+*Exercise* 
+
+Load built-in EuStockMarkets dataset, which contains daily closing prices of major European stock indices. The goal is to practice using the summarise(), group_by(), and arrange() functions to analyse financial data.
+
+###Dataset:
+The EuStockMarkets dataset contains data on four major European stock indices from 1991 to 1998:
+
+**DAX**: German stock index.
+**SMI**: Swiss stock index.
+**CAC**: French stock index.
+**FTSE**: British stock index.
+
+
+```{r}
+#Load the data
+data("EuStockMarkets")
+# Transform to data frame
+stock_data <- as.data.frame(EuStockMarkets)
+# Data processing. Adding the date - time series data.
+stock_data$Date <- seq(as.Date("1991-01-01"), by = "days", length.out = nrow(stock_data))
+#Print the first 6 rows
+head(stock_data)
+```
+
+*Exercise 1*
+Extract the year from the Date column and group the data by Year. Then, calculate the average closing price of the four indices for each year.
+
+```{r Exercise 1}
+stock_data %>%
+  mutate(Year = format(Date, "%Y")) %>%
+  group_by(Year) %>%
+  summarise(
+    avg_dax = mean(DAX, na.rm = TRUE),
+    avg_smi = mean(SMI, na.rm = TRUE),
+    avg_cac = mean(CAC, na.rm = TRUE),
+    avg_ftse = mean(FTSE, na.rm = TRUE)
+  )
+
+```
+*Exercise 2*
+Find the year with the highest average DAX index and sort the years in descending order based on the average DAX value.
+
+```{r Exercise 2}
+stock_data %>%
+  mutate(Year = format(Date, "%Y")) %>%
+  group_by(Year) %>%
+  summarise(avg_dax = mean(DAX, na.rm = TRUE)) %>%
+  arrange(desc(avg_dax))
+```
+*Exercise 3*
+In this exercise, you will work with the **`LifeCycleSavings`** dataset and use functions like `pull()`, the dot operator (`.`), `case_when()`, and `between()` to analyse economic data. This dataset contains economic information on savings rates in different countries.
+
+### Dataset
+The `LifeCycleSavings` dataset contains the following variables:
+- **sr**: Aggregate personal savings as a percentage of disposable income.
+- **pop15**: Percentage of population under 15 years of age.
+- **pop75**: Percentage of population over 75 years of age.
+- **dpi**: Real per-capita disposable income.
+- **ddpi**: Percentage growth rate of dpi.
+
+You can load and convert the dataset to a data frame with the following command:
+
+
+```{r Exercise 3}
+data("LifeCycleSavings")
+savings_data <- as.data.frame(LifeCycleSavings)
+```
+
+Create a new column savings_category to classify countries based on their savings rate (sr) as follows:
+
+"Low Savings" if sr is less than 10.
+"Moderate Savings" if sr is between 10 and 20.
+"High Savings" if sr is greater than 20.
+
+```{r Exercise 4}
+savings_data %>%
+  mutate(savings_category = case_when(
+    sr < 10 ~ "Low Savings",
+    sr >= 10 & sr <= 20 ~ "Moderate Savings",
+    sr > 20 ~ "High Savings"
+  )) %>%
+  select(sr, savings_category) %>%
+  head(10)
+```
+*Example*
+```{r}
+# Extract the 'sr' column using pull()
+savings_rate <- savings_data %>%
+  pull(sr)
+
+# Display the first 10 values
+head(savings_rate, 10)
+
+```
+
+
+```{r}
+# Access the 'sr' column using the dot operator
+savings_rate <- savings_data %>%
+  .$sr
+
+# Display the first 10 values
+head(savings_rate, 10)
+```
+
+## The end

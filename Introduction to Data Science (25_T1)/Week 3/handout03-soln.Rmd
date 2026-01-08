@@ -1,0 +1,262 @@
+---
+title: |
+  | Introduction to Data Science
+  | R exercises in-class
+  | Week 3  
+author: |
+  | Dr. Gah-Yi Ban
+  | Imperial College Business School
+
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+
+Tidyverse continued
+====================
+
+Let us start by calling the `tidyverse` library.
+
+**NOTE:** If you don't have the tidyverse package on your RStudio, please first install it by running `install.packages("tidyverse")` in the R Console.
+
+```{r load lib, warning=F, message=F}
+library(tidyverse)
+```
+
+Before starting any practice and exercises, load the dataset "uk_gdp_and_weeklyWage.csv". Recall this gives us data on the average weekly pay (in £) and the total GDP (in millions of £) from 2000 to 2022.
+
+
+```{r load data}
+uk_gdp_and_weeklyWage <- read.csv("./data/uk_gdp_and_weeklyWage.csv", 
+                                  stringsAsFactors = F)
+
+head(uk_gdp_and_weeklyWage)
+```
+
+With pipe operators, you may use one or more of the following verbs (note there are others):
+
+  + `select()`: pick variables based on their names.
+  + `filter()`: pick cases based on their values.
+  + `mutate()`: add new variables that are functions of existing variables.
+  + `arrange()` allows you to sort a data frame by a particular column.
+  + `summarise()`: reduce multiple values down to a single summary.
+  + These all combine naturally with `group_by()` which allows you to perform any
+  operation “by group”. 
+  
+**Note ** If you use `group()`, then `ungroup()` is always used after performing all the calculations. If you forget to `ungroup()` data, future data management will likely produce errors. Always `ungroup()` swhen you’ve finished with your calculations.
+
+### mutate
+
+Let us add GDP growth rates and categorize the growth rate into quartiles.
+
+*Note:* there will be NA(s) in the GDP growth rates data
+
+To do so, we need to make use of `cut()` and `quantile()` functions.
+
+The `cut()` function in R is used to cut a range of values into bins and specify labels for each bin. This function uses the following syntax:
+
+**cut(x, breaks, include.lowest = TRUE or FALSE, labels = ...)**
+
+where:
+
+* x: Name of vector
+
+* breaks: Number of breaks to make or vector of break points
+
+* labels: Labels for the resulting bins. `labels = NULL` produces interval bins and `labels = FALSE` produces integer category labels starting at 1. Otherwise, you can assign your own labels with `labels = your own vector of labels`.
+
+* include.lowest: Boolean value to include lowest break value 
+
+To see how `cut()` works, study and run the code below that puts a vector of numbers from 0 to 100 into 5 bins.
+```{r cut}
+vec <- c(0:100)
+
+cut(vec, c(0,20,40,60,80,100), include.lowest = TRUE, labels = FALSE) 
+
+```
+
+The `quantile()` function produces sample quantiles corresponding to the given probabilities. The smallest observation corresponds to a probability of 0 and the largest to a probability of 1.
+
+The syntax is:
+
+**quantile(x, probs, na.rm = TRUE or FALSE, type = 7)**
+
+where:
+
+* x: Numeric vector whose sample quantiles are wanted. NA and NaN values are not allowed in numeric vectors unless na.rm is set to TRUE.
+
+* probs: Numeric vector of probabilities. E.g., if `probs = seq(0, 1, 0.25)`, then you are asking for the quartiles (0%, 25%, 50%, 75% and 100%).  
+
+* na.rm = TRUE or FALSE: if TRUE, any NA and NaN's are removed from x before the quantiles are computed.
+
+* type: An integer between 1 and 9 selecting one of the nine quantile algorithms available are to be used. Default is to keep it at 7.
+
+To see how `quantile()` works, study and run the code below that puts a vector of numbers from 0 to 100 into quartiles.
+```{r quantile}
+
+vec <- c(0:100)
+
+quantile(vec, probs = seq(0, 1, 0.25), type = 7) 
+
+```
+
+Now we are ready to use `mutate` to add GDP growth rates and categorize the growth rate into quartiles. Study and run the code chunk below. 
+
+```{r mutate}
+
+uk_gdp_and_weeklyWage <- uk_gdp_and_weeklyWage %>% 
+  mutate(GDP_growth_rate = (GDP_m - lag(GDP_m)) / lag(GDP_m) * 100, 
+         )
+
+uk_gdp_and_weeklyWage <- uk_gdp_and_weeklyWage %>% 
+  mutate(GDP_growth_rate_Quartile = cut(GDP_growth_rate, 
+                                  quantile(GDP_growth_rate, 
+                                           probs = seq(0, 1, 0.25), type = 7, 
+                                           na.rm = T), 
+                                  include.lowest = T, labels = F)
+          )
+
+head(uk_gdp_and_weeklyWage)
+
+```
+
+
+### arrange
+
+Let's sort the data by the order of GDP growth rates using arrange.
+
+```{r sort data}
+uk_gdp_and_weeklyWage %>% arrange(GDP_growth_rate) %>% head()
+
+```
+
+### group_by
+
+Let us now investigate the mean, standard deviation of GDPs, mean and standard deviation of weekly wage, and mean and standard deviation of GDP growth rates 
+in each GDP growth rate quartile group by `summarise`.
+
+Can you do this in the following code chunk?
+
+*Exercise 1*
+
+```{r Exercise 1}
+uk_gdp_and_weeklyWage %>% 
+  group_by(GDP_growth_rate_Quartile) %>%
+  summarise(mean_GDP = mean(GDP_m), std_GDP = sd(GDP_m),
+            mean_wage = mean(Weekly_pay), std_wage = sd(Weekly_pay),
+            mean_GDPrate = mean(GDP_growth_rate), 
+            std_GDPrate = sd(GDP_growth_rate)) %>%
+  ungroup()
+```
+
+After running the above code chunk, have you observed any issue(s)? 
+
+To address the issue(s), adjustment in the above code chunk can be done by different 
+ways. For example, `filter` can be added to implement that in the Exercise 2.
+
+*Exercise 2*
+```{r Exercise 2}
+uk_gdp_and_weeklyWage %>% 
+  filter(!is.na(GDP_growth_rate_Quartile)) %>%
+  group_by(GDP_growth_rate_Quartile) %>%
+  summarise(mean_GDP = mean(GDP_m), std_GDP = sd(GDP_m),
+            mean_wage = mean(Weekly_pay), std_wage = sd(Weekly_pay),
+            mean_GDPrate = mean(GDP_growth_rate), 
+            std_GDPrate = sd(GDP_growth_rate)) %>%
+  ungroup()
+```
+
+Sometimes, viewing the first or last few rows of the data will be helpful to 
+understand the data. Recall that we used `head` to display the first few rows 
+of data.But we often need to sort the data before viewing. 
+
+Let us try viewing the first 10 rows of "uk_gdp_and_weeklyWage" after sorting 
+the "GDP_growth_rate" with `arrange` in Exercise 3.
+
+*Exercise 3*
+```{r Exercise 3}
+uk_gdp_and_weeklyWage %>% arrange(GDP_growth_rate) %>%
+  head(10)
+```
+Now let us try viewing the last 10 rows of "uk_gdp_and_weeklyWage" after sorting the "GDP_growth_rate" with `arrange` and `tail` in Exercise 4.
+
+*Exercise 4*
+```{r Exercise 4}
+uk_gdp_and_weeklyWage %>% arrange(GDP_growth_rate) %>%
+  tail(10)
+```
+
+### summarise
+
+`summarise()` or `summarize()` function provides a summary of data, such as
+mean, standard deviation, median etc. The function is often used together with 
+`group_by` if the data contain groups.
+
+Let's start with a simply task by showing the mean of weekly wage, GDP and GDP growth rate.
+
+```{r summarize}
+uk_gdp_and_weeklyWage %>% 
+    summarise(mean_wage = mean(Weekly_pay), mean_GDP = mean(GDP_m), 
+              mean_GDP_growth = mean(GDP_growth_rate))
+```
+Have you found any issue after running the code above? Why? What's the solution?
+
+You can handle NA values by adding an argument `na.rm=TRUE` or `na.rm=T` (for shorter version) into the function `mean`. Try these below.
+
+*Exercise 5*
+
+```{r Exercise 5}
+uk_gdp_and_weeklyWage %>% 
+    summarise(mean_wage = mean(Weekly_pay), mean_GDP = mean(GDP_m), 
+              mean_GDP_growth = mean(GDP_growth_rate, na.rm=T))
+
+```
+
+If we run `summary()` on the GDP growth rate column, we get 2.163% as the median
+rate. Let us extract this number from the string output using the `parse_number()` function, as below. To find out how to use `parse_number()`, you can search online or type `?parse_number` in the Console.
+
+```{r GDP growth rate median}
+GDP_growth_rate_summary <- uk_gdp_and_weeklyWage %>% 
+  summary(GDP_growth_rate, na.rm=T)
+
+GDP_growth_rate_summary
+
+GDP_growth_rate_median <- parse_number(GDP_growth_rate_summary[3,4], 
+                                       locale = locale(grouping_mark = " "))
+
+GDP_growth_rate_median
+```
+
+Let's group the GDP growth rate data by the benchmark at 2.163% and check the mean and standard deviation of the GDP growth rate.
+
+```{r group summary}
+uk_gdp_and_weeklyWage <- uk_gdp_and_weeklyWage %>%
+  mutate(lower_median = GDP_growth_rate < GDP_growth_rate_median)
+
+uk_gdp_and_weeklyWage %>% group_by(lower_median) %>%
+  summarise(mean_GDP_growth = mean(GDP_growth_rate, na.rm=T), 
+            std_GDP_growth = sd(GDP_growth_rate, na.rm = T)) %>%
+  ungroup()
+```
+
+Any issue(s) found from the code chunk above?
+
+Please find a solution to address the issue in the following code chunk.
+
+*Exercise 6*
+
+```{r Exercise 6}
+uk_gdp_and_weeklyWage <- uk_gdp_and_weeklyWage %>%
+  mutate(lower_median = GDP_growth_rate < GDP_growth_rate_median)
+
+uk_gdp_and_weeklyWage %>% 
+  group_by(lower_median) %>%
+  filter(!is.na(GDP_growth_rate)) %>%
+  summarise(mean_GDP_growth = mean(GDP_growth_rate), 
+            std_GDP_growth = sd(GDP_growth_rate)) %>%
+  ungroup()
+```
+
+## The End
