@@ -1,0 +1,123 @@
+---
+title: |
+  | Introduction to Data Science
+  | R Tutorial
+  | Week 2
+author: |
+  | Ilse Cuevas Andrade and Dr. Gah-Yi Ban
+  | Imperial College Business School
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+1. Deal with NAs
+-----------
+
+- Load the data from "uk_gdp_and_weeklyWage_na.csv".
+
+- Locate the NAs and remove the rows with missing values. 
+- One way to do it is using the built-in function `na.omit`
+
+```{r}
+#Load data 
+
+uk_gdp_and_weeklyWage_na <- read.csv("data/uk_gdp_and_weeklyWage_na.csv")
+
+uk_gdp_and_weeklyWage_no_NA<-na.omit(uk_gdp_and_weeklyWage_na)
+
+```
+
+
+2. Functions in R.
+-----------
+
+*Example*
+
+Write a function compute_s_n that for any given n computes the sum Sn = 1^2 + 2^2 +3^2 + . . . n^2. Report the value of the sum when n = 10.
+
+```{r}
+# Two approaches to solve this question. 
+
+compute_s_n <- function(n) {
+  sum_squares<-0 # initialize vector
+  # using for loop
+  
+  for(i in 1:n){
+    sum_squares <- sum_squares +(i^2)
+  }
+  
+  
+  return(sum_squares)
+}
+
+result <- compute_s_n(10)
+print(result)
+```
+
+
+```{r}
+compute_s_n <- function(n) {
+  # using vectorized approach
+  sum_squares <- sum((1:n)^2)
+  
+  return(sum_squares)
+}
+
+# Compute S_n for n = 10
+result <- compute_s_n(10)
+print(result)
+```
+
+*Exercise 1*
+-----------
+
+- Load the data "uk_gdp_and_weeklyWage.csv" 
+- Then, add two columns, "GDP_growth_rate" and "weeklyWageLevel", using `mutate` to show yearly GDP growth rate and if weekly wage level was over £500 or not. 
+
+```{r Exercise 1}
+uk_gdp_and_weeklyWage <- read.csv("data/uk_gdp_and_weeklyWage.csv")
+
+uk_gdp_and_weeklyWage %>% 
+  mutate(GDP_growth_rate = (GDP_m - lag(GDP_m)) / lag(GDP_m) * 100, 
+         weeklyWageLevel = Weekly_pay>500)
+
+```
+
+*Exercise 2 (Challenging!)*
+-----------
+
+- From the dataframe `uk_gdp_and_weeklyWage`, extract a subset containing leap years only.
+
+- *Hint*: 
+    - you may want to use `rbind` together with loop and nested conditions
+to extract the subset holding leap years. 
+    - NULL value can be used to initialized an empty data frame.
+But there are different ways to implement that.
+
+```{r Exercise 2}
+
+leap_year_subset <- NULL
+for (i in 1:nrow(uk_gdp_and_weeklyWage)) {
+  year_num <- uk_gdp_and_weeklyWage$Year[i]
+  # check if it is a leap year
+  if (year_num %% 100 == 0) {
+    if (year_num %% 400 == 0) {
+      leap_year_subset <- rbind(leap_year_subset, uk_gdp_and_weeklyWage[i, ])
+    }
+  } else if (year_num %% 4 == 0) {
+    leap_year_subset <- rbind(leap_year_subset, uk_gdp_and_weeklyWage[i, ])
+  } else {
+    print(paste(year_num, "is not a leap year"))
+  }
+}
+```
+
+
+
+##The end

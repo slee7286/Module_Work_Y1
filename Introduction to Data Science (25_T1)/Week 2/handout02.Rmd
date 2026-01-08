@@ -1,0 +1,448 @@
+---
+title: |
+  | Introduction to Data Science
+  | R exercises in-class
+  | Week 2  
+author: |
+  | Dr. Gah-Yi Ban
+  | Imperial College Business School
+
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+Basic Programming in R 
+====================
+
+Run the following code chunks to get started.
+
+```{r GDP data}
+# GDP unit : m (million)
+uk_GDP_2018 <- 2203005
+uk_GDP_2019 <- 2238348
+uk_GDP_2020 <- 1991439
+uk_GDP_2021 <- 2142738
+uk_GDP_2022 <- 2230625
+
+```
+
+```{r GDP grow rates}
+uk_GDP_growth_rate_2019 <- (uk_GDP_2019 - uk_GDP_2018)/uk_GDP_2018 * 100
+
+print(uk_GDP_growth_rate_2019)
+
+uk_GDP_growth_rate_2020 <- (uk_GDP_2020 - uk_GDP_2019)/uk_GDP_2019 * 100
+
+print(uk_GDP_growth_rate_2020)
+
+uk_GDP_growth_rate_2021 <- (uk_GDP_2021 - uk_GDP_2020)/uk_GDP_2020 * 100
+
+print(uk_GDP_growth_rate_2021)
+```
+
+Comparison
+----------
+
+It is often necessary to compare values and variables, to determine if they are
+equal, or if one is greater or less than another. The *comparison operators*
+for equality are `==` and `!=`
+```{r Comparison Operators - Equality}
+# Equal to
+uk_GDP_growth_rate_2020 == uk_GDP_growth_rate_2020
+
+# Not equal to
+uk_GDP_growth_rate_2020 != uk_GDP_growth_rate_2020
+
+```
+
+The operators for ordering (greater/less than) are `>`  `<`  `>=`  `<=`
+```{r Comparison Operators - Ordering}
+# Less than
+uk_GDP_growth_rate_2020 < uk_GDP_growth_rate_2020
+
+# Less than or equal to
+uk_GDP_growth_rate_2020 <= uk_GDP_growth_rate_2020
+
+# Greater than
+uk_GDP_growth_rate_2020 > uk_GDP_growth_rate_2020
+
+# Greater than or equal to
+uk_GDP_growth_rate_2020 >= uk_GDP_growth_rate_2020
+
+```
+
+Notice that the output is either `TRUE` or `FALSE`. These are *Boolean* values
+(also called logical values) - a data type, different to numeric or character.
+
+
+Vector
+------
+
+A vector holds same type of data in an array. A vector can be created using an in-built function in R called `c()`. Elements must be comma-separated. All elements in a vector can be processed all at once; run and study the following code chunk.
+```{r vector}
+# UK average weekly wage between 2018 and 2022, unit: £
+uk_avg_weekly_wage <- c(488,	505,	516,	542,	571)
+
+uk_avg_weekly_wage > 500
+```
+
+Previously, we converted dates in character type to Date type directly one by one. But with dates in a numeric type vector, we need to convert them into character type before converting into Date type. The following example demonstrates this idea.
+```{r vector of dates}
+# UK average weekly wage between 2018 and 2022, unit: £
+uk_avg_weekly_wage <- c(488,	505,	516,	542,	571)
+
+# UK GDP between 2018 and 2022, unit: m£
+
+uk_GDP <- c(2203005, 2238348, 1991439, 2142738, 2230625)
+
+yrs <- c(20010106, 20020406, NA, 20021203, 20031104, 20050908)
+
+yr <- as.Date(as.character(yrs), format = "%Y%m%d")
+
+print(yr)
+```
+
+NA values
+--------
+We can check if there are NA values using the function `is.na()`. Run and study the following code chunk.
+```{r check NAs in a vector}
+# is.na() is a R built-in function for detecting NAs 
+is.na(yrs)
+
+# which() is for returning the location of TRUE values
+which(is.na(yrs))
+```
+
+
+Data frame
+---------
+
+A data frame is a type of data that uses rows and columns to store tabular data. 
+An important feature of a data frame is that different columns can store different types of data. For example, the following code chunk generates a data frame. After running the code chunk, a data frame is generated and listed in the Environment window (see top right hand side of your screen). Click on the variable name, and a view window will be opened to show the data.
+
+```{r generate a data frame}
+uk_gdp_weekly_wage <- data.frame("Year"=c(2018:2022), 
+                               "weekly_wage"=c(488,	505,	516,	542,	571),
+                               "GDP"=
+                                 c(2203005,	2238348	,1991439,	2142738,	NA),
+                               stringsAsFactors = F)
+
+print(uk_gdp_weekly_wage)
+```
+
+### Indexing
+
+Accessing the *elements* of a vector or data frame is done by *indexing*  with `[ ]`. The *index* is a position in a vector or data frame, and in R it always starts at 1.
+```{r Indexing}
+# Extract the first element
+uk_avg_weekly_wage[1]
+
+# Extract the first three elements
+uk_avg_weekly_wage[1:3]
+
+# Extract the second and fourth elements
+uk_avg_weekly_wage[c(2, 4)]
+
+# Extract the last element
+uk_avg_weekly_wage[length(uk_avg_weekly_wage)]
+
+# Change the first element
+uk_avg_weekly_wage[1] <- 4
+
+# Add a new element with append()
+uk_avg_weekly_wage <- append(uk_avg_weekly_wage, 10)
+
+print(uk_avg_weekly_wage)
+
+```
+
+#### Indices with data frame
+
+A data frame can be also accessed by the column names and indices. The following
+example code shows how to access the 2nd element in the Year column with 2 
+methods.
+
+```{r accessing elements of a data frame}
+uk_gdp_weekly_wage$Year[2]
+uk_gdp_weekly_wage[2,1]
+```
+
+
+#### Exercise 1: Indices
+
+*Exercise 1*
+Extract then print the UK GDP and weekly wage data from the year 2021.
+```{r Exercise 1}
+uk_gdp_weekly_wage2021 <- ???
+
+print(uk_gdp_weekly_wage2021)
+
+```
+
+*Exercise 2*
+Change the weekly wage in 2021 to 550 and print out the latest result.
+```{r Exercise 2}
+??? <- 550
+
+print(uk_gdp_weekly_wage2021)
+```
+
+*Exercise 3*
+Now correct the weekly wage in 2021 back to 542 and print out the latest result
+```{r Exercise 3}
+??? <- 542
+
+print(uk_gdp_weekly_wage2021)
+```
+
+### load data 
+
+Before starting loading, copy the data file "uk_gdp_and_weeklyWage.csv" to **data** directory in your R **project directory** (i.e., create a new folder called data in the current directory) and run the folllowing code chunk.
+
+```{r load data}
+uk_gdp_and_weeklyWage <- read.csv("./data/uk_gdp_and_weeklyWage.csv", stringsAsFactors = F)
+```
+
+The variable `uk_gdp_and_weeklyWage` stores the data imported. It is a data frame.
+The argument `stringsAsFactors=F` is used for stopping read.csv from organizing 
+character type of data in factor type (factors are used to work with categorical variables, variables that have a fixed and known set of possible values). The argument is used to avoid some potential troubles.
+
+To view the imported data, simply click on the variable name from the list in 
+the **top-right** Environment panel...**But**, hold on for a second, before clicking,
+you need to observe the number of rows of data. For example, `uk_gdp_and_weeklyWage`
+has *23 obs. of 3 variables*, that means, it has 23 rows and 3 columns. If there
+are 500,000 or more rows or columns, direct clicking will likely freeze your RStudio. In that case, instead of clicking on the variable, the following line is recommended. 
+```
+View(head(uk_gdp_and_weeklyWage))
+```
+The line can be run in a code chunk and ideally run in the **Console** window (usually, placed at the bottom left). By default, `head` is a built-in function and it retrieves the first 6 rows of  data. If more rows are expected, an argument is required. For example,
+
+```{r view 15}
+View(head(uk_gdp_and_weeklyWage, n = 15))
+
+```
+
+Programming Structure
+--------------------
+
+### Conditional Statements if...else
+
+- Before applying an operation we might verify if it can be executed.
+
+- We might need to apply different operations depending on some conditions.
+
+- We can use an if-else statement to determine what operations need to be executed if a condition is verified.
+
+For example, check if weekly wage in 2021 was more than £550
+
+```{r check wage}
+# check which row contains the data of 2021
+row_num <- which(uk_gdp_and_weeklyWage$Year == 2021)
+if (uk_gdp_and_weeklyWage$Weekly_pay[row_num] > 550) {
+  print("Weekly wage in 2021 was more than £550")
+} else {
+  print("Weekly wage in 2021 was less than £550") 
+}
+```
+
+*Exercise 4*
+By changing the year number, check if the weekly wage in 2018 exceeded £550.
+```{r Exercise 4}
+# check which row contains the data of 2018
+row_num <- which(???)
+
+if ??? {
+  print("Weekly wage in 2018 was more than £550")
+} else {
+  print("Weekly wage in 2018 was less than £550") 
+}
+
+```
+
+*Exercise 5*
+We don't want to change the relevant numbers every time. In the following exercise, use one variable to improve the above code. 
+```{r Exercise 5}
+year_num <- 2018
+row_num <- which(???)
+
+if ??? {
+  print("Weekly wage in 2018 was more than £550")
+} else {
+  print("Weekly wage in 2018 was less than £550") 
+}
+
+```
+
+### loop
+
+What if we want to repeat the same steps many times?
+
+One common way is to use the **for** loop.
+
+- Use **for** loop to repeat the same operations a specific number of times.
+
+- Use indices together with the loop to control element access.
+
+Run the code below and observe what happens.
+
+```{r loop year number}
+for (i in 1:nrow(uk_gdp_and_weeklyWage)) {
+  # nrow returns the number of rows of the data frame
+  # 1:nrow() specifies the number of times i varies
+  print(uk_gdp_and_weeklyWage$Year[i])
+}
+
+```
+
+Now based on Exercise 5, code the following:
+
+*Exercise 6*
+Loop through every year in the dataset and check if the weekly wage exceeded £550. 
+```{r Exercise 6}
+
+for ??? {
+  year_num <- ???
+  row_num <- ???
+  if ??? {
+    print(paste("Weekly wage in",  year_num, "was more than £550"))
+  } else {
+    print(paste("Weekly wage in", year_num, "was less than £550"))
+  }
+}
+```
+
+Pipe operators
+====================
+The pipe operator allows you to send results of one function to another. The **%>%** is used as pipe function for carrying out a sequences of actions. A set of *verbs* for common data manipulation challenges.
+
+Let's use `tidyverse` package to support `%>%` operators.
+
+**NOTE:** First install the tidyverse package by running `install.packages("tidyverse")` in the R Console.
+
+```{r load lib, warning=F, message=F}
+library(tidyverse)
+```
+
+Before starting any practice and exercises, load the dataset "uk_gdp_and_weeklyWage.csv".
+
+```{r load data 2}
+uk_gdp_and_weeklyWage <- read.csv("./data/uk_gdp_and_weeklyWage.csv", 
+                                  stringsAsFactors = F)
+```
+
+With pipe operators, you can use the one or more of the following verbs:
+
+  + `select()`: pick variables based on their names.
+  + `filter()`: pick cases based on their values.
+  + `mutate()`: add new variables that are functions of existing variables.
+  + `arrange()` allows you to sort a data frame by a particular column.
+  + `summarise()`: reduce multiple values down to a single summary.
+  + These all combine naturally with `group_by()` which allows you to perform any
+  operation “by group”. 
+  
+**Note ** If you use `group()`, then `ungroup()` is always used after performing all the calculations. If you forget to `ungroup()` data, future data management will likely produce errors. Always `ungroup()` swhen you’ve finished with your calculations.
+  
+### select
+
+For example, the following code can select the Year column from the data frame.
+
+```{r select a column}
+uk_gdp_and_weeklyWage %>% select(Year) %>% head()
+```
+*Exercise 7*
+
+Select the Year and weekly wage columns from "uk_gdp_and_weeklyWage".
+```{r Exercise 7}
+
+uk_gdp_and_weeklyWage %>% ???
+
+```
+If want to store the pipe operations results for later use, assign the operations 
+to a variable.
+
+For example:
+
+```{r store select results}
+
+year_num <- uk_gdp_and_weeklyWage %>% select(Year)
+
+```
+
+### filter
+
+To extract a subset of the dataset, `filter` can be used. For example, if want 
+to select the GDP data between 2015 and 2020. We can do
+```{r filter}
+
+uk_gdp_and_weeklyWage %>% select(Year, GDP_m) %>% filter(Year>=2015, Year<=2020)
+```
+
+
+Recall the exercise selecting the subset from leap years last week, it can be 
+implemented using pipe operations. 
+
+*Exercise 8*
+
+Use select and filter with pipe operators to obtain a subset of weekly wage from leap years.
+```{r Exercise 8}
+uk_gdp_and_weeklyWage %>% ??? %>% ???
+```
+
+### mutate
+
+Recall the practice for calculating GDP growth rate in the previous week(s), if we want to calculate all the yearly GDP growth rates from 2000 to 2022, we need to add a column to the data frame and repeat the equation to obtain GDP growth rate results.
+
+One method is to use `loop` to implement the calculation. Read the following
+code chunk, run it and observe the results.
+
+```{r gdp growth rate method 1}
+# add a colummn "GDP_growth_rate" to the data frame by assigning NA values
+uk_gdp_and_weeklyWage$GDP_growth_rate <- NA
+
+# use loop to calculate the GDP growth rate
+# start from the 2nd row because the equation looks backwards one period.
+for (i in 2:nrow(uk_gdp_and_weeklyWage)) {
+  uk_gdp_and_weeklyWage$GDP_growth_rate[i] <- 
+    (uk_gdp_and_weeklyWage$GDP_m[i] - uk_gdp_and_weeklyWage$GDP_m[i-1])/
+    uk_gdp_and_weeklyWage$GDP_m[i-1] * 100
+}
+
+```
+
+`mutate()` creates new columns that are functions of existing variables. It can also modify (if the name is the same as an existing column) and delete columns (by setting their value to NULL).
+
+With `mutate`, `lag()` and pipe operator(s), the above code can be implemented in the following, much smaller, code chunk.
+
+```{r gdp growth rate method 2}
+uk_gdp_and_weeklyWage <- uk_gdp_and_weeklyWage %>% 
+  mutate(GDP_growth_rate = (GDP_m - lag(GDP_m)) / lag(GDP_m) * 100)
+```
+
+*Exercise 9*
+Use mutate to add a column "weeklyWageLevel" to check if weekly wage was more than 500 or not.
+```{r Exercise 9}
+uk_gdp_and_weeklyWage %>% ???
+```
+
+### arrange
+
+`arrange()` allows you to sort a data frame by a particular column. Try the following code chunk.
+
+```{r arrange}
+uk_gdp_and_weeklyWage %>% 
+  arrange(GDP_growth_rate)
+
+```
+
+The default is to sort in an ascending order; to sort by a descending order, you need to specify `arrange(desc())`. Try this for "GDP_growth_rate" in the "uk_gdp_and_weeklyWage" data frame.
+
+*Exercise 10*
+```{r Exercise 10}
+uk_gdp_and_weeklyWage %>% ???
+
+```
+
+
+## The End
